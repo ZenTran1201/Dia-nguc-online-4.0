@@ -276,6 +276,13 @@
             box-shadow: 0 6px 20px rgba(230, 34, 43, 0.6);
         }
 
+        .btn-action:disabled {
+            background: #4a1d22;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
         .hell-levels-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
@@ -287,22 +294,23 @@
         .hell-level-card {
             background: rgba(10, 3, 4, 0.8);
             border: 1px solid var(--border-red);
-            padding: 12px;
+            padding: 15px;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s;
+            text-align: center;
         }
 
         .hell-level-card:hover {
             border-color: var(--accent-gold);
             transform: scale(1.02);
-            box-shadow: 0 0 10px rgba(255, 183, 3, 0.2);
+            box-shadow: 0 0 15px rgba(255, 183, 3, 0.3);
         }
 
         .hell-level-card h4 {
             color: var(--accent-red);
-            font-size: 13px;
-            margin-bottom: 5px;
+            font-size: 14px;
+            margin-bottom: 6px;
         }
 
         .hell-level-card p {
@@ -310,8 +318,94 @@
             color: var(--text-muted);
         }
 
-        /* Shop Grid */
-        .shop-grid {
+        /* MODAL OVERLAY */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(6px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: rgba(22, 10, 12, 0.95);
+            border: 2px solid var(--accent-red);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 480px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 30px rgba(230, 34, 43, 0.7);
+            animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes modalPop {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .modal-icon-display {
+            font-size: 75px;
+            margin: 15px 0;
+            text-shadow: 0 0 20px rgba(230, 34, 43, 0.8);
+            animation: pulseIcon 1.5s infinite ease-in-out;
+            cursor: pointer;
+        }
+
+        @keyframes pulseIcon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .timer-container {
+            width: 100%;
+            background: #110406;
+            border: 1px solid var(--border-red);
+            border-radius: 10px;
+            height: 16px;
+            overflow: hidden;
+            margin: 15px 0 8px;
+            position: relative;
+        }
+
+        .timer-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ffb703, #e6222b);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .timer-text {
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--accent-gold);
+            margin-bottom: 10px;
+        }
+
+        /* Shop Grid & Inventory Grid */
+        .shop-grid, .inventory-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 15px;
@@ -320,7 +414,7 @@
             padding-right: 5px;
         }
 
-        .shop-item {
+        .shop-item, .inventory-item {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border-red);
             padding: 15px;
@@ -331,13 +425,13 @@
             justify-content: space-between;
         }
 
-        .shop-item h4 {
+        .shop-item h4, .inventory-item h4 {
             color: var(--accent-gold);
             font-size: 14px;
             margin-bottom: 5px;
         }
 
-        .shop-item p {
+        .shop-item p, .inventory-item p {
             font-size: 11px;
             color: var(--text-muted);
             margin-bottom: 12px;
@@ -356,23 +450,32 @@
         .quest-card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 183, 3, 0.3);
-            padding: 12px;
+            padding: 15px;
             border-radius: 8px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quest-card:hover {
+            border-color: var(--accent-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(255, 183, 3, 0.2);
         }
 
         .quest-card h4 {
             color: var(--accent-gold);
-            font-size: 13px;
+            font-size: 14px;
             margin-bottom: 5px;
         }
 
         .quest-card p {
             font-size: 11px;
             color: var(--text-muted);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .table-custom {
@@ -539,8 +642,9 @@
                     <div class="nav-item" onclick="switchTab('tab-samhoi')">2. 18 Tầng Sám Hối <span>❯</span></div>
                     <div class="nav-item" onclick="switchTab('tab-nhiemvu')">3. Tích Điểm Công Đức (Nhiệm Vụ) <span>❯</span></div>
                     <div class="nav-item" onclick="switchTab('tab-cuahang')">4. Cửa Hàng Công Đức <span>❯</span></div>
-                    <div class="nav-item" onclick="switchTab('tab-dauthai')">5. Đăng Ký Đầu Thai <span>❯</span></div>
-                    <div class="nav-item" onclick="switchTab('tab-sonamtao')">6. Sổ Nam Tào (Bảng Vàng) <span>❯</span></div>
+                    <div class="nav-item" onclick="switchTab('tab-kho')">5. Kho Vật Phẩm Công Đức <span>❯</span></div>
+                    <div class="nav-item" onclick="switchTab('tab-dauthai')">6. Đăng Ký Đầu Thai <span>❯</span></div>
+                    <div class="nav-item" onclick="switchTab('tab-sonamtao')">7. Sổ Nam Tào (Bảng Vàng) <span>❯</span></div>
                 </div>
             </div>
 
@@ -568,157 +672,51 @@
                 <!-- TAB 2: 18 TẦNG SÁM HỐI -->
                 <div id="tab-samhoi" class="card view-panel">
                     <div class="section-title">🔥 18 TẦNG ĐỊA NGỤC (DANH MỤC SÁM HỐI & CẢI TẠO)</div>
-                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Chọn một tầng tương ứng với tội danh của bạn để thực hiện sám hối, giảm bớt điểm nghiệp tích lũy.</p>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Bấm chọn tầng địa ngục bên dưới để xem hình phạt minh họa và tiến hành sám hối giảm bớt nghiệp báo.</p>
                     <div class="hell-levels-grid" id="hell-levels-container"></div>
                 </div>
 
                 <!-- TAB 3: TÍCH ĐIỂM CÔNG ĐỨC (NHIỆM VỤ) -->
                 <div id="tab-nhiemvu" class="card view-panel">
                     <div class="section-title">⭐ NHIỆM VỤ TÍCH ĐIỂM CÔNG ĐỨC ÂM PHỦ</div>
-                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Hoàn thành các nhiệm vụ bên dưới để gia tăng điểm Công Đức, chuẩn bị cho việc đổi vật phẩm và đầu thai kiếp sau.</p>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Chọn một nhiệm vụ bên dưới để thực hiện. Thời gian làm nhiệm vụ (5s - 60s) tùy thuộc vào giá trị Công Đức nhận được.</p>
                     
-                    <div class="quest-grid">
-                        <div class="quest-card">
-                            <div>
-                                <h4>🕯️ Thắp Nhang Trầm Hươu Ảo</h4>
-                                <p>Hướng tâm thiện lành, thắp 1 nén nhang cầu an.</p>
-                            </div>
-                            <button class="btn-header" onclick="earnMerit(10, 'Thắp nhang thành công!')">+10 Công Đức</button>
-                        </div>
-                        <div class="quest-card">
-                            <div>
-                                <h4>📖 Đọc 1 Bài Kinh Sám Hối</h4>
-                                <p>Tụng niệm giải tỏa oán nghiệp trần gian.</p>
-                            </div>
-                            <button class="btn-header" onclick="earnMerit(25, 'Đọc kinh tịnh tâm thành công!')">+25 Công Đức</button>
-                        </div>
-                        <div class="quest-card">
-                            <div>
-                                <h4>🍜 Cúng Dường Cháo Canh Mạnh Bà</h4>
-                                <p>Bố thí cho các vong hồn đói khát dọc đường âm ty.</p>
-                            </div>
-                            <button class="btn-header" onclick="earnMerit(50, 'Đã cúng dường thành công!')">+50 Công Đức</button>
-                        </div>
-                        <div class="quest-card">
-                            <div>
-                                <h4>🌉 Giúp Cô Hồn Qua Cầu Nại Hà</h4>
-                                <p>Dắt tay các cụ già cô hồn qua sông quên lãng.</p>
-                            </div>
-                            <button class="btn-header" onclick="earnMerit(100, 'Giúp cô hồn qua cầu thành công!')">+100 Công Đức</button>
-                        </div>
-                        <div class="quest-card">
-                            <div>
-                                <h4>⚖️ Phụ Giúp Nam Tào Ghi Sổ Sinh Tử</h4>
-                                <p>Kiểm tra thông tin dân số cõi trần.</p>
-                            </div>
-                            <button class="btn-header" onclick="earnMerit(200, 'Hoàn thành phụ tá Nam Tào!')">+200 Công Đức</button>
-                        </div>
-                        <div class="quest-card">
-                            <div>
-                                <h4>🔥 Đổ Dầu Thêm Vào Vạc Sôi</h4>
-                                <p>Làm sạch tầng địa ngục bằng sức lao động chuyên cần.</p>
-                            </div>
-                            <button class="btn-header" onclick="earnMerit(500, 'Đã hỗ trợ vạc dầu thành công!')">+500 Công Đức</button>
-                        </div>
-                    </div>
+                    <div class="quest-grid" id="quest-list-container"></div>
                 </div>
 
                 <!-- TAB 4: CỬA HÀNG CÔNG ĐỨC -->
                 <div id="tab-cuahang" class="card view-panel">
                     <div class="section-title">🪙 CỬA HÀNG ĐỔI CÔNG ĐỨC 4.0</div>
-                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Dùng điểm Công Đức tích lũy để mua vật phẩm hỗ trợ đầu thai hoặc xả nghiệp nhanh từ cấp độ sơ cấp đến đại thừa tu tiên.</p>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Dùng điểm Công Đức tích lũy để mua vật phẩm hỗ trợ đầu thai hoặc xả nghiệp nhanh. Vật phẩm mua xong sẽ chuyển vào Kho của bạn.</p>
                     
-                    <div class="shop-grid">
-                        <div class="shop-item">
-                            <div>
-                                <h4>🍃 Lá Trầu Không Âm Ty</h4>
-                                <p>Vật phẩm sơ khai giúp xua đuổi tà ma nhẹ.</p>
-                            </div>
-                            <button class="btn-header" onclick="buyItem('Lá Trầu Không Âm Ty', 25)">25 Công Đức</button>
-                        </div>
-                        <div class="shop-item">
-                            <div>
-                                <h4>🪞 Kính Nghiệp Báo VIP</h4>
-                                <p>Soi rõ tương lai kiếp sau trước khi bấm quyết định.</p>
-                            </div>
-                            <button class="btn-header" onclick="buyItem('Kính Nghiệp Báo VIP', 50)">50 Công Đức</button>
-                        </div>
-                        <div class="shop-item">
-                            <div>
-                                <h4>🍵 Bát Canh Mạnh Bà VIP</h4>
-                                <p>Xóa sạch ký ức nợ nần kiếp cũ, đầu thai không vướng bận.</p>
-                            </div>
-                            <button class="btn-header" onclick="buyItem('Bát Canh Mạnh Bà VIP', 120)">120 Công Đức</button>
-                        </div>
-                        <div class="shop-item">
-                            <div>
-                                <h4>📜 Kim Bài Miễn Tội Tầng 1</h4>
-                                <p>Bỏ qua 50 điểm nghiệp khi qua cửa khảo tra.</p>
-                            </div>
-                            <button class="btn-header" onclick="buyItem('Kim Bài Miễn Tội Tầng 1', 300)">300 Công Đức</button>
-                        </div>
-                        <div class="shop-item">
-                            <div>
-                                <h4>🗡️ Kiếm Trảm Nghiệp Phù</h4>
-                                <p>Chém đứt 200 điểm nghiệp tích lũy tức thì.</p>
-                            </div>
-                            <button class="btn-header" onclick="buyItem('Kiếm Trảm Nghiệp Phù', 1000)">1,000 Công Đức</button>
-                        </div>
-                        <div class="shop-item">
-                            <div>
-                                <h4>🏮 Đèn Hoa Đăng Giải Oán</h4>
-                                <p>Thắp sáng 18 tầng địa ngục, giảm toàn bộ nghiệp nặng.</p>
-                            </div>
-                            <button class="btn-header" onclick="buyItem('Đèn Hoa Đăng Giải Oán', 5000)">5,000 Công Đức</button>
-                        </div>
-                        <div class="shop-item">
-                            <div>
-                                <h4>👑 Long bào Địa Tạng Vương</h4>
-                                <p>Khoác lên mình uy quyền tối cao của cõi âm.</p>
-                            </div>
-                            <button class="btn-header" onclick="buyItem('Long bào Địa Tạng Vương', 25000)">25,000 Công Đức</button>
-                        </div>
-                        <div class="shop-item">
-                            <div>
-                                <h4>🐉 Linh Thú Kỳ Lân Âm Phủ</h4>
-                                <p>Thú cưỡi hộ mệnh xuyên không gian 6 cõi.</p>
-                            </div>
-                            <button class="btn-header" onclick="buyItem('Linh Thú Kỳ Lân Âm Phủ', 100000)">100,000 Công Đức</button>
-                        </div>
-                        <div class="shop-item">
-                            <div>
-                                <h4>⚡ Hợp Thể Đại Đạo Kim Đan</h4>
-                                <p>Đột phá cảnh giới tu vi âm phủ, miễn nhiễm mọi hình phạt.</p>
-                            </div>
-                            <button class="btn-header" onclick="buyItem('Hợp Thể Đại Đạo Kim Đan', 500000)">500,000 Công Đức</button>
-                        </div>
-                        <div class="shop-item" style="border-color: var(--accent-gold); background: rgba(255, 183, 3, 0.05);">
-                            <div>
-                                <h4 style="color: #fff;">🌌 Thẻ Chuyển Sinh Tu Tiên</h4>
-                                <p>Cấp bậc tối thượng! Bay thẳng lên tiên giới phi thăng bất tử.</p>
-                            </div>
-                            <button class="btn-header" style="background: var(--accent-gold); color: #000; font-weight: bold;" onclick="buyItem('Thẻ Chuyển Sinh Tu Tiên', 1000000)">1,000,000 Công Đức</button>
-                        </div>
-                    </div>
+                    <div class="shop-grid" id="shop-items-container"></div>
                 </div>
 
-                <!-- TAB 5: ĐĂNG KÝ ĐẦU THAI -->
+                <!-- TAB 5: KHO VẬT PHẨM CÔNG ĐỨC -->
+                <div id="tab-kho" class="card view-panel">
+                    <div class="section-title">🎒 KHO VẬT PHẨM CÔNG ĐỨC SỞ HỮU</div>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Danh sách các vật phẩm bạn đã mua từ Cửa Hàng. Bấm "SỬ DỤNG" để kích hoạt công dụng đặc biệt của từng vật phẩm.</p>
+                    
+                    <div class="inventory-grid" id="inventory-list-container"></div>
+                </div>
+
+                <!-- TAB 6: ĐĂNG KÝ ĐẦU THAI -->
                 <div id="tab-dauthai" class="card view-panel">
                     <div class="section-title">🌀 NGUYỆN VỌNG ĐẦU THAI KIẾP SAU</div>
                     <div class="input-group">
                         <label>LỰA CHỌN KIẾP SAU THEO CÔNG ĐỨC:</label>
-                        <select id="reincarnate-select">
-                            <option value="0">Tỷ Phú Trúng Số (Cần 500 Công Đức)</option>
-                            <option value="1">Mèo Của Trâm Anh Thế Gia (Cần 200 Công Đức)</option>
-                            <option value="2">Người Bình Thường 8 Tiếng/Ngày (Cần 50 Công Đức)</option>
-                            <option value="3">Cây Cỏ Tịnh Tâm Không Deadline (Cần 10 Công Đức)</option>
-                            <option value="4">Muỗi Đêm Hè (0 Công Đức / Nhiều Nghiệp)</option>
-                        </select>
+                        <select id="reincarnate-select"></select>
                     </div>
-                    <button class="btn-action" onclick="registerReincarnation()">🌀 XÁC NHẬN NGUYỆN VỌNG ĐẦU THAI 🌀</button>
+
+                    <div id="reincarnate-status-box" style="margin-top: 15px; padding: 15px; border: 1px dashed var(--border-red); border-radius: 8px; text-align: center; display: none;">
+                        <div id="reincarnate-status-title" style="font-weight: bold; font-size: 15px; color: var(--accent-gold);"></div>
+                        <div id="reincarnate-status-desc" style="font-size: 12px; color: var(--text-muted); margin-top: 5px;"></div>
+                    </div>
+
+                    <button class="btn-action" id="btn-submit-reincarnation" onclick="submitReincarnation()">🌀 XÁC NHẬN NGUYỆN VỌNG ĐẦU THAI 🌀</button>
                 </div>
 
-                <!-- TAB 6: SỔ NAM TÀO -->
+                <!-- TAB 7: SỔ NAM TÀO -->
                 <div id="tab-sonamtao" class="card view-panel">
                     <div class="section-title">📜 SỔ NAM TÀO (DANH SÁCH TỘI NHÂN)</div>
                     <table class="table-custom">
@@ -736,6 +734,52 @@
                 </div>
 
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL HÌNH PHẠT SÁM HỐI -->
+    <div class="modal-overlay" id="punishment-modal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('punishment-modal')">✕</button>
+            <h3 id="modal-title" style="color: var(--accent-gold); margin-bottom: 8px;">Tầng Địa Ngục</h3>
+            <p id="modal-desc" style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Mô tả hình phạt</p>
+
+            <div class="modal-icon-display" id="modal-icon" onclick="triggerPunishmentAction()">🔥</div>
+
+            <p style="font-size: 11px; color: var(--accent-red); margin-bottom: 15px;">👇 Bấm trực tiếp vào HÌNH PHẠT bên trên để chấp nhận hình phạt & giảm nghiệp (-5 Karma)!</p>
+
+            <button class="btn-action" id="modal-btn" onclick="triggerPunishmentAction()">THỰC HIỆN HÌNH PHẠT (-5 KARMA)</button>
+        </div>
+    </div>
+
+    <!-- MODAL LÀM NHIỆM VỤ TÍCH CÔNG ĐỨC -->
+    <div class="modal-overlay" id="quest-modal">
+        <div class="modal-box">
+            <button class="modal-close" id="quest-close-btn" onclick="cancelQuest()">✕</button>
+            <h3 id="quest-modal-title" style="color: var(--accent-gold); margin-bottom: 8px;">Tên Nhiệm Vụ</h3>
+            <p id="quest-modal-desc" style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Mô tả nhiệm vụ</p>
+
+            <div class="modal-icon-display" id="quest-modal-icon">🕯️</div>
+
+            <div class="timer-container">
+                <div class="timer-bar" id="quest-timer-bar"></div>
+            </div>
+            <div class="timer-text" id="quest-timer-text">Đang thực hiện... (0/10s)</div>
+
+            <button class="btn-action" id="quest-modal-btn" disabled>ĐANG TIẾN HÀNH NHIỆM VỤ...</button>
+        </div>
+    </div>
+
+    <!-- MODAL DUYỆT ĐẦU THAI MỚI -->
+    <div class="modal-overlay" id="reincarnate-result-modal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('reincarnate-result-modal')">✕</button>
+            <h3 id="reincarnate-result-title" style="color: var(--accent-gold); margin-bottom: 8px;">KẾT QUẢ ĐẦU THAI</h3>
+            <p id="reincarnate-result-desc" style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Mô tả kiếp sau</p>
+
+            <div class="modal-icon-display" id="reincarnate-result-icon">✨</div>
+
+            <button class="btn-action" onclick="closeModal('reincarnate-result-modal')">XÁC NHẬN DUYỆT KIẾP SAU</button>
         </div>
     </div>
 
@@ -797,7 +841,7 @@
                 { text: "Chụp ảnh check-in sống ảo rồi bỏ mứa đồ ăn", karma: 25 },
                 { text: "Quên sinh nhật người yêu rồi bảo cố tình tạo bất ngờ", karma: 32 },
                 { text: "Đăng status thả thính dù đã có người yêu", karma: 28 },
-                { text: "Vào cãi nhau trên mạng xã hội bằng nick ảo", karma: 20 }
+                { text: "Vao cãi nhau trên mạng xã hội bằng nick ảo", karma: 20 }
             ],
             long: [
                 { text: "Nhận deadline xong biến mất hút đến tận ngày nộp mới xuất hiện bảo bị bệnh", karma: 50 },
@@ -839,24 +883,55 @@
         };
 
         const hell18Levels = [
-            { level: 1, name: "Địa Ngục Bạt Thiệt (Kéo Lưỡi)", desc: "Dành cho tội chửi sếp, chửi khách, nói dối.", action: "Gõ Mõ Sám Hối" },
-            { level: 2, name: "Địa Ngục Cắt Ngón Tay", desc: "Dành cho tội viết sai chính tả, gõ phím khẩu nghiệp.", action: "Tịnh Tâm Bấm Phím" },
-            { level: 3, name: "Địa Ngục Cây Băng", desc: "Dành cho tội xem tin nhắn không rep, lạnh lòng.", action: "Xóa Băng Lòng" },
-            { level: 4, name: "Địa Ngục Nghiệt Kính", desc: "Dành cho tội sống ảo, sửa ảnh dìm bạn.", action: "Soi Rõ Bản Tâm" },
-            { level: 5, name: "Địa Ngục Chưng Trưng", desc: "Dành cho tội ép uống rượu bia, lừa gạt.", action: "Uống Nước Suối Bồ Đề" },
-            { level: 6, name: "Địa Ngục Đồng Trụ (Cột Đồng)", desc: "Dành cho tội cắm sừng, thả thính bừa bãi.", action: "Sám Hối Tình Xuyên" },
-            { level: 7, name: "Địa Ngục Bồn Dầu Sôi", desc: "Dành cho tội bùng nợ, quỵt tiền ship.", action: "Nhảy Bồn Dầu Trừ Nghiệp" },
-            { level: 8, name: "Địa Ngục Núi Băng", desc: "Dành cho tội chê cơm mẹ nấu, vô ơn.", action: "Ấn Ấm Tình Thân" },
-            { level: 9, name: "Địa Ngục Bát Đao", desc: "Dành cho tội đâm sau lưng, đoạt công.", action: "Chịu Đao Sám Hối" },
-            { level: 10, name: "Địa Ngục Trại Đốc", desc: "Dành cho tội rủ rê đa cấp, lừa đảo.", action: "Đọc Kinh Cải Tạo" },
-            { level: 11, name: "Địa Ngục Bàn Chông", desc: "Dành cho tội bùng deadline, bỏ bài tập.", action: "Đẩy Chông Trả Nợ" },
-            { level: 12, name: "Địa Ngục Ép Lực", desc: "Dành cho tội bom hàng shipper, quỵt nợ.", action: "Thành Tâm Trả Tiền" },
-            { level: 13, name: "Địa Ngục Huyết Trì (Hồ Máu)", desc: "Dành cho tội bất hiếu, ngược đãi thú cưng.", action: "Rửa Sạch Bụi Trần" },
-            { level: 14, name: "Địa Ngục U Vọng", desc: "Dành cho tội hứa lèo, hẹn giờ ngủ quên.", action: "Thức Tỉnh Bản Tâm" },
-            { level: 15, name: "Địa Ngục Kẹp Thị", desc: "Dành cho tội giành mic Karaoke, xả rác.", action: "Tập Học Khiêm Tốn" },
-            { level: 16, name: "Địa Ngục Hỏa Sơn (Núi Lửa)", desc: "Dành cho tội kích động antifan, dội phẫn nộ.", action: "Dập Tắt Lửa Tố" },
-            { level: 17, name: "Địa Ngục Thạch Ma (Cối Đá)", desc: "Dành cho tội tham ăn, bỏ mứa đồ ăn.", action: "Xay Đá Tích Công" },
-            { level: 18, name: "Địa Ngục Đao Cứu (Cưa Người)", desc: "Dành cho tội phản bội bạn thân, trộm mật khẩu.", action: "Xác Nhận Thành Tâm" }
+            { level: 1, name: "Địa Ngục Bạt Thiệt (Kéo Lưỡi)", desc: "Dành cho tội chửi sếp, chửi khách, nói dối.", action: "Kéo Lưỡi Sám Hối", icon: "👅" },
+            { level: 2, name: "Địa Ngục Cắt Ngón Tay", desc: "Dành cho tội viết sai chính tả, gõ phím khẩu nghiệp.", action: "Chịu Phạt Ngón Tay", icon: "✂️" },
+            { level: 3, name: "Địa Ngục Cây Băng", desc: "Dành cho tội xem tin nhắn không rep, lạnh lòng.", action: "Đâm Cây Băng Lòng", icon: "🧊" },
+            { level: 4, name: "Địa Ngục Nghiệt Kính", desc: "Dành cho tội sống ảo, sửa ảnh dìm bạn.", action: "Soi Kính Âm Phủ", icon: "🪞" },
+            { level: 5, name: "Địa Ngục Chưng Trưng", desc: "Dành cho tội ép uống rượu bia, lừa gạt.", action: "Chịu Nồi Nước Sôi", icon: "🏺" },
+            { level: 6, name: "Địa Ngục Đồng Trụ (Cột Đồng)", desc: "Dành cho tội cắm sừng, thả thính bừa bãi.", action: "Ôm Cột Đồng Nóng", icon: "🛢️" },
+            { level: 7, name: "Địa Ngục Bồn Dầu Sôi", desc: "Dành cho tội bùng nợ, quỵt tiền ship.", action: "Nhảy Bồn Dầu Trừ Nghiệp", icon: "🔥" },
+            { level: 8, name: "Địa Ngục Núi Băng", desc: "Dành cho tội chê cơm mẹ nấu, vô ơn.", action: "Lên Núi Băng Tuyết", icon: "🏔️" },
+            { level: 9, name: "Địa Ngục Bát Đao", desc: "Dành cho tội đâm sau lưng, đoạt công.", action: "Chịu Đao Trảm Nghiệp", icon: "🗡️" },
+            { level: 10, name: "Địa Ngục Trại Đốc", desc: "Dành cho tội rủ rê đa cấp, lừa đảo.", action: "Chịu Phạt Đốc Trại", icon: "🕸️" },
+            { level: 11, name: "Địa Ngục Bàn Chông", desc: "Dành cho tội bùng deadline, bỏ bài tập.", action: "Nằm Bàn Chông Trả Nợ", icon: "📌" },
+            { level: 12, name: "Địa Ngục Ép Lực", desc: "Dành cho tội bom hàng shipper, quỵt nợ.", action: "Ép Lực Cởi Tội", icon: "🗜️" },
+            { level: 13, name: "Địa Ngục Huyết Trì (Hồ Máu)", desc: "Dành cho tội bất hiếu, ngược đãi thú cưng.", action: "Ngâm Hồ Huyết Trì", icon: "🩸" },
+            { level: 14, name: "Địa Ngục U Vọng", desc: "Dành cho tội hứa lèo, hẹn giờ ngủ quên.", action: "Chịu Phạt U Vọng", icon: "👁️" },
+            { level: 15, name: "Địa Ngục Kẹp Thị", desc: "Dành cho tội giành mic Karaoke, xả rác.", action: "Kẹp Thị Cải Tạo", icon: "⛓️" },
+            { level: 16, name: "Địa Ngục Hỏa Sơn (Núi Lửa)", desc: "Dành cho tội kích động antifan, dội phẫn nộ.", action: "Tắm Dung Nham Núi Lửa", icon: "🌋" },
+            { level: 17, name: "Địa Ngục Thạch Ma (Cối Đá)", desc: "Dành cho tội tham ăn, bỏ mứa đồ ăn.", action: "Xay Cối Đá Tích Công", icon: "🪨" },
+            { level: 18, name: "Địa Ngục Đao Cứu (Cưa Người)", desc: "Dành cho tội phản bội bạn thân, trộm mật khẩu.", action: "Chịu Đao Cưa Cực Nặng", icon: "🪚" }
+        ];
+
+        const questDatabase = [
+            { id: 1, title: "🕯️ Thắp Nhang Trầm Hươu Ảo", desc: "Hướng tâm thiện lành, thắp 1 nén nhang cầu an.", merit: 10, duration: 5, icon: "🕯️" },
+            { id: 2, title: "📖 Đọc 1 Bài Kinh Sám Hối", desc: "Tụng niệm giải tỏa oán nghiệp trần gian.", merit: 25, duration: 10, icon: "📖" },
+            { id: 3, title: "🍜 Cúng Dường Cháo Canh Mạnh Bà", desc: "Bố thí cho các vong hồn đói khát dọc đường âm ty.", merit: 50, duration: 15, icon: "🍜" },
+            { id: 4, title: "🌉 Giúp Cô Hồn Qua Cầu Nại Hà", desc: "Dắt tay các cụ già cô hồn qua sông quên lãng.", merit: 100, duration: 25, icon: "🌉" },
+            { id: 5, title: "⚖️ Phụ Giúp Nam Tào Ghi Sổ Sinh Tử", desc: "Kiểm tra thông tin dân số cõi trần.", merit: 200, duration: 40, icon: "⚖️" },
+            { id: 6, title: "🔥 Đổ Dầu Thêm Vào Vạc Sôi", desc: "Làm sạch tầng địa ngục bằng sức lao động chuyên cần.", merit: 500, duration: 60, icon: "🔥" }
+        ];
+
+        const shopDatabase = [
+            { id: 'item_1', name: '🍃 Lá Trầu Không Âm Ty', desc: 'Vật phẩm sơ khai giúp xua đuổi tà ma nhẹ.', cost: 25, icon: '🍃', effect: 'Lá trầu tỏa ánh sáng xanh nhạt! Giúp xua tan tà khí xung quanh.' },
+            { id: 'item_2', name: '🪞 Kính Nghiệp Báo VIP', desc: 'Soi rõ tương lai kiếp sau trước khi bấm quyết định.', cost: 50, icon: '🪞', effect: 'Kính hiện lên hình ảnh: Kiếp sau bạn sẽ có cuộc sống rất an yên!' },
+            { id: 'item_3', name: '🍵 Bát Canh Mạnh Bà VIP', desc: 'Xóa sạch ký ức nợ nần kiếp cũ, đầu thai không vướng bận.', cost: 120, icon: '🍵', effect: 'Bạn đã uống Bát Canh Mạnh Bà! Ký ức về nợ nần kiếp trước đã hoàn toàn biến mất.' },
+            { id: 'item_4', name: '📜 Kim Bài Miễn Tội Tầng 1', desc: 'Bỏ qua 50 điểm nghiệp khi qua cửa khảo tra.', cost: 300, icon: '📜', effect: 'Kim Bài phát sáng! Bạn được miễn giảm 50 điểm Karma khi qua cửa khảo tra.' },
+            { id: 'item_5', name: '🗡️ Kiếm Trảm Nghiệp Phù', desc: 'Chém đứt 200 điểm nghiệp tích lũy tức thì.', cost: 1000, icon: '🗡️', effect: 'Kiếm Trảm Nghiệp phát uy! Giảm ngay 200 điểm Karma tích lũy!', karmaReduce: 200 },
+            { id: 'item_6', name: '🏮 Đèn Hoa Đăng Giải Oán', desc: 'Thắp sáng 18 tầng địa ngục, giảm toàn bộ nghiệp nặng.', cost: 5000, icon: '🏮', effect: 'Đèn Hoa Đăng giải tỏa mọi oán khí! Giảm ngay 500 điểm Karma!', karmaReduce: 500 },
+            { id: 'item_7', name: '👑 Long bào Địa Tạng Vương', desc: 'Khoác lên mình uy quyền tối cao của cõi âm.', cost: 25000, icon: '👑', effect: 'Bạn khoác lên mình Long Báo VIP! Tất cả quỷ sai 18 tầng địa ngục đều cúi đầu.' },
+            { id: 'item_8', name: '🐉 Linh Thú Kỳ Lân Âm Phủ', desc: 'Thú cưỡi hộ mệnh xuyên không gian 6 cõi.', cost: 100000, icon: '🐉', effect: 'Kỳ Lân gầm vang cõi âm! Bạn nhận được quyền tự do di chuyển khắp 6 cõi.' },
+            { id: 'item_9', name: '⚡ Hợp Thể Đại Đạo Kim Đan', desc: 'Đột phá cảnh giới tu vi âm phủ, miễn nhiễm mọi hình phạt.', cost: 500000, icon: '⚡', effect: 'Đại Đạo Kim Đan phát sáng rực rỡ! Bạn đạt tới cảnh giới Bất Tử Âm Phủ!' },
+            { id: 'item_10', name: '🌌 Thẻ Chuyển Sinh Tu Tiên', desc: 'Cấp bậc tối thượng! Bay thẳng lên tiên giới phi thăng bất tử.', cost: 1000000, icon: '🌌', effect: 'THỦ TỤC HOÀN TẤT! Cổng Tiên Giới rộng mở, bạn phi thăng thành Tiên!' }
+        ];
+
+        // DANH SÁCH TỰ CHỌN ĐẦU THAI KÈM ICON & CÔNG ĐỨC
+        const reincarnateOptions = [
+            { id: 0, title: "Tỷ Phú Trúng Số Kiếp Sau", cost: 500, icon: "💎", desc: "Bạn sẽ được sinh ra ở vạch đích, sở hữu tập đoàn nghìn tỷ, tiền tiêu không cần nhìn giá!" },
+            { id: 1, title: "Mèo Hoàng Gia Trâm Anh Thế Gia", cost: 200, icon: "🐱", desc: "Không deadline, không học hành, ăn bò Wagyu và được hầu hạ cả ngày!" },
+            { id: 2, title: "Người Bình Thường 8 Tiếng/Ngày", cost: 50, icon: "👨‍💼", desc: "Môi trường sống ổn định, đúng giờ tan làm, đủ tiền đi du lịch 1 năm 2 lần." },
+            { id: 3, title: "Cây Cỏ Tịnh Tâm Không Deadline", cost: 10, icon: "🪴", desc: "Trở thành cây cổ thụ trăm tuổi giữa rừng sâu, tắm nắng đón gió không lo âu." },
+            { id: 4, title: "Muỗi Đêm Hè (Phạt Cải Tạo)", cost: 0, icon: "🦟", desc: "Chuyển sinh thành muỗi, vòng đời 7 ngày đi vo ve cắn chân cư dân mạng." }
         ];
 
         let currentUser = {
@@ -864,15 +939,23 @@
             karma: 0,
             merit: 25,
             assignedHell: "Chưa Xếp Tầng",
-            selectedCrimes: []
+            selectedCrimes: [],
+            inventory: {}
         };
 
+        let currentActiveHell = null;
+        let currentActiveQuest = null;
+        let questTimerInterval = null;
         let liveSinners = 1248;
 
         window.onload = function() {
             initFireCanvas();
             renderCrimes();
             render18Hells();
+            renderQuests();
+            renderShop();
+            renderInventory();
+            renderReincarnateSelect();
             updateUI();
             startLiveSinnersCounter();
         };
@@ -918,14 +1001,280 @@
             let html = '';
             hell18Levels.forEach(h => {
                 html += `
-                    <div class="hell-level-card" onclick="doSamHoi(${h.level})">
+                    <div class="hell-level-card" onclick="openHellModal(${h.level})">
+                        <div style="font-size: 30px; margin-bottom: 5px;">${h.icon}</div>
                         <h4>Tầng ${h.level}: ${h.name}</h4>
                         <p>${h.desc}</p>
-                        <button class="btn-header" style="margin-top:8px; width:100%; font-size:10px;">${h.action} (-5 Karma)</button>
+                        <span style="font-size: 10px; color: var(--accent-gold); display: block; margin-top: 8px;">👉 Bấm vào để xem hình phạt</span>
                     </div>
                 `;
             });
             container.innerHTML = html;
+        }
+
+        function renderQuests() {
+            const container = document.getElementById('quest-list-container');
+            let html = '';
+            questDatabase.forEach(q => {
+                html += `
+                    <div class="quest-card" onclick="startQuestModal(${q.id})">
+                        <div style="font-size: 35px; margin-bottom: 8px;">${q.icon}</div>
+                        <h4>${q.title}</h4>
+                        <p>${q.desc}</p>
+                        <div style="font-size: 11px; color: var(--accent-gold); font-weight: bold; margin-bottom: 10px;">⏱️ Thời gian: ${q.duration}s</div>
+                        <button class="btn-header" style="width: 100%;">+${q.merit} Công Đức</button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderShop() {
+            const container = document.getElementById('shop-items-container');
+            let html = '';
+            shopDatabase.forEach(item => {
+                let isTuTien = item.id === 'item_10';
+                html += `
+                    <div class="shop-item" style="${isTuTien ? 'border-color: var(--accent-gold); background: rgba(255, 183, 3, 0.05);' : ''}">
+                        <div>
+                            <div style="font-size: 32px; margin-bottom: 5px;">${item.icon}</div>
+                            <h4 style="${isTuTien ? 'color: #fff;' : ''}">${item.name}</h4>
+                            <p>${item.desc}</p>
+                        </div>
+                        <button class="btn-header" style="${isTuTien ? 'background: var(--accent-gold); color: #000; font-weight: bold;' : ''}" onclick="buyItem('${item.id}')">${item.cost.toLocaleString('vi-VN')} Công Đức</button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function renderInventory() {
+            const container = document.getElementById('inventory-list-container');
+            let keys = Object.keys(currentUser.inventory);
+            if (keys.length === 0) {
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">🎒 Kho của bạn đang trống! Hãy sang tab "Cửa Hàng Công Đức" để mua vật phẩm.</div>`;
+                return;
+            }
+
+            let html = '';
+            keys.forEach(id => {
+                let qty = currentUser.inventory[id];
+                if (qty > 0) {
+                    let item = shopDatabase.find(s => s.id === id);
+                    if (item) {
+                        html += `
+                            <div class="inventory-item">
+                                <div>
+                                    <div style="font-size: 35px; margin-bottom: 5px;">${item.icon}</div>
+                                    <h4>${item.name}</h4>
+                                    <p>${item.desc}</p>
+                                    <div style="font-size: 11px; color: var(--accent-gold); font-weight: bold; margin-bottom: 8px;">Số lượng: ${qty}</div>
+                                </div>
+                                <button class="btn-action" style="margin-top:0;" onclick="useInventoryItem('${item.id}')">SỬ DỤNG</button>
+                            </div>
+                        `;
+                    }
+                }
+            });
+            container.innerHTML = html;
+        }
+
+        function renderReincarnateSelect() {
+            const select = document.getElementById('reincarnate-select');
+            let html = '';
+            reincarnateOptions.forEach(opt => {
+                html += `<option value="${opt.id}">${opt.icon} ${opt.title} (Cần ${opt.cost} Công Đức)</option>`;
+            });
+            select.innerHTML = html;
+        }
+
+        // XỬ LÝ ĐĂNG KÝ ĐẦU THAI VỚI KẾT QUẢ NGẪU NHIÊN
+        function submitReincarnation() {
+            if (currentUser.karma > 0) {
+                alert("❌ Bạn vẫn còn Điểm Karma Nghiệp Báo! Hãy sang tab '18 Tầng Sám Hối' để trả hết nghiệp trước khi xin đầu thai.");
+                return;
+            }
+
+            const selectVal = parseInt(document.getElementById('reincarnate-select').value);
+            const opt = reincarnateOptions.find(o => o.id === selectVal);
+            if (!opt) return;
+
+            if (currentUser.merit < opt.cost) {
+                alert(`❌ Bạn chưa đủ Công Đức cho nguyện vọng này! Cần ${opt.cost} Công Đức (Bạn hiện có: ${currentUser.merit}).`);
+                return;
+            }
+
+            const btn = document.getElementById('btn-submit-reincarnation');
+            btn.innerText = "⏳ ĐANG THẨM ĐỊNH TẠI PHỦ NAM TÀO...";
+            btn.disabled = true;
+
+            const statusBox = document.getElementById('reincarnate-status-box');
+            statusBox.style.display = 'block';
+            document.getElementById('reincarnate-status-title').innerText = "⚖️ ĐANG XÉT DUYỆT HỒ SƠ ĐẦU THAI...";
+            document.getElementById('reincarnate-status-desc').innerText = "Phán Quan đang đối chiếu sổ sinh tử và điểm công đức của bạn...";
+
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerText = "🌀 XÁC NHẬN NGUYỆN VỌNG ĐẦU THAI 🌀";
+
+                let rand = Math.random(); // Ngẫu nhiên 0 -> 1
+
+                if (rand < 0.7) {
+                    // 70% DUYỆT THÀNH CÔNG
+                    currentUser.merit -= opt.cost;
+                    playHellSound();
+                    updateUI();
+
+                    document.getElementById('reincarnate-status-title').innerText = "✅ HỒ SƠ ĐÃ ĐƯỢC PHÁN QUAN DUYỆT!";
+                    document.getElementById('reincarnate-status-title').style.color = "#00ff66";
+                    document.getElementById('reincarnate-status-desc').innerText = `Nguyện vọng: ${opt.title}`;
+
+                    document.getElementById('reincarnate-result-title').innerText = `✅ ĐÃ DUYỆT: ${opt.title}`;
+                    document.getElementById('reincarnate-result-desc').innerText = opt.desc;
+                    document.getElementById('reincarnate-result-icon').innerText = opt.icon;
+                    document.getElementById('reincarnate-result-modal').classList.add('active');
+
+                } else if (rand < 0.9) {
+                    // 20% TRẠNG THÁI CHỜ DUYỆT
+                    document.getElementById('reincarnate-status-title').innerText = "⏳ TRẠNG THÁI: ĐANG TRONG HÀNG CHỜ DUYỆT";
+                    document.getElementById('reincarnate-status-title').style.color = "var(--accent-gold)";
+                    document.getElementById('reincarnate-status-desc').innerText = "Hồ sơ của bạn quá đông người đăng ký cùng lúc. Hãy thử bấm đăng ký lại sau ít phút!";
+                    alert("⏳ Hồ sơ của bạn hiện đang nằm trong danh sách CHỜ DUYỆT của Phán Quan!");
+
+                } else {
+                    // 10% BỊ TỪ CHỐI
+                    document.getElementById('reincarnate-status-title').innerText = "❌ TRẠNG THÁI: TỪ CHỐI DUYỆT";
+                    document.getElementById('reincarnate-status-title').style.color = "var(--accent-red)";
+                    document.getElementById('reincarnate-status-desc').innerText = "Phán Quan nhận thấy nhân duyên kiếp này chưa đủ! Vui lòng tích thêm điểm Công Đức.";
+                    alert("❌ Nguyện vọng đầu thai của bạn bị TỪ CHỐI! Vui lòng thử lại sau.");
+                }
+
+            }, 2500);
+        }
+
+        function buyItem(itemId) {
+            let item = shopDatabase.find(s => s.id === itemId);
+            if (!item) return;
+
+            if (currentUser.merit >= item.cost) {
+                currentUser.merit -= item.cost;
+                currentUser.inventory[itemId] = (currentUser.inventory[itemId] || 0) + 1;
+                playHellSound();
+                updateUI();
+                renderInventory();
+                alert(`🎊 Đã mua thành công: ${item.name}! Vật phẩm đã được chuyển vào Kho.`);
+            } else {
+                alert("❌ Không đủ điểm Công Đức! Hãy sang tab 'Tích Điểm Công Đức' để hoàn thành nhiệm vụ.");
+            }
+        }
+
+        function useInventoryItem(itemId) {
+            let item = shopDatabase.find(s => s.id === itemId);
+            if (!item || !currentUser.inventory[itemId] || currentUser.inventory[itemId] <= 0) return;
+
+            currentUser.inventory[itemId] -= 1;
+            if (currentUser.inventory[itemId] <= 0) delete currentUser.inventory[itemId];
+
+            if (item.karmaReduce) {
+                currentUser.karma = Math.max(0, currentUser.karma - item.karmaReduce);
+            }
+
+            playHellSound();
+            updateUI();
+            renderInventory();
+
+            alert(`✨ [SỬ DỤNG VẬT PHẨM: ${item.name}]\n\n${item.effect}`);
+        }
+
+        function startQuestModal(questId) {
+            const quest = questDatabase.find(q => q.id === questId);
+            if (!quest) return;
+            currentActiveQuest = quest;
+
+            document.getElementById('quest-modal-title').innerText = quest.title;
+            document.getElementById('quest-modal-desc').innerText = quest.desc;
+            document.getElementById('quest-modal-icon').innerText = quest.icon;
+            
+            const btn = document.getElementById('quest-modal-btn');
+            btn.innerText = "⏳ ĐANG TIẾN HÀNH NHIỆM VỤ...";
+            btn.disabled = true;
+
+            const timerBar = document.getElementById('quest-timer-bar');
+            const timerText = document.getElementById('quest-timer-text');
+            timerBar.style.width = '0%';
+            
+            document.getElementById('quest-modal').classList.add('active');
+
+            let elapsed = 0;
+            const totalMs = quest.duration * 1000;
+            const intervalStep = 100;
+
+            if (questTimerInterval) clearInterval(questTimerInterval);
+
+            questTimerInterval = setInterval(() => {
+                elapsed += intervalStep;
+                let pct = Math.min(100, (elapsed / totalMs) * 100);
+                timerBar.style.width = pct + '%';
+                
+                let secondsLeft = Math.ceil((totalMs - elapsed) / 1000);
+                timerText.innerText = `Đang thực hiện... (Còn ${secondsLeft}s / Tổng ${quest.duration}s)`;
+
+                if (elapsed >= totalMs) {
+                    clearInterval(questTimerInterval);
+                    timerText.innerText = "🎉 HOÀN THÀNH NHIỆM VỤ!";
+                    btn.innerText = `LÃNH NGHỆ +${quest.merit} CÔNG ĐỨC`;
+                    btn.disabled = false;
+                    btn.onclick = finishQuest;
+                }
+            }, intervalStep);
+        }
+
+        function finishQuest() {
+            if (currentActiveQuest) {
+                currentUser.merit += currentActiveQuest.merit;
+                playHellSound();
+                updateUI();
+                alert(`🎉 Bạn đã nhận thành công +${currentActiveQuest.merit} Điểm Công Đức!`);
+                closeModal('quest-modal');
+            }
+        }
+
+        function cancelQuest() {
+            if (questTimerInterval) clearInterval(questTimerInterval);
+            closeModal('quest-modal');
+        }
+
+        function openHellModal(level) {
+            const hell = hell18Levels.find(h => h.level === level);
+            if (!hell) return;
+            currentActiveHell = hell;
+
+            document.getElementById('modal-title').innerText = `Tầng ${hell.level}: ${hell.name}`;
+            document.getElementById('modal-desc').innerText = hell.desc;
+            document.getElementById('modal-icon').innerText = hell.icon;
+            document.getElementById('modal-btn').innerText = `${hell.action} (-5 KARMA)`;
+            document.getElementById('punishment-modal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function triggerPunishmentAction() {
+            if (currentUser.karma > 0) {
+                currentUser.karma = Math.max(0, currentUser.karma - 5);
+                currentUser.merit += 2;
+                playHellSound();
+                updateUI();
+
+                if (currentUser.karma === 0) {
+                    alert("🎉 Bạn đã xóa hết toàn bộ điểm Karma nghiệp báo! Chuẩn bị đầu thai.");
+                    closeModal('punishment-modal');
+                }
+            } else {
+                alert("Bạn đã hết nghiệp báo để trả!");
+                closeModal('punishment-modal');
+            }
         }
 
         function toggleCrime(text, karma, isChecked) {
@@ -953,30 +1302,13 @@
             currentUser.karma = total;
 
             if (total === 0) currentUser.assignedHell = "Chưa có nghiệp";
-            else if (total < 50) currentUser.assignedHell = "Tầng 1: Bạt T舌";
+            else if (total < 50) currentUser.assignedHell = "Tầng 1: Bạt Thiệt";
             else if (total < 150) currentUser.assignedHell = "Tầng 7: Bồn Dầu Sôi";
             else if (total < 300) currentUser.assignedHell = "Tầng 11: Bàn Chông";
             else currentUser.assignedHell = "Tầng 18: Đao Cứu (Cực Nặng)";
 
             updateUI();
             alert(`Đã thẩm định! Tổng Karma của ${currentUser.name}: ${currentUser.karma}. Xếp vào ${currentUser.assignedHell}`);
-        }
-
-        function doSamHoi(level) {
-            if (currentUser.karma > 0) {
-                currentUser.karma = Math.max(0, currentUser.karma - 5);
-                currentUser.merit += 2;
-                playHellSound();
-                updateUI();
-            } else {
-                alert("Bạn đã hết nghiệp báo ở tầng này!");
-            }
-        }
-
-        function earnMerit(amount, msg) {
-            currentUser.merit += amount;
-            alert(`🎉 ${msg} Nhận được +${amount} Điểm Công Đức!`);
-            updateUI();
         }
 
         function updateUserName() {
@@ -1011,20 +1343,6 @@
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             event.currentTarget.classList.add('active');
-        }
-
-        function buyItem(name, cost) {
-            if (currentUser.merit >= cost) {
-                currentUser.merit -= cost;
-                alert(`🎊 Đã mua thành công vật phẩm: ${name}!`);
-                updateUI();
-            } else {
-                alert("❌ Không đủ điểm Công Đức! Hãy sang tab 'Tích Điểm Công Đức' để hoàn thành nhiệm vụ.");
-            }
-        }
-
-        function registerReincarnation() {
-            alert(`🌀 Đã ghi nhận nguyện vọng đầu thai cho ${currentUser.name}. Nam Tào sẽ duyệt khi hết nghiệp!`);
         }
 
         function showCCCD() {
