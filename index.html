@@ -1,1086 +1,921 @@
 <!DOCTYPE html>
-<html lang="vi" class="dark">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ĐỊA NGỤC ONLINE 4.0 - Sổ Nam Tào Digital</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Be+Vietnam+Pro:wght@400;500;700;900&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        hell: {
-                            900: '#050202',
-                            800: '#0f0505',
-                            700: '#1c0a0a',
-                            600: '#381111',
-                            blood: '#8b0000',
-                            flame: '#ff3700',
-                            amber: '#ffaa00',
-                            gold: '#d4af37'
-                        }
-                    },
-                    fontFamily: {
-                        header: ['Cinzel', 'serif'],
-                        body: ['Be Vietnam Pro', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-
+    <title>Địa Ngục Online v5.0 - Hệ Thống Âm Phủ Số</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Cinzel:wght@700&display=swap" rel="stylesheet">
     <style>
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0b0303;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #381111;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #8b0000;
+        :root {
+            --bg-dark: #070304;
+            --panel-bg: rgba(22, 10, 12, 0.85);
+            --border-red: #5a1118;
+            --accent-red: #e6222b;
+            --accent-gold: #ffb703;
+            --text-light: #f1e4e5;
+            --text-muted: #a3888b;
         }
 
-        /* Canvas background styling */
-        #particle-canvas {
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #canvas-fire {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
             z-index: 0;
-        }
-
-        /* Glow & Shadow Effects */
-        .text-glow-red {
-            text-shadow: 0 0 10px rgba(255, 55, 0, 0.7), 0 0 20px rgba(139, 0, 0, 0.9);
-        }
-        .text-glow-gold {
-            text-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
-        }
-        .box-glow-red {
-            box-shadow: 0 0 25px rgba(139, 0, 0, 0.4), inset 0 0 15px rgba(255, 55, 0, 0.15);
-        }
-        .box-glow-gold {
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-        }
-
-        /* Animations */
-        @keyframes pulse-slow {
-            0%, 100% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.03); opacity: 1; filter: drop-shadow(0 0 15px #ff3700); }
-        }
-        .animate-pulse-slow {
-            animation: pulse-slow 3s infinite ease-in-out;
-        }
-
-        @keyframes float-up {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-50px) scale(1.2); opacity: 0; }
-        }
-        .float-text {
-            position: absolute;
-            animation: float-up 1s forwards ease-out;
             pointer-events: none;
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-red);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--accent-red);
+            font-size: 24px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(230, 34, 43, 0.5);
+        }
+
+        .header-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-header {
+            background: rgba(230, 34, 43, 0.15);
+            border: 1px solid var(--accent-red);
+            color: var(--text-light);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-header:hover {
+            background: var(--accent-red);
+            box-shadow: 0 0 15px rgba(230, 34, 43, 0.6);
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-red);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .profile-box {
+            text-align: center;
+            border-bottom: 1px dashed var(--border-red);
+            padding-bottom: 15px;
+        }
+
+        .avatar {
+            width: 70px;
+            height: 70px;
+            background: #2a080c;
+            border: 2px solid var(--accent-red);
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .status-metric {
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #220a0d;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 3px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-red);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(230, 34, 43, 0.1);
+            border-color: var(--accent-red);
+            color: #fff;
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255, 183, 3, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 10px;
+            background: #120507;
+            border: 1px solid var(--border-red);
+            border-radius: 6px;
+            color: #fff;
+            outline: none;
+        }
+
+        .crime-group-title {
+            font-size: 14px;
+            color: var(--accent-red);
+            margin: 15px 0 8px;
+            font-weight: bold;
+        }
+
+        .crime-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 10px;
+            max-height: 380px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .crime-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(90, 17, 24, 0.5);
+            padding: 10px;
+            border-radius: 6px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .crime-item:hover {
+            border-color: var(--accent-red);
+            background: rgba(230, 34, 43, 0.05);
+        }
+
+        .custom-crime-box {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #e6222b, #800f14);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(230, 34, 43, 0.4);
+            transition: all 0.3s;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 34, 43, 0.6);
+        }
+
+        .hell-levels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 12px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .hell-level-card {
+            background: rgba(10, 3, 4, 0.8);
+            border: 1px solid var(--border-red);
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .hell-level-card:hover {
+            border-color: var(--accent-gold);
+            transform: scale(1.02);
+            box-shadow: 0 0 10px rgba(255, 183, 3, 0.2);
+        }
+
+        .hell-level-card h4 {
+            color: var(--accent-red);
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .hell-level-card p {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .table-custom {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .table-custom th, .table-custom td {
+            padding: 10px;
+            border: 1px solid var(--border-red);
+            text-align: left;
+        }
+
+        .table-custom th {
+            background: rgba(230, 34, 43, 0.2);
+            color: var(--accent-gold);
+        }
+
+        .view-panel {
+            display: none;
+        }
+
+        .view-panel.active {
+            display: block;
+        }
+
+        /* WIDGET DIÊM VƯƠNG GÓC DƯỚI BÊN PHẢI */
+        .diem-vuong-widget {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(18, 5, 7, 0.92);
+            border: 2px solid var(--accent-red);
+            border-radius: 50px;
+            padding: 10px 20px 10px 12px;
+            box-shadow: 0 0 25px rgba(230, 34, 43, 0.6);
+            backdrop-filter: blur(8px);
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(230, 34, 43, 0.4); }
+            50% { box-shadow: 0 0 28px rgba(230, 34, 43, 0.8); }
+        }
+
+        .diem-vuong-avatar {
+            width: 48px;
+            height: 48px;
+            background: #2a0408;
+            border: 2px solid var(--accent-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            position: relative;
+        }
+
+        .live-dot {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            background: #00ff66;
+            border: 2px solid #000;
+            border-radius: 50%;
+            animation: blinkLive 1s infinite;
+        }
+
+        @keyframes blinkLive {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .diem-vuong-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .diem-vuong-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent-gold);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .diem-vuong-status {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-top: 2px;
+        }
+
+        .diem-vuong-status span {
+            color: var(--accent-red);
+            font-size: 15px;
             font-weight: 900;
         }
 
-        /* Modal backdrop blur */
-        .backdrop-blur-md {
-            backdrop-filter: blur(12px);
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #100405;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-red);
+            border-radius: 3px;
         }
     </style>
 </head>
-<body class="bg-hell-900 text-gray-200 font-body min-h-screen relative overflow-x-hidden border-t-4 border-hell-flame">
+<body>
+    <canvas id="canvas-fire"></canvas>
 
-    <!-- Particle Canvas for Hell Fire & Ashes -->
-    <canvas id="particle-canvas"></canvas>
-
-    <div class="relative z-10 flex flex-col min-h-screen">
-        
-        <!-- Header / Navigation -->
-        <header class="border-b border-hell-600/50 bg-hell-800/80 backdrop-blur-md sticky top-0 z-40 px-4 py-3">
-            <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('dashboard')">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-hell-flame to-hell-blood flex items-center justify-center border border-hell-amber shadow-lg animate-pulse">
-                        <i class="fa-solid font-bold fa-fire text-hell-amber text-xl"></i>
-                    </div>
-                    <div>
-                        <h1 class="font-header font-black text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-hell-flame to-hell-gold uppercase text-glow-red">
-                            ĐỊA NGỤC ONLINE <span class="text-xs px-2 py-0.5 rounded bg-hell-blood/60 border border-red-500/50 text-white font-mono">v4.0</span>
-                        </h1>
-                        <p class="text-xs text-gray-400 font-mono">Sổ Nam Tào Digital System • Âm Phủ 4.0</p>
-                    </div>
-                </div>
-
-                <!-- Control Buttons & Audio Toggle -->
-                <div class="flex items-center space-x-3">
-                    <button id="sound-toggle" onclick="toggleAudio()" class="px-3 py-1.5 rounded-lg bg-hell-700 hover:bg-hell-600 border border-red-900 text-xs font-semibold flex items-center gap-2 transition">
-                        <i class="fa-solid fa-volume-xmark text-red-500" id="sound-icon"></i>
-                        <span id="sound-text">Âm Thanh: TẮT</span>
-                    </button>
-                    
-                    <button onclick="openIDCardModal()" class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-hell-gold/20 to-amber-900/40 border border-hell-gold/50 text-hell-gold hover:bg-hell-gold/30 text-xs font-bold flex items-center gap-2 transition shadow">
-                        <i class="fa-solid fa-id-card"></i>
-                        <span>Thẻ Căn Cước Âm Phủ</span>
-                    </button>
-                </div>
+    <div class="app-container">
+        <header>
+            <div class="logo">
+                <h1>🔥 ĐỊA NGỤC ONLINE v5.0</h1>
+                <p style="font-size: 11px; color: var(--text-muted);">Sổ Nam Tào Digital System • Âm Phủ 4.0</p>
+            </div>
+            <div class="header-btns">
+                <button class="btn-header" onclick="toggleAudio()">🔊 Âm Thanh: <span id="audio-status">BẬT</span></button>
+                <button class="btn-header" onclick="showCCCD()">🪪 Thẻ Căn Cước Âm Phủ</button>
             </div>
         </header>
 
-        <!-- Main Content Area -->
-        <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-            <!-- Left Sidebar: Profile & Status -->
-            <aside class="lg:col-span-4 space-y-6">
-                <!-- User Profile / Register Status -->
-                <div class="bg-hell-800/70 border border-hell-600/60 rounded-2xl p-5 box-glow-red relative overflow-hidden backdrop-blur-md">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-hell-flame/10 rounded-full blur-2xl pointer-events-none"></div>
-
-                    <div class="flex justify-between items-start mb-4 border-b border-hell-700/60 pb-3">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 rounded-xl bg-hell-700 border border-hell-flame flex items-center justify-center text-2xl text-red-500 shadow-inner">
-                                <i class="fa-solid fa-skull"></i>
-                            </div>
-                            <div>
-                                <h2 class="font-bold text-lg text-white" id="user-display-name">Chưa Khai Báo</h2>
-                                <p class="text-xs text-red-400 font-mono" id="user-hell-id">ID: #0000-HELL</p>
-                            </div>
+        <div class="main-layout">
+            <div class="sidebar">
+                <div class="card profile-box">
+                    <div class="avatar">💀</div>
+                    <h3 id="user-display-name">Tội Nhân Vô Danh</h3>
+                    <p style="font-size: 11px; color: var(--text-muted);" id="user-id">ID: #8619-HELL</p>
+                    
+                    <div class="status-metric">
+                        <div class="metric-row">
+                            <span>Điểm Nghiệp Tích Lũy:</span>
+                            <span style="color: var(--accent-red); font-weight: bold;" id="stat-karma">0</span>
                         </div>
-                        <button onclick="resetProfile()" class="text-xs text-gray-400 hover:text-red-400 p-1" title="Đăng ký lại">
-                            <i class="fa-solid fa-rotate"></i>
-                        </button>
+                        <div class="metric-row">
+                            <span>Điểm Công Đức:</span>
+                            <span style="color: var(--accent-gold); font-weight: bold;" id="stat-merit">0</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="karma-bar"></div>
+                        </div>
                     </div>
 
-                    <!-- Karma Statistics & Progress -->
-                    <div class="space-y-4">
-                        <div>
-                            <div class="flex justify-between text-xs font-semibold mb-1">
-                                <span class="text-red-400 flex items-center gap-1"><i class="fa-solid fa-[#fire]"></i> Điểm Nghiệp Tích Lũy:</span>
-                                <span class="text-red-500 font-bold font-mono text-sm" id="karma-score-display">0</span>
-                            </div>
-                            <div class="w-full h-3 bg-hell-900 rounded-full overflow-hidden border border-red-900/40 p-0.5">
-                                <div id="karma-bar" class="h-full bg-gradient-to-r from-red-800 to-hell-flame rounded-full transition-all duration-300" style="width: 0%"></div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <div class="flex justify-between text-xs font-semibold mb-1">
-                                <span class="text-hell-gold flex items-center gap-1"><i class="fa-solid fa-coins"></i> Điểm Công Đức (Đầu Thai):</span>
-                                <span class="text-hell-gold font-bold font-mono text-sm" id="merit-score-display">0</span>
-                            </div>
-                            <div class="w-full h-2.5 bg-hell-900 rounded-full overflow-hidden border border-amber-900/40 p-0.5">
-                                <div id="merit-bar" class="h-full bg-gradient-to-r from-amber-700 to-hell-gold rounded-full transition-all duration-300" style="width: 0%"></div>
-                            </div>
-                        </div>
-
-                        <div class="bg-hell-900/80 p-3 rounded-xl border border-hell-700/50 space-y-2 text-xs">
-                            <div class="flex justify-between">
-                                <span class="text-gray-400">Tầng Địa Ngục Chỉ Định:</span>
-                                <span class="text-red-400 font-bold" id="hell-layer-display">Chưa Xếp Tầng</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-400">Tỷ Lệ Hoàn Lương:</span>
-                                <span class="text-emerald-400 font-bold font-mono" id="rehab-percent">0%</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-400">Trạng Thái Đầu Thai:</span>
-                                <span class="text-amber-400 font-bold" id="reincarnate-status">Chưa Đủ Điều Kiện</span>
-                            </div>
-                        </div>
+                    <div style="margin-top: 12px; font-size: 11px; text-align: left; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px;">
+                        Tầng Chỉ Định: <b style="color: var(--accent-red);" id="stat-hell-name">Chưa xếp tầng</b><br>
+                        Trạng Thái: <b style="color: #4CAF50;" id="stat-status">Đang Tự Do</b>
                     </div>
                 </div>
 
-                <!-- Quick Navigation Tabs -->
-                <nav class="bg-hell-800/50 border border-hell-700/50 rounded-2xl p-2 space-y-1 backdrop-blur-md">
-                    <button onclick="switchTab('calculator')" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-semibold text-sm flex items-center justify-between transition bg-hell-700 text-white border border-red-900/50" id="btn-tab-calculator">
-                        <span class="flex items-center gap-3"><i class="fa-solid fa-book-skull text-red-500 w-5"></i> 1. Tra Cứu Nghiệp Báo</span>
-                        <i class="fa-solid fa-chevron-right text-xs opacity-50"></i>
-                    </button>
-
-                    <button onclick="switchTab('rehab')" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-semibold text-sm flex items-center justify-between transition text-gray-400 hover:bg-hell-700/50 hover:text-white" id="btn-tab-rehab">
-                        <span class="flex items-center gap-3"><i class="fa-solid fa-dumpster-fire text-orange-500 w-5"></i> 2. Bồn Dầu Sám Hối</span>
-                        <i class="fa-solid fa-chevron-right text-xs opacity-50"></i>
-                    </button>
-
-                    <button onclick="switchTab('merit')" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-semibold text-sm flex items-center justify-between transition text-gray-400 hover:bg-hell-700/50 hover:text-white" id="btn-tab-merit">
-                        <span class="flex items-center gap-3"><i class="fa-solid fa-hand-holding-heart text-amber-400 w-5"></i> 3. Cửa Hàng Công Đức</span>
-                        <i class="fa-solid fa-chevron-right text-xs opacity-50"></i>
-                    </button>
-
-                    <button onclick="switchTab('reincarnate')" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-semibold text-sm flex items-center justify-between transition text-gray-400 hover:bg-hell-700/50 hover:text-white" id="btn-tab-reincarnate">
-                        <span class="flex items-center gap-3"><i class="fa-solid fa-wheelchair text-emerald-400 w-5"></i> 4. Đăng Ký Đầu Thai</span>
-                        <i class="fa-solid fa-chevron-right text-xs opacity-50"></i>
-                    </button>
-
-                    <button onclick="switchTab('leaderboard')" class="nav-btn w-full text-left px-4 py-3 rounded-xl font-semibold text-sm flex items-center justify-between transition text-gray-400 hover:bg-hell-700/50 hover:text-white" id="btn-tab-leaderboard">
-                        <span class="flex items-center gap-3"><i class="fa-solid fa-list-ol text-purple-400 w-5"></i> 5. Sổ Nam Tào (Bảng Vàng)</span>
-                        <i class="fa-solid fa-chevron-right text-xs opacity-50"></i>
-                    </button>
-                </nav>
-
-                <!-- Hell Notice Widget -->
-                <div class="bg-gradient-to-br from-red-950/40 to-hell-900 border border-red-900/30 p-4 rounded-2xl text-xs space-y-2">
-                    <div class="font-bold text-red-400 flex items-center gap-2">
-                        <i class="fa-solid fa-bullhorn"></i> THÔNG BÁO TỪ ĐẠI VƯƠNG:
-                    </div>
-                    <p class="text-gray-300 leading-relaxed">
-                        Nghiêm cấm hành vi hack điểm nghiệp hoặc xin giùm nghiệp cho người yêu cũ. Mọi vi phạm sẽ bị đày xuống Tầng Địa Ngục Deadline vô thời hạn!
-                    </p>
+                <div class="card nav-menu">
+                    <div class="nav-item active" onclick="switchTab('tab-tracuu')">1. Tra Cứu Nghiệp Báo <span>❯</span></div>
+                    <div class="nav-item" onclick="switchTab('tab-samhoi')">2. 18 Tầng Sám Hối <span>❯</span></div>
+                    <div class="nav-item" onclick="switchTab('tab-cuahang')">3. Cửa Hàng Công Đức <span>❯</span></div>
+                    <div class="nav-item" onclick="switchTab('tab-dauthai')">4. Đăng Ký Đầu Thai <span>❯</span></div>
+                    <div class="nav-item" onclick="switchTab('tab-sonamtao')">5. Sổ Nam Tào (Bảng Vàng) <span>❯</span></div>
                 </div>
-            </aside>
+            </div>
 
-            <!-- Main Content Display -->
-            <section class="lg:col-span-8">
-                
+            <div class="main-content">
                 <!-- TAB 1: TRA CỨU NGHIỆP BÁO -->
-                <div id="tab-calculator" class="tab-content space-y-6">
-                    <div class="bg-hell-800/80 border border-hell-600/60 rounded-2xl p-6 backdrop-blur-md">
-                        <div class="mb-6">
-                            <h2 class="font-header text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-hell-flame uppercase mb-2">
-                                <i class="fa-solid fa-calculator text-red-500 mr-2"></i> Máy Tính Số Đo Nghiệp Báo
-                            </h2>
-                            <p class="text-sm text-gray-400">
-                                Nhập họ tên thật (hoặc nick facebook) và tích chọn các tội danh chuẩn mạng xã hội bạn đã vô tình/cố ý vấp phải trong thời gian qua.
-                            </p>
-                        </div>
-
-                        <form id="karma-form" onsubmit="calculateKarma(event)" class="space-y-6">
-                            <!-- Name Input -->
-                            <div>
-                                <label class="block text-xs font-bold text-gray-300 uppercase mb-2">Danh Xưng Tội Nhân (Họ & Tên):</label>
-                                <input type="text" id="input-name" required placeholder="Ví dụ: Nguyễn Văn Deadline..." class="w-full bg-hell-900 border border-hell-600 focus:border-hell-flame rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-hell-flame transition">
-                            </div>
-
-                            <!-- Sin Checkboxes list -->
-                            <div>
-                                <label class="block text-xs font-bold text-gray-300 uppercase mb-3">Danh Sách Tội Danh Cư Dân Mạng (Chọn các mục đã phạm):</label>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="sins-container">
-                                    <!-- Dynamic sin items injected here -->
-                                </div>
-                            </div>
-
-                            <button type="submit" class="w-full py-4 rounded-xl font-header font-black text-lg tracking-wider text-black bg-gradient-to-r from-red-500 via-hell-flame to-amber-500 hover:from-red-400 hover:to-amber-400 shadow-lg shadow-red-900/50 transition transform hover:-translate-y-0.5">
-                                <i class="fa-solid fa-gavel mr-2"></i> THẨM ĐỊNH NGHIỆP BÁO & QUYẾT ĐỊNH XẾP TẦNG
-                            </button>
-                        </form>
+                <div id="tab-tracuu" class="card view-panel active">
+                    <div class="section-title">⚖️ MÁY TÍNH SỐ ĐO NGHIỆP BÁO CƯ DÂN MẠNG</div>
+                    <div class="input-group">
+                        <label>DANH XƯNG TỘI NHÂN (HỌ & TÊN / NICKNAME):</label>
+                        <input type="text" id="input-name" placeholder="Nhập tên để Nam Tào ghi sổ..." onchange="updateUserName()">
                     </div>
+
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">TÍCH CHỌN CÁC TỘI DANH BẠN ĐÃ LỠ PHẠM PHẢI:</p>
+
+                    <div id="crime-list-container"></div>
+
+                    <div class="custom-crime-box">
+                        <input type="text" id="custom-crime-input" placeholder="Tự điền nghiệp báo khác của bạn..." style="flex: 1;">
+                        <input type="number" id="custom-karma-input" placeholder="+Karma" style="width: 90px;" value="15">
+                        <button class="btn-header" onclick="addCustomCrime()">Thêm Nghiệp</button>
+                    </div>
+
+                    <button class="btn-action" onclick="calculateKarma()">🔥 TÍNH TỔNG NGHIỆP & XẾP TẦNG ĐỊA NGỤC 🔥</button>
                 </div>
 
-                <!-- TAB 2: BỒN DẦU SÁM HỐI / TRẢ NGHIỆP -->
-                <div id="tab-rehab" class="tab-content space-y-6 hidden">
-                    <div class="bg-hell-800/80 border border-hell-600/60 rounded-2xl p-6 backdrop-blur-md relative overflow-hidden">
-                        
-                        <div class="text-center max-w-xl mx-auto space-y-3 mb-8">
-                            <span class="px-3 py-1 rounded-full bg-red-950 border border-red-600 text-red-400 text-xs font-bold">KHU CẢI TẠO TẬP TRUNG</span>
-                            <h2 class="font-header text-3xl font-black text-red-500 uppercase tracking-wide text-glow-red">
-                                Bồn Dầu Sám Hối 4.0
-                            </h2>
-                            <p class="text-sm text-gray-300">
-                                Bấm liên tục vào nút Bồn Dầu hoặc Nếm Roi để chịu hình phạt trực tiếp. Mỗi lần tương tác sẽ phát âm thanh sám hối thực tế và trừ đi 1 Điểm Nghiệp!
-                            </p>
-                        </div>
-
-                        <!-- Clickable Oil Cauldron Interactive Area -->
-                        <div class="flex flex-col items-center justify-center my-8 relative">
-                            
-                            <!-- Counter Display Floating Above -->
-                            <div id="click-feedback-container" class="relative w-full flex justify-center mb-4">
-                                <div class="bg-hell-900/90 border border-hell-flame px-6 py-2 rounded-full font-mono font-bold text-lg text-white flex items-center gap-3 shadow-xl">
-                                    <span class="text-red-400">Nghiệp Còn Lại:</span>
-                                    <span id="rehab-karma-counter" class="text-2xl text-hell-flame">0</span>
-                                </div>
-                            </div>
-
-                            <!-- Cauldron Interactive Button -->
-                            <button id="cauldron-btn" onclick="executePenance(event)" class="group relative w-64 h-64 rounded-full bg-gradient-to-b from-hell-700 via-hell-800 to-black border-4 border-hell-flame flex flex-col items-center justify-center p-4 shadow-2xl transition transform active:scale-95 hover:border-amber-500 cursor-pointer focus:outline-none">
-                                <div class="absolute inset-0 rounded-full bg-hell-flame/10 animate-ping pointer-events-none"></div>
-                                
-                                <i class="fa-solid fa-hot-tub-person text-6xl text-red-500 group-hover:text-amber-400 transition transform group-hover:scale-110 mb-2"></i>
-                                <span class="font-header font-black text-xl text-white group-hover:text-amber-300">NHẢY BỒN DẦU</span>
-                                <span class="text-xs text-red-400 font-semibold tracking-wider uppercase mt-1">(-1 Nghiệp / Click)</span>
-
-                                <!-- Animated Bubbles inside -->
-                                <div class="absolute bottom-6 flex space-x-2 opacity-60">
-                                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-bounce"></span>
-                                    <span class="w-3 h-3 rounded-full bg-red-500 animate-bounce" style="animation-delay: 0.2s"></span>
-                                    <span class="w-2 h-2 rounded-full bg-orange-500 animate-bounce" style="animation-delay: 0.4s"></span>
-                                </div>
-                            </button>
-
-                            <!-- Alternative Auto Penance / Whip Button -->
-                            <div class="mt-8 flex flex-wrap gap-4 justify-center">
-                                <button onclick="executePenanceWhip(event)" class="px-5 py-3 rounded-xl bg-hell-700 hover:bg-hell-600 border border-red-600/50 text-white font-bold text-sm flex items-center gap-2 transition active:scale-95 shadow">
-                                    <i class="fa-solid fa-bullwhip text-red-400"></i> Nếm Roi Âm Phủ (-3 Nghiệp)
-                                </button>
-                                
-                                <button id="auto-penance-btn" onclick="toggleAutoPenance()" class="px-5 py-3 rounded-xl bg-hell-900 hover:bg-hell-700 border border-amber-600/50 text-amber-400 font-bold text-sm flex items-center gap-2 transition active:scale-95">
-                                    <i class="fa-solid fa-robot"></i> Thuê "Tội Nhân Lao Động" (Tự Trừ)
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
+                <!-- TAB 2: 18 TẦNG SÁM HỐI -->
+                <div id="tab-samhoi" class="card view-panel">
+                    <div class="section-title">🔥 18 TẦNG ĐỊA NGỤC (DANH MỤC SÁM HỐI & CẢI TẠO)</div>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Chọn một tầng tương ứng với tội danh của bạn để thực hiện sám hối, giảm bớt điểm nghiệp tích lũy.</p>
+                    
+                    <div class="hell-levels-grid" id="hell-levels-container"></div>
                 </div>
 
                 <!-- TAB 3: CỬA HÀNG CÔNG ĐỨC -->
-                <div id="tab-merit" class="tab-content space-y-6 hidden">
-                    <div class="bg-hell-800/80 border border-hell-600/60 rounded-2xl p-6 backdrop-blur-md">
-                        <div class="flex justify-between items-center mb-6">
-                            <div>
-                                <h2 class="font-header text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-hell-gold uppercase">
-                                    <i class="fa-solid fa-store text-amber-400 mr-2"></i> Cửa Hàng Tích Điểm Công Đức
-                                </h2>
-                                <p class="text-sm text-gray-400">Thực hiện các hoạt động cải tạo tinh thần để quy đổi điểm Công Đức dùng chọn kiếp sau.</p>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-xs text-gray-400">Số Dư Hiện Tại</div>
-                                <div class="font-mono text-xl font-bold text-hell-gold" id="store-merit-display">0 CD</div>
-                            </div>
+                <div id="tab-cuahang" class="card view-panel">
+                    <div class="section-title">🪙 CỬA HÀNG ĐỔI CÔNG ĐỨC 4.0</div>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Dùng điểm Công Đức tích lũy để mua vật phẩm hỗ trợ đầu thai hoặc xả nghiệp nhanh.</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
+                        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-red); padding: 15px; border-radius: 8px; text-align: center;">
+                            <h4>🍵 Bát Canh Mạnh Bà VIP</h4>
+                            <p style="font-size: 11px; color: var(--text-muted); margin: 8px 0;">Xóa sạch ký ức nợ nần kiếp cũ, đầu thai không vướng bận.</p>
+                            <button class="btn-header" onclick="buyItem('Canh Mạnh Bà', 50)">50 Công Đức</button>
                         </div>
-
-                        <!-- Tasks & Shop Grid -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            
-                            <!-- Task 1: Chanting -->
-                            <div class="bg-hell-900/90 border border-hell-700 rounded-xl p-4 flex flex-col justify-between space-y-4 hover:border-amber-500/50 transition">
-                                <div>
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <div class="p-2.5 rounded-lg bg-amber-950 border border-amber-800 text-amber-400">
-                                            <i class="fa-solid fa-bell text-xl"></i>
-                                        </div>
-                                        <div>
-                                            <h3 class="font-bold text-white text-base">Tụng Kinh Sám Hối 4.0</h3>
-                                            <span class="text-xs text-emerald-400 font-semibold">+10 Điểm Công Đức</span>
-                                        </div>
-                                    </div>
-                                    <p class="text-xs text-gray-400">Nghe và gõ chuông tụng bài kinh sám hối công nghệ để tĩnh tâm thanh lọc tâm hồn.</p>
-                                </div>
-                                <button onclick="startChantingTask()" class="w-full py-2.5 rounded-lg bg-amber-600/20 hover:bg-amber-600/30 border border-amber-500/40 text-amber-300 font-bold text-xs transition flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-play"></i> Bắt Đầu Tụng Kinh (10s)
-                                </button>
-                            </div>
-
-                            <!-- Task 2: Fake Ad -->
-                            <div class="bg-hell-900/90 border border-hell-700 rounded-xl p-4 flex flex-col justify-between space-y-4 hover:border-amber-500/50 transition">
-                                <div>
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <div class="p-2.5 rounded-lg bg-purple-950 border border-purple-800 text-purple-400">
-                                            <i class="fa-solid fa-rectangle-ad text-xl"></i>
-                                        </div>
-                                        <div>
-                                            <h3 class="font-bold text-white text-base">Xem Quảng Cáo Âm Phủ</h3>
-                                            <span class="text-xs text-emerald-400 font-semibold">+25 Điểm Công Đức</span>
-                                        </div>
-                                    </div>
-                                    <p class="text-xs text-gray-400">Xem video quảng cáo các dịch vụ bãi nướng, bồn dầu VIP tại Âm Phủ.</p>
-                                </div>
-                                <button onclick="watchFakeAd()" class="w-full py-2.5 rounded-lg bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/40 text-purple-300 font-bold text-xs transition flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-eye"></i> Xem Quảng Cáo (5s)
-                                </button>
-                            </div>
-
-                            <!-- Task 3: Confession -->
-                            <div class="bg-hell-900/90 border border-hell-700 rounded-xl p-4 flex flex-col justify-between space-y-4 hover:border-amber-500/50 transition">
-                                <div>
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <div class="p-2.5 rounded-lg bg-red-950 border border-red-800 text-red-400">
-                                            <i class="fa-solid fa-comment-slash text-xl"></i>
-                                        </div>
-                                        <div>
-                                            <h3 class="font-bold text-white text-base">Viết Thư Sám Hối</h3>
-                                            <span class="text-xs text-emerald-400 font-semibold">+15 Điểm Công Đức</span>
-                                        </div>
-                                    </div>
-                                    <p class="text-xs text-gray-400">Bày tỏ lời hứa chân thành sẽ không bao giờ xem chùa thả tim hay quỵt tiền.</p>
-                                </div>
-                                <button onclick="openConfessModal()" class="w-full py-2.5 rounded-lg bg-red-600/20 hover:bg-red-600/30 border border-red-500/40 text-red-300 font-bold text-xs transition flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-pen-nib"></i> Viết Lời Sám Hối
-                                </button>
-                            </div>
-
-                            <!-- Task 4: Sell Coal -->
-                            <div class="bg-hell-900/90 border border-hell-700 rounded-xl p-4 flex flex-col justify-between space-y-4 hover:border-amber-500/50 transition">
-                                <div>
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <div class="p-2.5 rounded-lg bg-gray-800 border border-gray-600 text-gray-300">
-                                            <i class="fa-solid fa-fire-burner text-xl"></i>
-                                        </div>
-                                        <div>
-                                            <h3 class="font-bold text-white text-base">Phụ Bếp Than Âm Phủ</h3>
-                                            <span class="text-xs text-emerald-400 font-semibold">+5 Điểm Công Đức / Click</span>
-                                        </div>
-                                    </div>
-                                    <p class="text-xs text-gray-400">Bốc vần củi than giữ nhiệt cho Bồn Dầu 4.0 hoạt động ổn định.</p>
-                                </div>
-                                <button onclick="addCoals()" class="w-full py-2.5 rounded-lg bg-gray-700 hover:bg-gray-600 border border-gray-500 text-gray-200 font-bold text-xs transition flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-hand-holding-hand"></i> Bốc 1 Than (+5 CD)
-                                </button>
-                            </div>
-
+                        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-red); padding: 15px; border-radius: 8px; text-align: center;">
+                            <h4>📜 Kim Bài Miễn Tội Tầng 1</h4>
+                            <p style="font-size: 11px; color: var(--text-muted); margin: 8px 0;">Bỏ qua 50 điểm nghiệp khi qua cửa khảo tra.</p>
+                            <button class="btn-header" onclick="buyItem('Kim Bài Miễn Tội', 100)">100 Công Đức</button>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-red); padding: 15px; border-radius: 8px; text-align: center;">
+                            <h4>🪞 Kính Nghiệp Báo VIP</h4>
+                            <p style="font-size: 11px; color: var(--text-muted); margin: 8px 0;">Soi rõ tương lai kiếp sau trước khi bấm quyết định.</p>
+                            <button class="btn-header" onclick="buyItem('Kính Nghiệp Báo', 30)">30 Công Đức</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- TAB 4: CHỌN KIẾP SAU -->
-                <div id="tab-reincarnate" class="tab-content space-y-6 hidden">
-                    <div class="bg-hell-800/80 border border-hell-600/60 rounded-2xl p-6 backdrop-blur-md">
-                        <div class="mb-6">
-                            <h2 class="font-header text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200 uppercase">
-                                <i class="fa-solid fa-recycle text-emerald-400 mr-2"></i> Lựa Chọn Thể Tánh Kiếp Sau
-                            </h2>
-                            <p class="text-sm text-gray-400">Dùng số điểm Công Đức đã tích lũy để mở khóa thân phận sau khi hoàn thành 100% tỷ lệ cải tạo hoàn lương.</p>
-                        </div>
-
-                        <!-- Reincarnation Cards Grid -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="reincarnate-cards-container">
-                            <!-- Injected dynamically based on points -->
-                        </div>
-
-                        <!-- Final Reincarnation Register Button -->
-                        <div class="mt-6 pt-6 border-t border-hell-700 text-center">
-                            <button id="final-reincarnate-btn" onclick="executeFinalReincarnation()" disabled class="px-8 py-4 rounded-xl font-header font-black text-lg text-gray-500 bg-hell-900 border border-gray-700 cursor-not-allowed transition shadow-lg">
-                                <i class="fa-solid fa-door-open mr-2"></i> ĐĂNG KÝ BƯỚC QUA CỔNG ĐẦU THAI
-                            </button>
-                            <p class="text-xs text-gray-400 mt-2" id="reincarnate-hint-text">Cần hoàn thành 100% cải tạo (Nghiệp = 0) và chọn 1 kiếp sau để kích hoạt.</p>
-                        </div>
+                <!-- TAB 4: ĐĂNG KÝ ĐẦU THAI -->
+                <div id="tab-dauthai" class="card view-panel">
+                    <div class="section-title">🌀 NGUYỆN VỌNG ĐẦU THAI KIẾP SAU</div>
+                    <div class="input-group">
+                        <label>LỰA CHỌN KIẾP SAU THEO CÔNG ĐỨC:</label>
+                        <select id="reincarnate-select">
+                            <option value="0">Tỷ Phú Trúng Số (Cần 500 Công Đức)</option>
+                            <option value="1">Mèo Của Trâm Anh Thế Gia (Cần 200 Công Đức)</option>
+                            <option value="2">Người Bình Thường 8 Tiếng/Ngày (Cần 50 Công Đức)</option>
+                            <option value="3">Cây Cỏ Tịnh Tâm Không Deadline (Cần 10 Công Đức)</option>
+                            <option value="4">Muỗi Đêm Hè (0 Công Đức / Nhiều Nghiệp)</option>
+                        </select>
                     </div>
+                    <button class="btn-action" onclick="registerReincarnation()">🌀 XÁC NHẬN NGUYỆN VỌNG ĐẦU THAI 🌀</button>
                 </div>
 
-                <!-- TAB 5: SỔ NAM TÀO / BẢNG VÀNG -->
-                <div id="tab-leaderboard" class="tab-content space-y-6 hidden">
-                    <div class="bg-hell-800/80 border border-hell-600/60 rounded-2xl p-6 backdrop-blur-md">
-                        <div class="flex justify-between items-center mb-6">
-                            <div>
-                                <h2 class="font-header text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 uppercase">
-                                    <i class="fa-solid fa-scroll text-purple-400 mr-2"></i> Sổ Nam Tào (Danh Sách Tội Nhân)
-                                </h2>
-                                <p class="text-sm text-gray-400">Bảng ghi danh tự động lưu giữ lịch sử cải tạo tội nghiệp trên hệ thống.</p>
-                            </div>
-                            <button onclick="clearLeaderboard()" class="text-xs text-red-400 hover:text-red-300 border border-red-900/50 bg-red-950/40 px-3 py-1.5 rounded-lg">
-                                <i class="fa-solid fa-trash-can mr-1"></i> Xóa Lịch Sử Local
-                            </button>
-                        </div>
-
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-sm text-gray-300">
-                                <thead class="bg-hell-900 text-gray-400 uppercase font-mono text-xs border-b border-hell-700">
-                                    <tr>
-                                        <th class="p-3">Họ Tên Tội Nhân</th>
-                                        <th class="p-3">Số Nghiệp Ban Đầu</th>
-                                        <th class="p-3">Tầng Địa Ngục</th>
-                                        <th class="p-3">Công Đức</th>
-                                        <th class="p-3">Trạng Thái</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="leaderboard-body" class="divide-y divide-hell-700/50">
-                                    <!-- Dynamic rows injected here -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                <!-- TAB 5: SỔ NAM TÀO -->
+                <div id="tab-sonamtao" class="card view-panel">
+                    <div class="section-title">📜 SỔ NAM TÀO (DANH SÁCH TỘI NHÂN)</div>
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Tên Tội Nhân</th>
+                                <th>Tổng Nghiệp</th>
+                                <th>Tầng Địa Ngục</th>
+                                <th>Công Đức</th>
+                                <th>Trạng Thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="namtao-table-body"></tbody>
+                    </table>
                 </div>
 
-            </section>
-        </main>
-
-        <!-- Footer -->
-        <footer class="border-t border-hell-700/40 bg-hell-900/90 py-4 px-6 text-center text-xs text-gray-500 mt-auto">
-            <p>© 2026 ĐỊA NGỤC ONLINE 4.0 - Hệ Thống Quản Lý Nghiệp Báo Digital. Phát triển vì mục đích giải trí và nhắc nhở sống tích cực.</p>
-        </footer>
-    </div>
-
-    <!-- MODAL 1: THẺ CĂN CƯỚC ÂM PHỦ -->
-    <div id="idcard-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-gradient-to-b from-hell-800 to-hell-900 border-2 border-hell-gold rounded-2xl max-w-md w-full p-6 shadow-2xl relative box-glow-gold">
-            <button onclick="closeModal('idcard-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
-            <div class="text-center border-b border-hell-gold/30 pb-4 mb-4">
-                <div class="inline-block px-3 py-0.5 rounded-full bg-amber-950 border border-hell-gold text-hell-gold text-[10px] font-bold uppercase tracking-widest mb-1">
-                    CỘNG HOÀ ÂM PHỦ CẢI TẠO
-                </div>
-                <h3 class="font-header font-black text-xl text-hell-gold uppercase">THẺ CĂN CƯỚC ÂM PHỦ</h3>
-                <p class="text-[10px] text-gray-400 font-mono">HELL CITIZEN IDENTIFICATION CARD</p>
-            </div>
-
-            <!-- Card Design Inner -->
-            <div class="bg-hell-900/90 border border-hell-700 rounded-xl p-4 space-y-3 relative overflow-hidden">
-                <div class="flex items-center space-x-4">
-                    <div class="w-16 h-20 bg-hell-800 border-2 border-red-500/50 rounded-lg flex flex-col items-center justify-center text-red-500 text-3xl font-bold shadow-inner">
-                        <i class="fa-solid fa-user-ninja"></i>
-                    </div>
-                    <div class="space-y-1 text-xs">
-                        <div><span class="text-gray-500">Tên Tội Nhân:</span> <strong class="text-white text-sm block" id="card-name">Nguyễn Văn A</strong></div>
-                        <div><span class="text-gray-500">Mã Số Âm Phủ:</span> <span class="text-red-400 font-mono" id="card-id">#0000</span></div>
-                        <div><span class="text-gray-500">Tầng Chịu Phạt:</span> <span class="text-amber-400 font-semibold" id="card-layer">Chưa Định</span></div>
-                    </div>
-                </div>
-
-                <div class="border-t border-hell-700/60 pt-3 grid grid-cols-2 gap-2 text-xs">
-                    <div class="bg-hell-800 p-2 rounded border border-hell-700">
-                        <div class="text-gray-400 text-[10px]">Điểm Nghiệp:</div>
-                        <div class="text-red-400 font-bold font-mono text-sm" id="card-karma">0</div>
-                    </div>
-                    <div class="bg-hell-800 p-2 rounded border border-hell-700">
-                        <div class="text-gray-400 text-[10px]">Điểm Công Đức:</div>
-                        <div class="text-hell-gold font-bold font-mono text-sm" id="card-merit">0</div>
-                    </div>
-                </div>
-
-                <div class="text-xs">
-                    <span class="text-gray-500">Dự Kiến Kiếp Sau:</span>
-                    <div class="text-emerald-400 font-bold" id="card-nextlife">Chưa Đăng Ký</div>
-                </div>
-            </div>
-
-            <div class="mt-5 text-center space-y-2">
-                <p class="text-[11px] text-gray-400">Chụp màn hình thẻ này để "khoe" bạn bè trên MXH!</p>
-                <button onclick="closeModal('idcard-modal')" class="w-full py-2.5 rounded-xl bg-hell-gold hover:bg-amber-400 text-black font-bold text-sm transition">
-                    Đóng Thẻ Căn Cước
-                </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 2: FAKE AD MODAL -->
-    <div id="ad-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-hell-800 border border-purple-500 rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl relative">
-            <span class="px-2 py-1 rounded bg-purple-900 text-purple-300 text-[10px] font-bold uppercase">Quảng Cáo Âm Phủ</span>
-            <div class="w-20 h-20 mx-auto rounded-full bg-purple-950 flex items-center justify-center text-purple-400 text-4xl animate-bounce">
-                <i class="fa-solid fa-ghost"></i>
-            </div>
-            <h3 class="font-bold text-white text-lg">Dịch Vụ Bồn Dầu VIP 5 Sao</h3>
-            <p class="text-xs text-gray-300">Được ngâm dầu oliu nguyên chất, có massage lưng bởi Quỷ Dạ Xoa chuyên nghiệp. Giảm 50% cho tội nhân đặt trước!</p>
-            
-            <div class="w-full bg-hell-900 h-2 rounded-full overflow-hidden">
-                <div id="ad-progress" class="bg-purple-500 h-full w-0 transition-all duration-1000"></div>
-            </div>
-            <p class="text-xs text-gray-500 font-mono" id="ad-timer-text">Đang nhận diện năng lượng: 5s</p>
+    <!-- WIDGET DIÊM VƯƠNG GÓC DƯỚI BÊN PHẢI -->
+    <div class="diem-vuong-widget">
+        <div class="diem-vuong-avatar">
+            👹
+            <div class="live-dot"></div>
         </div>
-    </div>
-
-    <!-- MODAL 3: CONFESSION INPUT MODAL -->
-    <div id="confess-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-hell-800 border border-red-500/50 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
-            <h3 class="font-header font-bold text-white text-lg text-red-400">Thư Sám Hối & Cam Kết Âm Phủ</h3>
-            <textarea id="confess-text" rows="4" placeholder="Viết lời sám hối chân thành tại đây (Ví dụ: Con hứa từ nay ăn hết miếng cuối cùng không bỏ mứa...)" class="w-full bg-hell-900 border border-hell-600 rounded-xl p-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-red-500"></textarea>
-            <div class="flex justify-end gap-3">
-                <button onclick="closeModal('confess-modal')" class="px-4 py-2 rounded-lg bg-hell-700 text-gray-300 text-xs font-bold">Hủy</button>
-                <button onclick="submitConfession()" class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white text-xs font-bold">Gửi Lời Hứa (+15 CD)</button>
+        <div class="diem-vuong-info">
+            <div class="diem-vuong-title">📢 DIÊM VƯƠNG THÔNG BÁO</div>
+            <div class="diem-vuong-status">
+                Đang có <span id="active-sinners-count">1,248</span> người cùng trả nghiệp
             </div>
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC & AUDIO ENGINE -->
     <script>
-        /* -------------------------------------------------------------------------- */
-        /* 1. STATE MANAGEMENT & DATA                                                */
-        /* -------------------------------------------------------------------------- */
-        const APP_STATE = {
-            name: "Chưa Khai Báo",
-            id: "#" + Math.floor(1000 + Math.random() * 9000) + "-HELL",
-            karmaOriginal: 0,
-            karmaCurrent: 0,
-            merit: 0,
-            hellLayer: "Chưa Xếp Tầng",
-            selectedNextLife: null,
-            autoPenanceActive: false,
-            soundEnabled: false
+        const crimeDatabase = {
+            short: [
+                { text: "Ép uống bia rượu", karma: 20 },
+                { text: "Chửi sếp sau lưng", karma: 18 },
+                { text: "Chửi khách gắt gỏng", karma: 22 },
+                { text: "Xem không rep tin", karma: 15 },
+                { text: "Viết sai chính tả", karma: 10 },
+                { text: "Nói xạo đi ngủ", karma: 12 },
+                { text: "Ăn quỵt tiền ship", karma: 25 },
+                { text: "Chê cơm mẹ nấu", karma: 30 },
+                { text: "Hứa lèo hẹn giờ", karma: 15 },
+                { text: "Để bình xăng cạn", karma: 10 },
+                { text: "Tảo thoát group chat", karma: 12 },
+                { text: "Muộn tiền làm thêm", karma: 18 },
+                { text: "Mượn đồ không trả", karma: 20 },
+                { text: "Spam icon nhảm", karma: 10 },
+                { text: "Thả icon phẫn nộ", karma: 12 }
+            ],
+            medium: [
+                { text: "Hứa sang tuần trả tiền nhưng mất hút 3 năm", karma: 35 },
+                { text: "Nhắn 'Đang đến nơi rồi' khi vừa mới ngủ dậy", karma: 20 },
+                { text: "Ăn nốt miếng ngon cuối cùng không hỏi ý ai", karma: 15 },
+                { text: "Xem chùa video không thả tim hay để lại comment", karma: 12 },
+                { text: "Thả phẫn nộ bài viết của bạn thân chỉ để trêu", karma: 10 },
+                { text: "Bảo 'Nói thật nhé' nhưng đằng sau là nói dối", karma: 18 },
+                { text: "Vay tiền mua đồ hiệu nhưng bảo không có tiền trả", karma: 40 },
+                { text: "Hẹn 7h sáng nhưng 9h mới bắt đầu bước ra khỏi giường", karma: 22 },
+                { text: "Pass lại đồ cũ hư hỏng nhưng bảo new 99%", karma: 30 },
+                { text: "Mượn tai nghe xong làm đứt dây không chịu đền", karma: 25 },
+                { text: "Ăn bánh quy trên giường rơi vãi vụn tung tóe", karma: 15 },
+                { text: "Đi xem phim nói chuyện điện thoại oang oang", karma: 35 },
+                { text: "Được nhờ lấy đồ nhưng lấy sai còn gắt gỏng", karma: 18 },
+                { text: "Để bát đĩa đóng váng 3 ngày không chịu rửa", karma: 28 },
+                { text: "Mượn xe máy chạy kiệt xăng mới chịu trả lại", karma: 25 },
+                { text: "Rủ rê người khác ăn kiêng nhưng mình ăn uống xả giàn", karma: 15 },
+                { text: "Nhìn thấy người quen ngoài đường nhưng giả vờ quay đi", karma: 12 },
+                { text: "Review đồ ăn vô căn cứ làm người ta dẹp tiệm", karma: 45 },
+                { text: "Huỷ đơn hàng Shopee khi shipper đã giao đến cửa", karma: 30 },
+                { text: "Gửi ảnh dìm hàng bạn thân lên nhóm chung", karma: 18 },
+                { text: "Sử dụng Wi-Fi chùa nhà hàng xóm để tải phim", karma: 10 },
+                { text: "Chụp ảnh check-in sống ảo rồi bỏ mứa đồ ăn", karma: 25 },
+                { text: "Quên sinh nhật người yêu rồi bảo cố tình tạo bất ngờ", karma: 32 },
+                { text: "Đăng status thả thính dù đã có người yêu", karma: 28 },
+                { text: "Vào cãi nhau trên mạng xã hội bằng nick ảo", karma: 20 }
+            ],
+            long: [
+                { text: "Nhận deadline xong biến mất hút đến tận ngày nộp mới xuất hiện bảo bị bệnh", karma: 50 },
+                { text: "Đặt đồ ăn giao tận nơi xong tắt máy làm shipper đợi dưới mưa 1 tiếng", karma: 60 },
+                { text: "Vay tiền bạn thân lúc khó khăn xong lúc bạn cần lại chặn luôn liên lạc", karma: 70 },
+                { text: "Ăn uống chung nhóm xong đến lúc tính tiền giả vờ nghe điện thoại rồi đi mất", karma: 45 },
+                { text: "Lấy ảnh người khác sống ảo sang chảnh rồi đi dạy đời đạo lý làm người", karma: 40 },
+                { text: "Đóng góp bài tập nhóm đúng 1 câu 'Ok bạn' rồi hưởng chung điểm A", karma: 55 },
+                { text: "Spam tin nhắn rủ rê người khác tham gia đa cấp làm giàu nhanh chóng", karma: 65 },
+                { text: "Đi hát Karaoke giành mic từ đầu đến cuối không cho ai hát bài nào", karma: 35 },
+                { text: "Kể bí mật của bạn thân cho cả công ty biết rồi bảo 'Tớ vô tình thôi'", karma: 50 },
+                { text: "Mượn quần áo đi tiệc làm dính vết bẩn không tẩy rồi âm thầm trả lại", karma: 38 },
+                { text: "Xem phim rạp đạp liên tục vào lưng ghế người ngồi phía trước", karma: 42 },
+                { text: "Rủ bạn bè đi ăn bảo mình bao nhưng lúc thanh toán giả vờ quên ví", karma: 48 },
+                { text: "Mượn laptop người khác về tải phần mềm độc hại làm hỏng máy", karma: 55 },
+                { text: "Hứa làm phù rể phù dâu xong sát giờ cưới bảo bận không đến được", karma: 50 },
+                { text: "Đoạt công trạng dự án của đồng nghiệp trẻ trước mặt ban giám đốc", karma: 80 },
+                { text: "Nói xấu sau lưng bạn thân với chính người mà bạn thân ghét nhất", karma: 60 },
+                { text: "Dẫn chó đi dạo để phóng uế bừa bãi trước cửa nhà hàng xóm", karma: 30 },
+                { text: "Mượn xe hơi chạy va quẹt trầy xước rồi đem trả không nói một câu", karma: 70 },
+                { text: "Đổ thừa lỗi sai của mình cho thực tập sinh mới vào công ty", karma: 65 },
+                { text: "Hứa đi du lịch chung nhóm xong sát ngày hủy làm cả nhóm bù tiền", karma: 45 },
+                { text: "Nhận làm giùm bài tốt nghiệp xong copy toàn bộ trên mạng về bán", karma: 75 },
+                { text: "Mua hàng thanh lý trả giá 1/10 xong còn đòi freeship tận nơi", karma: 25 },
+                { text: "Ăn trộm mật khẩu Netflix của bạn rồi chia sẻ cho 10 người khác dùng", karma: 35 },
+                { text: "Đi dự đám cưới mừng phong bì giấy trống rồi ăn uống no nê", karma: 85 },
+                { text: "Bỏ bê thú cưng đói cả ngày để mải mê cày game online", karma: 50 },
+                { text: "Đăng ảnh nhóm chỉ sửa mặt mình đẹp còn mặc kệ bạn bè xấu", karma: 25 },
+                { text: "Gia nhập hội nhóm antifan đi lính dội bom phẫn nộ vô căn cứ", karma: 40 },
+                { text: "Gửi link virus giả làm quà tặng để hack tài khoản bạn bè", karma: 90 },
+                { text: "Mượn sách đọc xong làm mất rồi đền cuốn sách hoàn toàn khác", karma: 30 },
+                { text: "Rủ người ta yêu đương ngọt ngào xong đùng một cái bảo 'Chưa sẵn sàng'", karma: 55 },
+                { text: "Đi đường bật đèn pha chiếu thẳng vào mặt người đi ngược chiều", karma: 60 },
+                { text: "Hẹn hò qua mạng lấy hình idol xong ngoài đời xuất hiện hoàn toàn khác", karma: 35 },
+                { text: "Cắt ngang lời người khác đang phát biểu nghiêm túc bằng câu đùa vô duyên", karma: 25 },
+                { text: "Làm hỏng đồ dùng chung của công ty rồi lẳng lặng bỏ đi không báo", karma: 45 },
+                { text: "Nói dối bố mẹ xin tiền học thêm để đi quẹt thẻ đu idol", karma: 50 }
+            ]
         };
 
-        const SINS_DATA = [
-            { id: 'sin1', text: 'Xem chùa story/video không thả tim hay comment', karma: 15 },
-            { id: 'sin2', text: 'Hứa "sang tuần trả tiền" nhưng mất hút 3 năm', karma: 30 },
-            { id: 'sin3', text: 'Nhắn "Đang đến nơi rồi" khi vừa mới ngủ dậy', karma: 20 },
-            { id: 'sin4', text: 'Ăn nốt miếng ngon cuối cùng không hỏi ý ai', karma: 10 },
-            { id: 'sin5', text: 'Spam icon icon icon vào group chat khi sếp hỏi', karma: 12 },
-            { id: 'sin6', text: 'Thả phẫn nộ bài viết của bạn thân chỉ để trêu', karma: 8 },
-            { id: 'sin7', text: 'Mượn đồ xong dùng như đồ của mình', karma: 25 },
-            { id: 'sin8', text: 'Bảo "Nói thật nhé" nhưng đằng sau là nói dối', karma: 18 }
+        const hell18Levels = [
+            { level: 1, name: "Địa Ngục Bạt T舌 (Kéo Lưỡi)", desc: "Dành cho tội chửi sếp, chửi khách, nói dối.", action: "Gõ Mõ Sám Hối" },
+            { level: 2, name: "Địa Ngục Cắt Ngón Tay", desc: "Dành cho tội viết sai chính tả, gõ phím khẩu nghiệp.", action: "Tịnh Tâm Bấm Phím" },
+            { level: 3, name: "Địa Ngục Cây Băng", desc: "Dành cho tội xem tin nhắn không rep, lạnh lòng.", action: "Xóa Băng Lòng" },
+            { level: 4, name: "Địa Ngục Nghiệt Kính", desc: "Dành cho tội sống ảo, sửa ảnh dìm bạn.", action: "Soi Rõ Bản Tâm" },
+            { level: 5, name: "Địa Ngục Chưng Trưng", desc: "Dành cho tội ép uống rượu bia, lừa gạt.", action: "Uống Nước Suối Bồ Đề" },
+            { level: 6, name: "Địa Ngục Đồng Trụ (Cột Đồng)", desc: "Dành cho tội cắm sừng, thả thính bừa bãi.", action: "Sám Hối Tình Xuyên" },
+            { level: 7, name: "Địa Ngục Bồn Dầu Sôi", desc: "Dành cho tội bùng nợ, quỵt tiền ship.", action: "Nhảy Bồn Dầu Trừ Nghiệp" },
+            { level: 8, name: "Địa Ngục Núi Băng", desc: "Dành cho tội chê cơm mẹ nấu, vô ơn.", action: "Ấn Ấm Tình Thân" },
+            { level: 9, name: "Địa Ngục Bát Đao", desc: "Dành cho tội đâm sau lưng, đoạt công.", action: "Chịu Đao Sám Hối" },
+            { level: 10, name: "Địa Ngục Trại Đốc", desc: "Dành cho tội rủ rê đa cấp, lừa đảo.", action: "Đọc Kinh Cải Tạo" },
+            { level: 11, name: "Địa Ngục Bàn Chông", desc: "Dành cho tội bùng deadline, bỏ bài tập.", action: "Đẩy Chông Trả Nợ" },
+            { level: 12, name: "Địa Ngục Ép Lực", desc: "Dành cho tội bom hàng shipper, quỵt nợ.", action: "Thành Tâm Trả Tiền" },
+            { level: 13, name: "Địa Ngục Huyết Trì (Hồ Máu)", desc: "Dành cho tội bất hiếu, ngược đãi thú cưng.", action: "Rửa Sạch Bụi Trần" },
+            { level: 14, name: "Địa Ngục U Vọng", desc: "Dành cho tội hứa lèo, hẹn giờ ngủ quên.", action: "Thức Tỉnh Bản Tâm" },
+            { level: 15, name: "Địa Ngục Kẹp Thị", desc: "Dành cho tội giành mic Karaoke, xả rác.", action: "Tập Học Khiêm Tốn" },
+            { level: 16, name: "Địa Ngục Hỏa Sơn (Núi Lửa)", desc: "Dành cho tội kích động antifan, dội phẫn nộ.", action: "Dập Tắt Lửa Tố" },
+            { level: 17, name: "Địa Ngục Thạch Ma (Cối Đá)", desc: "Dành cho tội tham ăn, bỏ mứa đồ ăn.", action: "Xay Đá Tích Công" },
+            { level: 18, name: "Địa Ngục Đao Cứu (Cưa Người)", desc: "Dành cho tội phản bội bạn thân, trộm mật khẩu.", action: "Xác Nhận Thành Tâm" }
         ];
 
-        const HELL_LAYERS = [
-            { maxKarma: 15, name: "Tầng 1: Địa Ngục Kẹt Xe Cầu Giấy" },
-            { maxKarma: 35, name: "Tầng 2: Địa Ngục Deadline 23h59" },
-            { maxKarma: 60, name: "Tầng 3: Địa Ngục Bồn Dầu 4.0" },
-            { maxKarma: 100, name: "Tầng 4: Địa Ngục Bị Quỵt Nợ" },
-            { maxKarma: 999, name: "Tầng 5: Địa Ngục Mất Wifi Vĩnh Viễn" }
-        ];
+        let currentUser = {
+            name: "Tội Nhân Vô Danh",
+            karma: 0,
+            merit: 25,
+            assignedHell: "Chưa Xếp Tầng",
+            selectedCrimes: []
+        };
 
-        const REINCARNATION_OPTIONS = [
-            { id: 'life1', title: 'Thợ Săn Rich Kid', cost: 30, reqKarma: 0, desc: 'Đầu thai làm con mèo cưng gia đình giàu có, sáng ăn pate tối ngủ nệm nhung.' },
-            { id: 'life2', title: 'Cây Bàng Trường Học', cost: 15, reqKarma: 0, desc: 'Đứng im hóng drama học đường 100 năm không lo trả tiền nhà.' },
-            { id: 'life3', title: 'Con Muỗi 3 Ngày', cost: 5, reqKarma: 0, desc: 'Sống đời tự do ngắn ngủi 3 ngày rồi đầu thai tiếp cho nhanh.' },
-            { id: 'life4', title: 'Thần Đội Đèn VIP', cost: 50, reqKarma: 0, desc: 'Trở thành thần cai quản hệ thống Wifi cho toàn bang hội Âm Phủ.' }
-        ];
+        let liveSinners = 1248;
 
-        /* -------------------------------------------------------------------------- */
-        /* 2. AUDIO ENGINE (Web Audio API - No external files required)               */
-        /* -------------------------------------------------------------------------- */
-        let audioCtx = null;
-
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-        }
-
-        function toggleAudio() {
-            initAudio();
-            APP_STATE.soundEnabled = !APP_STATE.soundEnabled;
-            const icon = document.getElementById('sound-icon');
-            const text = document.getElementById('sound-text');
-            if (APP_STATE.soundEnabled) {
-                icon.className = "fa-solid fa-volume-high text-emerald-400";
-                text.innerText = "Âm Thanh: BẬT";
-                playBellSound();
-            } else {
-                icon.className = "fa-solid fa-volume-xmark text-red-500";
-                text.innerText = "Âm Thanh: TẮT";
-            }
-        }
-
-        // Play Bell Sound Synthesizer
-        function playBellSound() {
-            if (!APP_STATE.soundEnabled || !audioCtx) return;
-            try {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(220, audioCtx.currentTime); // A3 note
-                osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 1.5);
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 1.5);
-            } catch (e) {}
-        }
-
-        // Play Sizzle / Boiling Oil Noise Synthesizer
-        function playSizzleSound() {
-            if (!APP_STATE.soundEnabled || !audioCtx) return;
-            try {
-                const bufferSize = audioCtx.sampleRate * 0.15; // 0.15 sec
-                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-                const data = buffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) {
-                    data[i] = Math.random() * 2 - 1;
-                }
-                const noise = audioCtx.createBufferSource();
-                noise.buffer = buffer;
-                const filter = audioCtx.createBiquadFilter();
-                filter.type = 'bandpass';
-                filter.frequency.value = 3000;
-                const gain = audioCtx.createGain();
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-                noise.connect(filter);
-                filter.connect(gain);
-                gain.connect(audioCtx.destination);
-                noise.start();
-            } catch (e) {}
-        }
-
-        /* -------------------------------------------------------------------------- */
-        /* 3. INITIALIZATION & UI RENDERERS                                           */
-        /* -------------------------------------------------------------------------- */
-        window.addEventListener('DOMContentLoaded', () => {
-            initParticles();
-            renderSinsList();
-            loadLocalStorage();
+        window.onload = function() {
+            initFireCanvas();
+            renderCrimes();
+            render18Hells();
             updateUI();
-        });
+            startLiveSinnersCounter();
+        };
 
-        function renderSinsList() {
-            const container = document.getElementById('sins-container');
-            container.innerHTML = SINS_DATA.map(sin => `
-                <label class="flex items-start space-x-3 bg-hell-900/90 border border-hell-700/70 p-3 rounded-xl cursor-pointer hover:border-red-500/50 transition">
-                    <input type="checkbox" value="${sin.karma}" class="sin-checkbox mt-1 w-4 h-4 rounded text-red-600 focus:ring-red-500 bg-hell-800 border-hell-600">
-                    <span class="text-xs text-gray-300 leading-snug">
-                        ${sin.text} <strong class="text-red-400 font-mono">(+${sin.karma} Karma)</strong>
-                    </span>
-                </label>
-            `).join('');
+        function startLiveSinnersCounter() {
+            setInterval(() => {
+                let change = Math.floor(Math.random() * 7) - 3;
+                liveSinners += change;
+                if (liveSinners < 1000) liveSinners = 1000;
+                document.getElementById('active-sinners-count').innerText = liveSinners.toLocaleString('vi-VN');
+            }, 2500);
+        }
+
+        function renderCrimes() {
+            const container = document.getElementById('crime-list-container');
+            let html = '';
+
+            const sections = [
+                { title: "📌 NGHIỆP BÁO NGẮN (3 - 5 CHỮ) - 15 TỘI BẢN QUYỀN", data: crimeDatabase.short },
+                { title: "⚡ NGHIỆP BÁO TRUNG BÌNH (5 - 10 CHỮ) - 25 TỘI THƯỜNG GẶP", data: crimeDatabase.medium },
+                { title: "🔥 NGHIỆP BÁO NẶNG (TRÊN 10 CHỮ) - 35 TỘI NẶNG ĐÔ", data: crimeDatabase.long }
+            ];
+
+            sections.forEach(sec => {
+                html += `<div class="crime-group-title">${sec.title}</div><div class="crime-grid">`;
+                sec.data.forEach((c) => {
+                    html += `
+                        <div class="crime-item">
+                            <input type="checkbox" onchange="toggleCrime('${c.text}', ${c.karma}, this.checked)">
+                            <div>
+                                <div>${c.text}</div>
+                                <span style="color: var(--accent-red); font-size: 10px;">+${c.karma} Karma</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function render18Hells() {
+            const container = document.getElementById('hell-levels-container');
+            let html = '';
+            hell18Levels.forEach(h => {
+                html += `
+                    <div class="hell-level-card" onclick="doSamHoi(${h.level})">
+                        <h4>Tầng ${h.level}: ${h.name}</h4>
+                        <p>${h.desc}</p>
+                        <button class="btn-header" style="margin-top:8px; width:100%; font-size:10px;">${h.action} (-5 Karma)</button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function toggleCrime(text, karma, isChecked) {
+            if (isChecked) {
+                currentUser.selectedCrimes.push({ text, karma });
+            } else {
+                currentUser.selectedCrimes = currentUser.selectedCrimes.filter(c => c.text !== text);
+            }
+        }
+
+        function addCustomCrime() {
+            const text = document.getElementById('custom-crime-input').value.trim();
+            const karma = parseInt(document.getElementById('custom-karma-input').value) || 10;
+            if (text) {
+                currentUser.selectedCrimes.push({ text, karma });
+                alert(`Đã thêm tội tự điền: "${text}" (+${karma} Karma)`);
+                document.getElementById('custom-crime-input').value = '';
+                calculateKarma();
+            }
+        }
+
+        function calculateKarma() {
+            let total = 0;
+            currentUser.selectedCrimes.forEach(c => total += c.karma);
+            currentUser.karma = total;
+
+            if (total === 0) currentUser.assignedHell = "Chưa có nghiệp";
+            else if (total < 50) currentUser.assignedHell = "Tầng 1: Bạt T舌";
+            else if (total < 150) currentUser.assignedHell = "Tầng 7: Bồn Dầu Sôi";
+            else if (total < 300) currentUser.assignedHell = "Tầng 11: Bàn Chông";
+            else currentUser.assignedHell = "Tầng 18: Đao Cứu (Cực Nặng)";
+
+            updateUI();
+            alert(`Đã thẩm định! Tổng Karma của ${currentUser.name}: ${currentUser.karma}. Xếp vào ${currentUser.assignedHell}`);
+        }
+
+        function doSamHoi(level) {
+            if (currentUser.karma > 0) {
+                currentUser.karma = Math.max(0, currentUser.karma - 5);
+                currentUser.merit += 2;
+                playHellSound();
+                updateUI();
+            } else {
+                alert("Bạn đã hết nghiệp báo ở tầng này!");
+            }
+        }
+
+        function updateUserName() {
+            const val = document.getElementById('input-name').value.trim();
+            if (val) currentUser.name = val;
+            updateUI();
+        }
+
+        function updateUI() {
+            document.getElementById('user-display-name').innerText = currentUser.name;
+            document.getElementById('stat-karma').innerText = currentUser.karma;
+            document.getElementById('stat-merit').innerText = currentUser.merit;
+            document.getElementById('stat-hell-name').innerText = currentUser.assignedHell;
+
+            let barWidth = Math.min(100, (currentUser.karma / 300) * 100);
+            document.getElementById('karma-bar').style.width = barWidth + '%';
+
+            const body = document.getElementById('namtao-table-body');
+            body.innerHTML = `
+                <tr>
+                    <td><b>${currentUser.name}</b></td>
+                    <td style="color:var(--accent-red);">${currentUser.karma}</td>
+                    <td>${currentUser.assignedHell}</td>
+                    <td style="color:var(--accent-gold);">${currentUser.merit}</td>
+                    <td>${currentUser.karma === 0 ? 'Đã Tự Do' : 'Đang Cải Tạo'}</td>
+                </tr>
+            `;
         }
 
         function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.className = "nav-btn w-full text-left px-4 py-3 rounded-xl font-semibold text-sm flex items-center justify-between transition text-gray-400 hover:bg-hell-700/50 hover:text-white";
-            });
-            const activeBtn = document.getElementById(`btn-tab-${tabId}`);
-            if (activeBtn) {
-                activeBtn.className = "nav-btn w-full text-left px-4 py-3 rounded-xl font-semibold text-sm flex items-center justify-between transition bg-hell-700 text-white border border-red-900/50 shadow-md";
-            }
+            document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
         }
 
-        /* -------------------------------------------------------------------------- */
-        /* 4. BUSINESS LOGIC & KARMA CALCULATOR                                       */
-        /* -------------------------------------------------------------------------- */
-        function calculateKarma(e) {
-            e.preventDefault();
-            const nameInput = document.getElementById('input-name').value.trim();
-            if (!nameInput) return;
-
-            let totalKarma = 0;
-            document.querySelectorAll('.sin-checkbox:checked').forEach(cb => {
-                totalKarma += parseInt(cb.value);
-            });
-
-            if (totalKarma === 0) totalKarma = 10; // Minimum default karma for existing on social media
-
-            APP_STATE.name = nameInput;
-            APP_STATE.karmaOriginal = totalKarma;
-            APP_STATE.karmaCurrent = totalKarma;
-            
-            // Determine Hell Layer
-            const layerObj = HELL_LAYERS.find(l => totalKarma <= l.maxKarma) || HELL_LAYERS[HELL_LAYERS.length - 1];
-            APP_STATE.hellLayer = layerObj.name;
-
-            saveLocalStorage();
-            updateUI();
-            playBellSound();
-            switchTab('rehab');
-        }
-
-        function executePenance(event) {
-            if (APP_STATE.karmaCurrent <= 0) {
-                APP_STATE.karmaCurrent = 0;
+        function buyItem(name, cost) {
+            if (currentUser.merit >= cost) {
+                currentUser.merit -= cost;
+                alert(`Đã mua thành công ${name}!`);
                 updateUI();
-                return;
-            }
-
-            APP_STATE.karmaCurrent -= 1;
-            playSizzleSound();
-            createFloatingText(event.clientX, event.clientY, "-1 Nghiệp", "#ff3700");
-            saveLocalStorage();
-            updateUI();
-        }
-
-        function executePenanceWhip(event) {
-            if (APP_STATE.karmaCurrent <= 0) return;
-            const sub = Math.min(APP_STATE.karmaCurrent, 3);
-            APP_STATE.karmaCurrent -= sub;
-            playSizzleSound();
-            createFloatingText(event.clientX, event.clientY, `-${sub} Nghiệp (Roi)`, "#ffaa00");
-            saveLocalStorage();
-            updateUI();
-        }
-
-        let autoInterval = null;
-        function toggleAutoPenance() {
-            const btn = document.getElementById('auto-penance-btn');
-            if (APP_STATE.autoPenanceActive) {
-                clearInterval(autoInterval);
-                APP_STATE.autoPenanceActive = false;
-                btn.classList.remove('bg-amber-600', 'text-black');
-                btn.innerHTML = `<i class="fa-solid fa-robot"></i> Thuê "Tội Nhân Lao Động" (Tự Trừ)`;
             } else {
-                if (APP_STATE.karmaCurrent <= 0) return;
-                APP_STATE.autoPenanceActive = true;
-                btn.classList.add('bg-amber-600', 'text-black');
-                btn.innerHTML = `<i class="fa-solid fa-stop"></i> Dừng Lao Động Tự Động`;
-                autoInterval = setInterval(() => {
-                    if (APP_STATE.karmaCurrent > 0) {
-                        APP_STATE.karmaCurrent -= 1;
-                        playSizzleSound();
-                        updateUI();
-                    } else {
-                        toggleAutoPenance();
-                    }
-                }, 1000);
+                alert("Không đủ điểm Công Đức!");
             }
         }
 
-        /* -------------------------------------------------------------------------- */
-        /* 5. MERIT TASKS & SHOP                                                      */
-        /* -------------------------------------------------------------------------- */
-        function addMeritPoints(pts) {
-            APP_STATE.merit += pts;
-            saveLocalStorage();
-            updateUI();
-            playBellSound();
+        function registerReincarnation() {
+            alert(`Đã ghi nhận nguyện vọng đầu thai cho ${currentUser.name}. Nam Tào sẽ duyệt khi hết nghiệp!`);
         }
 
-        function startChantingTask() {
-            playBellSound();
-            alert("🔔 Bạn đang thỉnh chuông tụng kinh... (Nhận +10 Điểm Công Đức!)");
-            addMeritPoints(10);
+        function showCCCD() {
+            alert(`🪪 THẺ CĂN CƯỚC ÂM PHỦ 4.0\nHọ Tên: ${currentUser.name}\nNghiệp Tích Lũy: ${currentUser.karma}\nTầng Xếp Hạng: ${currentUser.assignedHell}`);
         }
 
-        function watchFakeAd() {
-            const modal = document.getElementById('ad-modal');
-            const progress = document.getElementById('ad-progress');
-            const timerText = document.getElementById('ad-timer-text');
-            modal.classList.remove('hidden');
+        let audioCtx = null;
+        let isAudioOn = true;
 
-            let seconds = 5;
-            progress.style.width = '0%';
+        function toggleAudio() {
+            isAudioOn = !isAudioOn;
+            document.getElementById('audio-status').innerText = isAudioOn ? "BẬT" : "TẮT";
+        }
+
+        function playHellSound() {
+            if (!isAudioOn) return;
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             
-            const interval = setInterval(() => {
-                seconds--;
-                progress.style.width = `${((5 - seconds) / 5) * 100}%`;
-                timerText.innerText = `Đang nhận diện năng lượng: ${seconds}s`;
-
-                if (seconds <= 0) {
-                    clearInterval(interval);
-                    modal.classList.add('hidden');
-                    addMeritPoints(25);
-                    alert("✨ Bạn đã hoàn thành xem quảng cáo! (+25 Công Đức)");
-                }
-            }, 1000);
+            let osc = audioCtx.createOscillator();
+            let gain = audioCtx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.4);
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.4);
         }
 
-        function openConfessModal() {
-            document.getElementById('confess-modal').classList.remove('hidden');
-        }
-
-        function submitConfession() {
-            const text = document.getElementById('confess-text').value.trim();
-            if (!text) return;
-            document.getElementById('confess-modal').classList.add('hidden');
-            document.getElementById('confess-text').value = '';
-            addMeritPoints(15);
-            alert("📜 Lời sám hối đã được ghi chép vào Sổ Nam Tào! (+15 Công Đức)");
-        }
-
-        function addCoals() {
-            addMeritPoints(5);
-        }
-
-        /* -------------------------------------------------------------------------- */
-        /* 6. REINCARNATION SELECTION                                                 */
-        /* -------------------------------------------------------------------------- */
-        function renderReincarnationCards() {
-            const container = document.getElementById('reincarnate-cards-container');
-            container.innerHTML = REINCARNATION_OPTIONS.map(opt => {
-                const isSelected = APP_STATE.selectedNextLife === opt.id;
-                const canAfford = APP_STATE.merit >= opt.cost;
-                return `
-                    <div class="bg-hell-900 border ${isSelected ? 'border-emerald-400 bg-emerald-950/20' : 'border-hell-700'} rounded-xl p-4 flex flex-col justify-between space-y-3">
-                        <div>
-                            <div class="flex justify-between items-start mb-1">
-                                <h4 class="font-bold text-white text-base">${opt.title}</h4>
-                                <span class="text-xs font-mono font-bold text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800">${opt.cost} CD</span>
-                            </div>
-                            <p class="text-xs text-gray-400">${opt.desc}</p>
-                        </div>
-                        <button onclick="selectNextLife('${opt.id}', ${opt.cost})" ${!canAfford ? 'disabled' : ''} class="w-full py-2 rounded-lg text-xs font-bold transition ${isSelected ? 'bg-emerald-500 text-black' : canAfford ? 'bg-hell-700 hover:bg-hell-600 text-white' : 'bg-gray-800 text-gray-500 cursor-not-allowed'}">
-                            ${isSelected ? '✓ Đã Chọn Thân Phận' : canAfford ? 'Chọn Thân Phận Này' : 'Không Đủ Công Đức'}
-                        </button>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function selectNextLife(id, cost) {
-            APP_STATE.selectedNextLife = id;
-            saveLocalStorage();
-            updateUI();
-        }
-
-        function executeFinalReincarnation() {
-            if (APP_STATE.karmaCurrent > 0 || !APP_STATE.selectedNextLife) return;
-            const chosen = REINCARNATION_OPTIONS.find(o => o.id === APP_STATE.selectedNextLife);
-            alert(`🎉 CHÚC MỪNG!\n\nTội nhân: ${APP_STATE.name}\nĐã chính thức hoàn lương 100% và qua cổng đầu thai biến thành: ${chosen ? chosen.title : 'Kiếp Sau'}.\n\nChúc bạn sống một đời mới tốt đẹp!`);
-            resetProfile();
-        }
-
-        /* -------------------------------------------------------------------------- */
-        /* 7. UI UPDATE & STORAGE                                                     */
-        /* -------------------------------------------------------------------------- */
-        function updateUI() {
-            document.getElementById('user-display-name').innerText = APP_STATE.name;
-            document.getElementById('user-hell-id').innerText = `ID: ${APP_STATE.id}`;
-            document.getElementById('karma-score-display').innerText = APP_STATE.karmaCurrent;
-            document.getElementById('merit-score-display').innerText = APP_STATE.merit;
-            document.getElementById('store-merit-display').innerText = `${APP_STATE.merit} CD`;
-            document.getElementById('rehab-karma-counter').innerText = APP_STATE.karmaCurrent;
-            document.getElementById('hell-layer-display').innerText = APP_STATE.hellLayer;
-
-            // Rehab progress %
-            const percent = APP_STATE.karmaOriginal > 0 
-                ? Math.round(((APP_STATE.karmaOriginal - APP_STATE.karmaCurrent) / APP_STATE.karmaOriginal) * 100)
-                : 0;
-            document.getElementById('rehab-percent').innerText = `${Math.max(0, Math.min(100, percent))}%`;
-
-            // Karma Bar
-            const karmaPct = APP_STATE.karmaOriginal > 0 ? (APP_STATE.karmaCurrent / APP_STATE.karmaOriginal) * 100 : 0;
-            document.getElementById('karma-bar').style.width = `${karmaPct}%`;
-
-            // Merit Bar
-            document.getElementById('merit-bar').style.width = `${Math.min(100, (APP_STATE.merit / 50) * 100)}%`;
-
-            // Reincarnation Status
-            const canReincarnate = APP_STATE.karmaCurrent === 0 && percent === 100;
-            document.getElementById('reincarnate-status').innerText = canReincarnate ? "Đủ Điều Kiện" : "Đang Cải Tạo";
-            
-            const finalBtn = document.getElementById('final-reincarnate-btn');
-            if (canReincarnate && APP_STATE.selectedNextLife) {
-                finalBtn.disabled = false;
-                finalBtn.className = "px-8 py-4 rounded-xl font-header font-black text-lg text-black bg-emerald-400 hover:bg-emerald-300 border border-emerald-200 cursor-pointer shadow-lg animate-pulse";
-                document.getElementById('reincarnate-hint-text').innerText = "Hệ thống sẵn sàng mở Cổng Đầu Thai!";
-            } else {
-                finalBtn.disabled = true;
-                finalBtn.className = "px-8 py-4 rounded-xl font-header font-black text-lg text-gray-500 bg-hell-900 border border-gray-700 cursor-not-allowed shadow-lg";
-            }
-
-            renderReincarnationCards();
-            renderLeaderboard();
-        }
-
-        function openIDCardModal() {
-            document.getElementById('card-name').innerText = APP_STATE.name;
-            document.getElementById('card-id').innerText = APP_STATE.id;
-            document.getElementById('card-layer').innerText = APP_STATE.hellLayer;
-            document.getElementById('card-karma').innerText = APP_STATE.karmaCurrent;
-            document.getElementById('card-merit').innerText = APP_STATE.merit;
-
-            const nextLifeObj = REINCARNATION_OPTIONS.find(o => o.id === APP_STATE.selectedNextLife);
-            document.getElementById('card-nextlife').innerText = nextLifeObj ? nextLifeObj.title : "Chưa Chọn";
-
-            document.getElementById('idcard-modal').classList.remove('hidden');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
-
-        function createFloatingText(x, y, text, color) {
-            const el = document.createElement('div');
-            el.className = 'float-text';
-            el.style.left = `${x - 20}px`;
-            el.style.top = `${y - 20}px`;
-            el.style.color = color;
-            el.innerText = text;
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 1000);
-        }
-
-        function renderLeaderboard() {
-            const tbody = document.getElementById('leaderboard-body');
-            const data = JSON.parse(localStorage.getItem('hell_leaderboard') || '[]');
-            
-            if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-gray-500 text-xs">Chưa có dữ liệu sổ sách.</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = data.map(item => `
-                <tr class="hover:bg-hell-800/50">
-                    <td class="p-3 font-bold text-white">${item.name}</td>
-                    <td class="p-3 font-mono text-red-400">${item.karmaOriginal}</td>
-                    <td class="p-3 text-xs text-amber-300">${item.hellLayer}</td>
-                    <td class="p-3 font-mono text-hell-gold">${item.merit}</td>
-                    <td class="p-3 text-xs font-semibold ${item.karmaCurrent === 0 ? 'text-emerald-400' : 'text-red-400'}">
-                        ${item.karmaCurrent === 0 ? 'Đã Hoàn Lương' : 'Đang Đụi Dầu'}
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function saveLocalStorage() {
-            localStorage.setItem('hell_user_state', JSON.stringify(APP_STATE));
-
-            // Sync with leaderboard
-            let list = JSON.parse(localStorage.getItem('hell_leaderboard') || '[]');
-            const idx = list.findIndex(i => i.id === APP_STATE.id);
-            if (idx >= 0) {
-                list[idx] = APP_STATE;
-            } else if (APP_STATE.name !== "Chưa Khai Báo") {
-                list.push(APP_STATE);
-            }
-            localStorage.setItem('hell_leaderboard', JSON.stringify(list));
-        }
-
-        function loadLocalStorage() {
-            const saved = localStorage.getItem('hell_user_state');
-            if (saved) {
-                Object.assign(APP_STATE, JSON.parse(saved));
-            }
-        }
-
-        function resetProfile() {
-            localStorage.removeItem('hell_user_state');
-            APP_STATE.name = "Chưa Khai Báo";
-            APP_STATE.id = "#" + Math.floor(1000 + Math.random() * 9000) + "-HELL";
-            APP_STATE.karmaOriginal = 0;
-            APP_STATE.karmaCurrent = 0;
-            APP_STATE.merit = 0;
-            APP_STATE.hellLayer = "Chưa Xếp Tầng";
-            APP_STATE.selectedNextLife = null;
-            updateUI();
-            switchTab('calculator');
-        }
-
-        function clearLeaderboard() {
-            localStorage.removeItem('hell_leaderboard');
-            renderLeaderboard();
-        }
-
-        /* -------------------------------------------------------------------------- */
-        /* 8. CANVAS PARTICLES ENGINE (Fire Ashes & Ember Effect)                      */
-        /* -------------------------------------------------------------------------- */
-        function initParticles() {
-            const canvas = document.getElementById('particle-canvas');
+        function initFireCanvas() {
+            const canvas = document.getElementById('canvas-fire');
             const ctx = canvas.getContext('2d');
+            let particles = [];
 
             function resize() {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
             }
-            resize();
             window.addEventListener('resize', resize);
+            resize();
 
-            const particles = Array.from({ length: 60 }, () => ({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                size: Math.random() * 3 + 1,
-                speedY: Math.random() * 1.5 + 0.5,
-                speedX: Math.random() * 1 - 0.5,
-                opacity: Math.random() * 0.8 + 0.2,
-                color: Math.random() > 0.5 ? '#ff3700' : '#ffaa00'
-            }));
+            for (let i = 0; i < 60; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 3 + 1,
+                    vY: Math.random() * 1 + 0.5,
+                    alpha: Math.random()
+                });
+            }
 
-            function animate() {
+            function loop() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 particles.forEach(p => {
-                    p.y -= p.speedY;
-                    p.x += p.speedX;
-                    if (p.y < 0) {
-                        p.y = canvas.height;
-                        p.x = Math.random() * canvas.width;
-                    }
-                    ctx.fillStyle = p.color;
-                    ctx.globalAlpha = p.opacity;
+                    p.y -= p.vY;
+                    if (p.y < 0) p.y = canvas.height;
+                    ctx.fillStyle = `rgba(230, 34, 43, ${p.alpha})`;
                     ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
                     ctx.fill();
                 });
-                requestAnimationFrame(animate);
+                requestAnimationFrame(loop);
             }
-            animate();
+            loop();
         }
     </script>
 </body>
