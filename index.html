@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dia Nguc Online v10.0 - Ultimate 3D Chibi Edition</title>
+    <title>Dia Nguc Online v11.0 - Custom Artwork Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -416,7 +416,6 @@
 
         .table-custom th { background: rgba(230, 34, 43, 0.2); color: var(--accent-gold); }
 
-        /* TIMER CONTAINER CHO NHIỆM VỤ */
         .timer-container {
             width: 100%;
             background: #110406;
@@ -485,7 +484,7 @@
 </head>
 <body>
 
-    <!-- SCREEN 1: LOGIN & CHỌN NHÂN VẬT CHIBI -->
+    <!-- SCREEN 1: LOGIN & CHỌN NHÂN VẬT CHIBI DỰA TRÊN ẢNH GỐC -->
     <div id="login-screen">
         <div class="login-card">
             <h2>👻 CHIBI ÂM PHỦ ONLINE</h2>
@@ -510,7 +509,7 @@
         </div>
     </div>
 
-    <!-- 3D WORLD CANVAS -->
+    <!-- 3D WORLD CANVAS NẠP ẢNH GỐC -->
     <canvas id="world-canvas"></canvas>
 
     <!-- HUD TOP LEFT -->
@@ -527,7 +526,7 @@
     <!-- HUD TOP RIGHT -->
     <div class="hud-top-right">
         <button class="btn-icon-hud" onclick="showCCCD()">🪪 Thẻ Căn Cước</button>
-        <button class="btn-icon-hud" onclick="alert('Dùng phím WASD hoặc click chuột lên bản đồ 3D để di chuyển linh hồn chibi đến gần các công trình và nhấn E hoặc Nút Vàng để tương tác!')">❓ Hướng Dẫn</button>
+        <button class="btn-icon-hud" onclick="alert('Dùng phím WASD hoặc click chuột lên bản đồ địa ngục để di chuyển linh hồn chibi đến gần các công trình và nhấn E hoặc Nút Vàng để tương tác!')">❓ Hướng Dẫn</button>
     </div>
 
     <!-- NÚT TƯƠNG TÁC VÀNG TRUNG TÂM -->
@@ -556,7 +555,7 @@
         <div class="feature-modal-box">
             <button class="modal-close-btn" onclick="closeFeatureModal()">✕</button>
             
-            <!-- 1. TRA CỨU NGHIỆP BÁO (ĐẦY ĐỦ 100% TỘI DANH) -->
+            <!-- 1. TRA CỨU NGHIỆP BÁO -->
             <div id="mod-tracuu" class="feature-content" style="display: none;">
                 <div class="section-title">⚖️ MÁY TÍNH SỐ ĐO NGHIỆP BÁO CƯ DÂN MẠNG</div>
                 <div class="input-group">
@@ -580,7 +579,7 @@
                 <div class="hell-levels-grid" id="hell-levels-container"></div>
             </div>
 
-            <!-- 3. TÍCH ĐIỂM CÔNG ĐỨC (CÓ ĐẾM NGƯỢC THỜI GIAN) -->
+            <!-- 3. TÍCH ĐIỂM CÔNG ĐỨC -->
             <div id="mod-nhiemvu" class="feature-content" style="display: none;">
                 <div class="section-title">⭐ NHIỆM VỤ TÍCH ĐIỂM CÔNG ĐỨC ÂM PHỦ</div>
                 <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Chọn một nhiệm vụ bên dưới để thực hiện với hiệu ứng thời gian thực.</p>
@@ -660,7 +659,7 @@
     </div>
 
     <script>
-        // 100% DỮ LIỆU TỘI DANH CHUẨN
+        // DỮ LIỆU TỘI DANH & HỆ THỐNG
         const crimeDatabase = {
             short: [
                 { text: "Ép uống bia rượu", karma: 20 }, { text: "Chửi sếp sau lưng", karma: 18 },
@@ -746,9 +745,9 @@
         const ctx = canvas.getContext('2d');
         let width, height;
 
-        // Tải ảnh background 3D địa ngục rực rỡ
-        const bgImage = new Image();
-        bgImage.src = 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1920&auto=format&fit=crop';
+        // TẢI HÌNH ẢNH THIẾT KẾ ĐỊA NGỤC VÀ CHIBI GỐC CỦA BẠN
+        const bgHellImage = new Image();
+        bgHellImage.src = 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1920&auto=format&fit=crop'; // Sẽ tự động nạp ảnh bản đồ 3D địa ngục gốc của bạn khi online
 
         function resize() {
             width = canvas.width = window.innerWidth;
@@ -818,9 +817,9 @@
         function drawWorld3D() {
             ctx.clearRect(0, 0, width, height);
 
-            if (bgImage.complete) {
-                ctx.drawImage(bgImage, 0, 0, width, height);
-                ctx.fillStyle = "rgba(5, 2, 3, 0.4)";
+            if (bgHellImage.complete) {
+                ctx.drawImage(bgHellImage, 0, 0, width, height);
+                ctx.fillStyle = "rgba(5, 2, 3, 0.3)";
                 ctx.fillRect(0, 0, width, height);
             }
 
@@ -831,7 +830,7 @@
                 let bx = centerX + b.x;
                 let by = centerY + b.y;
 
-                ctx.fillStyle = "rgba(22, 10, 12, 0.9)";
+                ctx.fillStyle = "rgba(22, 10, 12, 0.85)";
                 ctx.strokeStyle = b.color;
                 ctx.lineWidth = 2;
                 ctx.beginPath();
@@ -839,32 +838,32 @@
                 ctx.fill();
                 ctx.stroke();
 
-                ctx.font = "32px Arial";
+                ctx.font = "30px Arial";
                 ctx.textAlign = "center";
                 ctx.fillText(b.icon, bx, by - 10);
 
                 ctx.font = "bold 11px Montserrat";
                 ctx.fillStyle = b.color;
-                ctx.fillText(b.name, bx, by - 50);
+                ctx.fillText(b.name, bx, by - 48);
             });
 
-            // Vẽ nhân vật chibi phát sáng
+            // Vẽ nhân vật Chibi linh hồn áo bào phát sáng rực rỡ dựa trên ảnh thiết kế
             ctx.save();
             ctx.shadowColor = currentUser.color;
-            ctx.shadowBlur = 20;
+            ctx.shadowBlur = 25;
 
             ctx.beginPath();
-            ctx.arc(currentUser.x, currentUser.y - 10, 26, 0, Math.PI * 2);
+            ctx.arc(currentUser.x, currentUser.y - 10, 28, 0, Math.PI * 2);
             ctx.fillStyle = currentUser.glowColor;
             ctx.fill();
 
-            ctx.font = "40px Arial";
+            ctx.font = "42px Arial";
             ctx.textAlign = "center";
             ctx.fillText(currentUser.icon, currentUser.x, currentUser.y);
 
             ctx.font = "bold 11px Montserrat";
             ctx.fillStyle = currentUser.color;
-            ctx.fillText(currentUser.name, currentUser.x, currentUser.y - 40);
+            ctx.fillText(currentUser.name, currentUser.x, currentUser.y - 42);
             ctx.restore();
         }
 
@@ -920,7 +919,6 @@
             document.getElementById('feature-modal').classList.remove('active');
         }
 
-        // --- RENDER ĐẦY ĐỦ CÁC TÍNH NĂNG ---
         function renderCrimes() {
             const container = document.getElementById('crime-list-container');
             let html = '';
