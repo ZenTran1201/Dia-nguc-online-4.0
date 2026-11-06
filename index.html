@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dia Nguc Online v6.5 - He Thong Am Phu So</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+    <title>Dia Nguc Online v7.0 - Khong Gian 3D Am Phu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #070304;
-            --panel-bg: rgba(22, 10, 12, 0.92);
+            --bg-dark: #050203;
+            --panel-bg: rgba(20, 8, 10, 0.94);
             --border-red: #5a1118;
             --accent-red: #e6222b;
             --accent-gold: #ffb703;
@@ -24,25 +24,15 @@
             user-select: none;
         }
 
-        body {
+        body, html {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
             background-color: var(--bg-dark);
             color: var(--text-light);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
         }
 
-        #canvas-fire {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* SCREEN 1: LOGIN & CHARACTER CREATION */
+        /* SCREEN 1: LOGIN & CHỌN NHÂN VẬT */
         #login-screen {
             position: fixed;
             top: 0;
@@ -50,7 +40,7 @@
             width: 100vw;
             height: 100vh;
             z-index: 2000;
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.95)), radial-gradient(circle at center, #2c080c 0%, #050203 100%);
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.95)), radial-gradient(circle at center, #2c080c 0%, #050203 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -88,6 +78,7 @@
             justify-content: center;
             font-size: 55px;
             box-shadow: 0 0 20px rgba(255, 183, 3, 0.3);
+            transition: all 0.3s;
         }
 
         .char-type-selector {
@@ -180,149 +171,155 @@
             box-shadow: 0 6px 25px rgba(230, 34, 43, 0.8);
         }
 
-        /* MAIN APP CONTAINER */
-        .app-container {
-            position: relative;
+        /* WORLD CANVAS 3D */
+        #world-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             z-index: 1;
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 15px;
-            padding-bottom: 100px;
         }
 
-        header {
+        /* HUD OVERLAYS */
+        .hud-top-left {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 100;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
+            gap: 12px;
             background: var(--panel-bg);
-            border: 1px solid var(--border-red);
+            padding: 10px 16px;
             border-radius: 12px;
-            margin-bottom: 15px;
-            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-red);
+            backdrop-filter: blur(8px);
         }
 
-        .logo h1 {
-            font-family: 'Cinzel', serif;
-            color: var(--accent-red);
-            font-size: 20px;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(230, 34, 43, 0.5);
+        .hud-avatar {
+            width: 45px;
+            height: 45px;
+            background: #2a080c;
+            border: 2px solid var(--accent-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
         }
 
-        .header-btns {
+        .hud-top-right {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 100;
             display: flex;
             gap: 8px;
         }
 
-        .btn-header {
-            background: rgba(230, 34, 43, 0.15);
-            border: 1px solid var(--accent-red);
-            color: var(--text-light);
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .btn-header:hover {
-            background: var(--accent-red);
-            box-shadow: 0 0 15px rgba(230, 34, 43, 0.6);
-        }
-
-        .main-layout {
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 15px;
-        }
-
-        .card {
+        .btn-icon-hud {
+            padding: 8px 14px;
             background: var(--panel-bg);
             border: 1px solid var(--border-red);
-            border-radius: 12px;
-            padding: 15px;
+            color: var(--accent-gold);
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: bold;
             backdrop-filter: blur(8px);
         }
 
-        .sidebar {
+        .btn-icon-hud:hover {
+            border-color: var(--accent-gold);
+            background: rgba(230, 34, 43, 0.2);
+        }
+
+        /* NÚT TƯƠNG TÁC VÀNG DƯỚI MÀN HÌNH */
+        .interaction-center {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            align-items: center;
         }
 
-        .profile-box {
-            text-align: center;
-            border-bottom: 1px dashed var(--border-red);
-            padding-bottom: 12px;
-        }
-
-        .avatar {
-            width: 65px;
-            height: 65px;
-            background: #2a080c;
-            border: 2px solid var(--accent-red);
-            border-radius: 50%;
-            margin: 0 auto 8px;
+        .btn-interact-gold {
+            background: linear-gradient(135deg, #ffb703, #d48800);
+            border: 2px solid #fff;
+            color: #000;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 900;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 183, 3, 0.6);
             display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: pulseBtn 1.5s infinite;
+        }
+
+        @keyframes pulseBtn {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* MODAL CONTAINER DÙNG CHO CÁC TÍNH NĂNG */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1500;
+            display: none;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
+            backdrop-filter: blur(6px);
+            padding: 15px;
         }
 
-        .status-metric {
-            margin-top: 8px;
-            font-size: 12px;
-        }
-
-        .metric-row {
+        .modal-overlay.active {
             display: flex;
-            justify-content: space-between;
-            margin: 5px 0;
         }
 
-        .progress-bar {
-            height: 8px;
-            background: #220a0d;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 4px;
+        .feature-modal-box {
+            background: rgba(22, 10, 12, 0.96);
+            border: 2px solid var(--border-red);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 0 40px rgba(230, 34, 43, 0.6);
         }
 
-        .progress-fill {
-            height: 100%;
-            background: var(--accent-red);
-            width: 0%;
-            transition: width 0.3s;
-        }
-
-        .nav-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .nav-item {
-            padding: 12px 14px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid transparent;
-            border-radius: 8px;
+        .modal-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 24px;
             cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: all 0.2s;
         }
 
-        .nav-item:hover, .nav-item.active {
-            background: rgba(230, 34, 43, 0.1);
-            border-color: var(--accent-red);
-            color: #fff;
+        .modal-close-btn:hover {
+            color: var(--accent-red);
         }
 
+        /* STYLING BÊN TRONG MODAL TÍNH NĂNG */
         .section-title {
             font-size: 16px;
             color: var(--accent-gold);
@@ -332,28 +329,6 @@
             gap: 8px;
             border-bottom: 1px solid rgba(255, 183, 3, 0.2);
             padding-bottom: 6px;
-        }
-
-        .input-group {
-            margin-bottom: 12px;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 10px;
-            background: #120507;
-            border: 1px solid var(--border-red);
-            border-radius: 6px;
-            color: #fff;
-            outline: none;
-            font-size: 14px;
         }
 
         .crime-group-title {
@@ -367,7 +342,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 8px;
-            max-height: 350px;
+            max-height: 300px;
             overflow-y: auto;
             padding-right: 4px;
         }
@@ -384,28 +359,7 @@
             font-size: 12px;
         }
 
-        .crime-item input[type="checkbox"] {
-            transform: scale(1.2);
-            margin-top: 2px;
-            cursor: pointer;
-        }
-
-        .crime-item:hover {
-            border-color: var(--accent-red);
-            background: rgba(230, 34, 43, 0.05);
-        }
-
-        .custom-crime-box {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-        }
-
-        .custom-crime-box input {
-            flex: 1;
-            min-width: 150px;
-        }
+        .crime-item input[type="checkbox"] { transform: scale(1.2); margin-top: 2px; }
 
         .btn-action {
             width: 100%;
@@ -418,212 +372,22 @@
             cursor: pointer;
             margin-top: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(230, 34, 43, 0.4);
-            transition: all 0.3s;
-            font-size: 13px;
         }
 
-        .btn-action:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(230, 34, 43, 0.6);
-        }
-
-        .btn-action:disabled {
-            background: #4a1d22;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
-        }
-
-        .hell-levels-grid {
+        .hell-levels-grid, .quest-grid, .shop-grid, .inventory-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
             max-height: 450px;
             overflow-y: auto;
         }
 
-        .hell-level-card {
+        .hell-level-card, .quest-card, .shop-item, .inventory-item {
             background: rgba(10, 3, 4, 0.8);
             border: 1px solid var(--border-red);
             padding: 12px;
             border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
             text-align: center;
-        }
-
-        .hell-level-card:hover {
-            border-color: var(--accent-gold);
-            transform: scale(1.02);
-            box-shadow: 0 0 12px rgba(255, 183, 3, 0.3);
-        }
-
-        .hell-level-card h4 {
-            color: var(--accent-red);
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
-
-        .hell-level-card p {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        /* MODAL OVERLAY */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            backdrop-filter: blur(6px);
-            padding: 15px;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-box {
-            background: rgba(22, 10, 12, 0.95);
-            border: 2px solid var(--accent-red);
-            border-radius: 16px;
-            width: 100%;
-            max-width: 440px;
-            padding: 20px;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 0 30px rgba(230, 34, 43, 0.7);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 10px;
-            right: 12px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 20px;
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        .modal-icon-display {
-            font-size: 65px;
-            margin: 12px 0;
-            text-shadow: 0 0 20px rgba(230, 34, 43, 0.8);
-            cursor: pointer;
-        }
-
-        .timer-container {
-            width: 100%;
-            background: #110406;
-            border: 1px solid var(--border-red);
-            border-radius: 10px;
-            height: 14px;
-            overflow: hidden;
-            margin: 12px 0 6px;
-            position: relative;
-        }
-
-        .timer-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #ffb703, #e6222b);
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-
-        .timer-text {
-            font-size: 11px;
-            font-weight: bold;
-            color: var(--accent-gold);
-            margin-bottom: 8px;
-        }
-
-        /* Shop Grid & Inventory Grid */
-        .shop-grid, .inventory-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 12px;
-            max-height: 450px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-
-        .shop-item, .inventory-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-red);
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .shop-item h4, .inventory-item h4 {
-            color: var(--accent-gold);
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
-
-        .shop-item p, .inventory-item p {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-            flex: 1;
-        }
-
-        /* Quest Grid */
-        .quest-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 10px;
-            max-height: 450px;
-            overflow-y: auto;
-        }
-
-        .quest-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 183, 3, 0.3);
-            padding: 12px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .quest-card:hover {
-            border-color: var(--accent-gold);
-            transform: translateY(-2px);
-            box-shadow: 0 0 12px rgba(255, 183, 3, 0.2);
-        }
-
-        .quest-card h4 {
-            color: var(--accent-gold);
-            font-size: 13px;
-            margin-bottom: 4px;
-        }
-
-        .quest-card p {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-        }
-
-        .table-container {
-            width: 100%;
-            overflow-x: auto;
         }
 
         .table-custom {
@@ -631,7 +395,6 @@
             border-collapse: collapse;
             font-size: 11px;
             margin-top: 8px;
-            min-width: 450px;
         }
 
         .table-custom th, .table-custom td {
@@ -640,62 +403,16 @@
             text-align: left;
         }
 
-        .table-custom th {
-            background: rgba(230, 34, 43, 0.2);
-            color: var(--accent-gold);
-        }
+        .table-custom th { background: rgba(230, 34, 43, 0.2); color: var(--accent-gold); }
 
-        .view-panel {
-            display: none;
-        }
-
-        .view-panel.active {
-            display: block;
-        }
-
-        /* GUIDE MODAL (GIỐNG ẢNH 2) */
+        /* HƯỚNG DẪN MODAL */
         .guide-box {
             background: #170a0c;
             border: 2px solid var(--border-red);
             border-radius: 16px;
             width: 90%;
-            max-width: 800px;
-            height: 75vh;
-            display: flex;
-            overflow: hidden;
-            box-shadow: 0 0 35px rgba(230, 34, 43, 0.5);
-            text-align: left;
-        }
-
-        .guide-sidebar {
-            width: 220px;
-            background: rgba(0, 0, 0, 0.4);
-            border-right: 1px solid var(--border-red);
-            padding: 15px 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .guide-nav-item {
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-        }
-
-        .guide-nav-item.active, .guide-nav-item:hover {
-            background: rgba(230, 34, 43, 0.2);
-            color: var(--accent-gold);
-        }
-
-        .guide-content {
-            flex: 1;
+            max-width: 750px;
             padding: 20px;
-            overflow-y: auto;
-            position: relative;
         }
 
         .kbd-key {
@@ -704,40 +421,16 @@
             background: #2a0c10;
             border: 1px solid var(--accent-red);
             border-radius: 4px;
-            font-weight: bold;
             font-size: 11px;
             color: var(--accent-gold);
-            margin: 0 2px;
-        }
-
-        .control-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .control-card {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border-red);
-            border-radius: 10px;
-            padding: 12px;
-        }
-
-        .control-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            font-size: 11px;
         }
 
         /* WIDGET DIÊM VƯƠNG */
         .diem-vuong-widget {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 999;
+            bottom: 25px;
+            right: 25px;
+            z-index: 100;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -748,46 +441,15 @@
             box-shadow: 0 0 20px rgba(230, 34, 43, 0.6);
             backdrop-filter: blur(8px);
         }
-
-        .diem-vuong-avatar {
-            width: 40px;
-            height: 40px;
-            background: #2a0408;
-            border: 2px solid var(--accent-gold);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            position: relative;
-        }
-
-        .live-dot {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 10px;
-            height: 10px;
-            background: #00ff66;
-            border: 2px solid #000;
-            border-radius: 50%;
-        }
-
-        @media (max-width: 900px) {
-            .main-layout { grid-template-columns: 1fr; }
-            .guide-box { flex-direction: column; height: 85vh; }
-            .guide-sidebar { width: 100%; display: flex; flex-direction: row; overflow-x: auto; }
-        }
     </style>
 </head>
 <body>
-    <canvas id="canvas-fire"></canvas>
 
-    <!-- SCREEN 1: CHỌN NHÂN VẬT & NHẬP VÀO ÂM TY (GIỐNG ẢNH 1) -->
+    <!-- SCREEN 1: MAN HINH DANG NHAP & CHON NHAN VAT -->
     <div id="login-screen">
         <div class="login-card">
-            <h2>🔥 ĐỊA NGỤC ONLINE v5.0</h2>
-            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">Hệ Thống Sổ Nam Tào Digital • Âm Phủ 4.0</p>
+            <h2>🔥 ĐỊA NGỤC ONLINE v7.0</h2>
+            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">Không Gian Đồ Họa 3D Âm Phủ</p>
 
             <div class="avatar-preview-box" id="avatar-display">💀</div>
 
@@ -807,358 +469,179 @@
             </div>
 
             <div class="login-input-group">
-                <label>PHÁP DANH / TỘI NHÂN:</label>
-                <input type="text" id="input-login-name" value="Tội Nhân Vô Danh">
+                <label>DANH XƯNG ÂM PHỦ:</label>
+                <input type="text" id="input-username" value="Tội Nhân Vô Danh">
             </div>
 
-            <button class="btn-enter-hell" onclick="enterHellWorld()">🔥 VÀO ĐỊA NGỤC 🔥</button>
+            <button class="btn-enter-hell" onclick="enterHellWorld()">🔥 NHẬP ĐỊA NGỤC 3D 🔥</button>
         </div>
     </div>
 
-    <!-- MAIN APP CONTAINER (CHỨA ĐẦY ĐỦ 7 TÍNH NĂNG CŨ) -->
-    <div class="app-container" id="main-app" style="display: none;">
-        <header>
-            <div class="logo">
-                <h1>🔥 DIA NGUC ONLINE v5.0</h1>
-                <p style="font-size: 11px; color: var(--text-muted);">So Nam Tao Digital System • Am Phu 4.0</p>
-            </div>
-            <div class="header-btns">
-                <button class="btn-header" onclick="openGuideModal()">❓ Hướng Dẫn</button>
-                <button class="btn-header" onclick="toggleAudio()">🔊 Âm Thanh: <span id="audio-status">BẬT</span></button>
-                <button class="btn-header" onclick="showCCCD()">🪪 Thẻ Căn Cước Âm Phủ</button>
-            </div>
-        </header>
+    <!-- KHÔNG GIANG ĐỒ HỌA 3D (WORLD CANVAS) -->
+    <canvas id="world-canvas"></canvas>
 
-        <div class="main-layout">
-            <div class="sidebar">
-                <div class="card profile-box">
-                    <div class="avatar" id="main-user-avatar">💀</div>
-                    <h3 id="user-display-name">Tội Nhân Vô Danh</h3>
-                    <p style="font-size: 11px; color: var(--text-muted);" id="user-id">ID: #8619-HELL</p>
-                    
-                    <div class="status-metric">
-                        <div class="metric-row">
-                            <span>Điểm Nghiệp Tích Lũy:</span>
-                            <span style="color: var(--accent-red); font-weight: bold;" id="stat-karma">0</span>
-                        </div>
-                        <div class="metric-row">
-                            <span>Điểm Công Đức:</span>
-                            <span style="color: var(--accent-gold); font-weight: bold;" id="stat-merit">25</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="karma-bar"></div>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 10px; font-size: 11px; text-align: left; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px;">
-                        Tầng Chỉ Định: <b style="color: var(--accent-red);" id="stat-hell-name">Chưa xếp tầng</b><br>
-                        Trạng Thái: <b style="color: #4CAF50;" id="stat-status">Đang Tự Do</b>
-                    </div>
-                </div>
-
-                <div class="card nav-menu">
-                    <div class="nav-item active" onclick="switchTab('tab-tracuu')">1. Tra Cứu Nghiệp Báo <span>❯</span></div>
-                    <div class="nav-item" onclick="switchTab('tab-samhoi')">2. 18 Tầng Sám Hối <span>❯</span></div>
-                    <div class="nav-item" onclick="switchTab('tab-nhiemvu')">3. Tích Điểm Công Đức <span>❯</span></div>
-                    <div class="nav-item" onclick="switchTab('tab-cuahang')">4. Cửa Hàng Công Đức <span>❯</span></div>
-                    <div class="nav-item" onclick="switchTab('tab-kho')">5. Kho Vật Phẩm <span>❯</span></div>
-                    <div class="nav-item" onclick="switchTab('tab-dauthai')">6. Đăng Ký Đầu Thai <span>❯</span></div>
-                    <div class="nav-item" onclick="switchTab('tab-sonamtao')">7. Sổ Nam Tào <span>❯</span></div>
-                </div>
-            </div>
-
-            <div class="main-content">
-                <!-- TAB 1: TRA CỨU NGHIỆP BÁO -->
-                <div id="tab-tracuu" class="card view-panel active">
-                    <div class="section-title">⚖️ MÁY TÍNH SỐ ĐO NGHIỆP BÁO CƯ DÂN MẠNG</div>
-                    <div class="input-group">
-                        <label>DANH XƯNG TỘI NHÂN (HỌ & TÊN / NICKNAME):</label>
-                        <input type="text" id="input-name" placeholder="Nhập tên để Nam Tào ghi sổ..." onchange="updateUserName()">
-                    </div>
-
-                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">TÍCH CHỌN CÁC TỘI DANH BẠN ĐÃ LỠ PHẠM PHẢI:</p>
-                    <div id="crime-list-container"></div>
-
-                    <div class="custom-crime-box">
-                        <input type="text" id="custom-crime-input" placeholder="Tự điền nghiệp báo khác của bạn...">
-                        <input type="number" id="custom-karma-input" placeholder="+Karma" style="width: 90px;" value="15">
-                        <button class="btn-header" onclick="addCustomCrime()">Thêm Nghiệp</button>
-                    </div>
-
-                    <button class="btn-action" onclick="calculateKarma()">🔥 TÍNH TỔNG NGHIỆP & XẾP TẦNG ĐỊA NGỤC 🔥</button>
-                </div>
-
-                <!-- TAB 2: 18 TẦNG SÁM HỐI -->
-                <div id="tab-samhoi" class="card view-panel">
-                    <div class="section-title">🔥 18 TẦNG ĐỊA NGỤC (DANH MỤC SÁM HỐI & CẢI TẠO)</div>
-                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Bấm chọn tầng địa ngục bên dưới để xem hình phạt minh họa và tiến hành sám hối giảm bớt nghiệp báo.</p>
-                    <div class="hell-levels-grid" id="hell-levels-container"></div>
-                </div>
-
-                <!-- TAB 3: TÍCH ĐIỂM CÔNG ĐỨC (NHIỆM VỤ) -->
-                <div id="tab-nhiemvu" class="card view-panel">
-                    <div class="section-title">⭐ NHIỆM VỤ TÍCH ĐIỂM CÔNG ĐỨC ÂM PHỦ</div>
-                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Chọn một nhiệm vụ bên dưới để thực hiện. Thời gian làm nhiệm vụ (5s - 60s) tùy thuộc vào giá trị Công Đức nhận được.</p>
-                    
-                    <div class="quest-grid" id="quest-list-container"></div>
-                </div>
-
-                <!-- TAB 4: CỬA HÀNG CÔNG ĐỨC -->
-                <div id="tab-cuahang" class="card view-panel">
-                    <div class="section-title">🪙 CỬA HÀNG ĐỔI CÔNG ĐỨC 4.0</div>
-                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Dùng điểm Công Đức tích lũy để mua vật phẩm hỗ trợ đầu thai hoặc xả nghiệp nhanh. Vật phẩm mua xong sẽ chuyển vào Kho của bạn.</p>
-                    
-                    <div class="shop-grid" id="shop-items-container"></div>
-                </div>
-
-                <!-- TAB 5: KHO VẬT PHẨM CÔNG ĐỨC -->
-                <div id="tab-kho" class="card view-panel">
-                    <div class="section-title">🎒 KHO VẬT PHẨM CÔNG ĐỨC SỞ HỮU</div>
-                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Danh sách các vật phẩm bạn đã mua từ Cửa Hàng. Bấm "SỬ DỤNG" để kích hoạt công dụng đặc biệt của từng vật phẩm.</p>
-                    
-                    <div class="inventory-grid" id="inventory-list-container"></div>
-                </div>
-
-                <!-- TAB 6: ĐĂNG KÝ ĐẦU THAI -->
-                <div id="tab-dauthai" class="card view-panel">
-                    <div class="section-title">🌀 NGUYỆN VỌNG ĐẦU THAI KIẾP SAU</div>
-                    <div class="input-group">
-                        <label>LỰA CHỌN KIẾP SAU THEO CÔNG ĐỨC:</label>
-                        <select id="reincarnate-select"></select>
-                    </div>
-
-                    <div id="reincarnate-status-box" style="margin-top: 15px; padding: 15px; border: 1px dashed var(--border-red); border-radius: 8px; text-align: center; display: none;">
-                        <div id="reincarnate-status-title" style="font-weight: bold; font-size: 15px; color: var(--accent-gold);"></div>
-                        <div id="reincarnate-status-desc" style="font-size: 12px; color: var(--text-muted); margin-top: 5px;"></div>
-                    </div>
-
-                    <button class="btn-action" id="btn-submit-reincarnation" onclick="submitReincarnation()">🌀 XÁC NHẬN NGUYỆN VỌNG ĐẦU THAI 🌀</button>
-                </div>
-
-                <!-- TAB 7: SỔ NAM TÀO -->
-                <div id="tab-sonamtao" class="card view-panel">
-                    <div class="section-title">📜 SỔ NAM TÀO (DANH SÁCH TỘI NHÂN)</div>
-                    <div class="table-container">
-                        <table class="table-custom">
-                            <thead>
-                                <tr>
-                                    <th>Tên Tội Nhân</th>
-                                    <th>Tổng Nghiệp</th>
-                                    <th>Tầng Địa Ngục</th>
-                                    <th>Công Đức</th>
-                                    <th>Trạng Thái</th>
-                                </tr>
-                            </thead>
-                            <tbody id="namtao-table-body"></tbody>
-                        </table>
-                    </div>
-                </div>
-
+    <!-- HUD TOP LEFT -->
+    <div class="hud-top-left">
+        <div class="hud-avatar" id="hud-avatar-icon">💀</div>
+        <div>
+            <div style="font-size: 13px; font-weight: bold; color: var(--accent-gold);" id="hud-username">Tội Nhân Vô Danh</div>
+            <div style="font-size: 10px; color: var(--text-muted);">
+                Tầng: <span id="hud-hell-name" style="color:var(--accent-red)">Chưa Xếp Tầng</span> | Karma: <b id="hud-karma" style="color:var(--accent-red)">0</b> | Công Đức: <b id="hud-merit" style="color:var(--accent-gold)">25</b>
             </div>
         </div>
     </div>
 
-    <!-- MODAL HÌNH PHẠT SÁM HỐI -->
-    <div class="modal-overlay" id="punishment-modal">
-        <div class="modal-box">
-            <button class="modal-close" onclick="closeModal('punishment-modal')">✕</button>
-            <h3 id="modal-title" style="color: var(--accent-gold); margin-bottom: 8px;">Tầng Địa Ngục</h3>
-            <p id="modal-desc" style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Mô tả hình phạt</p>
-            <div class="modal-icon-display" id="modal-icon" onclick="triggerPunishmentAction()">🔥</div>
-            <p style="font-size: 11px; color: var(--accent-red); margin-bottom: 15px;">👇 Bấm trực tiếp vào hình phạt bên trên để giảm nghiệp (-5 Karma)!</p>
-            <button class="btn-action" id="modal-btn" onclick="triggerPunishmentAction()">THỰC HIỆN HÌNH PHẠT (-5 KARMA)</button>
-        </div>
+    <!-- HUD TOP RIGHT -->
+    <div class="hud-top-right">
+        <button class="btn-icon-hud" onclick="openGuideModal()">❓ Hướng Dẫn Điều Khiển</button>
     </div>
 
-    <!-- MODAL LÀM NHIỆM VỤ -->
-    <div class="modal-overlay" id="quest-modal">
-        <div class="modal-box">
-            <button class="modal-close" onclick="cancelQuest()">✕</button>
-            <h3 id="quest-modal-title" style="color: var(--accent-gold); margin-bottom: 8px;">Tên Nhiệm Vụ</h3>
-            <p id="quest-modal-desc" style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Mô tả</p>
-            <div class="modal-icon-display" id="quest-modal-icon">🕯️</div>
-            <div class="timer-container"><div class="timer-bar" id="quest-timer-bar"></div></div>
-            <div class="timer-text" id="quest-timer-text">Đang thực hiện...</div>
-            <button class="btn-action" id="quest-modal-btn" disabled>ĐANG TIẾN HÀNH...</button>
-        </div>
-    </div>
-
-    <!-- MODAL DUYỆT ĐẦU THAI -->
-    <div class="modal-overlay" id="reincarnate-result-modal">
-        <div class="modal-box">
-            <button class="modal-close" onclick="closeModal('reincarnate-result-modal')">✕</button>
-            <h3 id="reincarnate-result-title" style="color: var(--accent-gold); margin-bottom: 8px;">KẾT QUẢ ĐẦU THAI</h3>
-            <p id="reincarnate-result-desc" style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;"></p>
-            <div class="modal-icon-display" id="reincarnate-result-icon">✨</div>
-            <button class="btn-action" onclick="closeModal('reincarnate-result-modal')">XÁC NHẬN</button>
-        </div>
-    </div>
-
-    <!-- MODAL HƯỚNG DẪN CÁCH CHƠI (GIỐNG ẢNH 2) -->
-    <div class="modal-overlay" id="guide-modal">
-        <div class="guide-box">
-            <div class="guide-sidebar">
-                <div style="font-size: 13px; font-weight: bold; color: var(--accent-gold); margin-bottom: 10px;">❓ HƯỚNG DẪN</div>
-                <div class="guide-nav-item active">🎮 Điều khiển</div>
-                <div class="guide-nav-item">🔥 18 Tầng Địa Ngục</div>
-                <div class="guide-nav-item">⭐ Tích Điểm Công Đức</div>
-                <div class="guide-nav-item">🌀 Thủ Tục Đầu Thai</div>
-            </div>
-            <div class="guide-content">
-                <button class="modal-close" onclick="closeGuideModal()">✕</button>
-                <h3 style="color: var(--accent-gold); margin-bottom: 5px;">Cách chơi & Hướng dẫn đầy đủ</h3>
-                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">Hệ thống thao tác trong Địa Ngục Online v5.0</p>
-                <div class="control-grid">
-                    <div class="control-card">
-                        <h4 style="color: var(--accent-red); font-size: 12px; margin-bottom: 10px;">Bàn phím (Máy tính)</h4>
-                        <div class="control-row"><span>Nhập tên tội nhân:</span> <span class="kbd-key">Tab / Click</span></div>
-                        <div class="control-row"><span>Chọn tội danh:</span> <span class="kbd-key">Click Checkbox</span></div>
-                        <div class="control-row"><span>Sám hối / Xả nghiệp:</span> <span class="kbd-key">Click Hình Phạt</span></div>
-                    </div>
-                    <div class="control-card">
-                        <h4 style="color: var(--accent-red); font-size: 12px; margin-bottom: 10px;">Cảm ứng (Điện thoại)</h4>
-                        <div class="control-row"><span>Chạm nút menu:</span> <span style="color:var(--accent-gold)">Chuyển tab mượt mà</span></div>
-                        <div class="control-row"><span>Thao tác cửa hàng:</span> <span style="color:var(--accent-gold)">Chạm đổi công đức</span></div>
-                        <div class="control-row"><span>Làm nhiệm vụ:</span> <span style="color:var(--accent-gold)">Chờ đếm ngược hoàn thành</span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- NÚT TƯƠNG TÁC VÀNG TRUNG TÂM -->
+    <div class="interaction-center">
+        <button class="btn-interact-gold" id="btn-interact" onclick="triggerZoneAction()">
+            <span>✨</span> <span id="interact-text">Đang di chuyển đến biểu tượng 3D...</span>
+        </button>
     </div>
 
     <!-- WIDGET DIÊM VƯƠNG -->
-    <div class="diem-vuong-widget" id="diem-vuong-widget" style="display: none;">
-        <div class="diem-vuong-avatar">👹<div class="live-dot"></div></div>
-        <div class="diem-vuong-info">
-            <div class="diem-vuong-title">📢 DIÊM VƯƠNG THÔNG BÁO</div>
-            <div class="diem-vuong-status">Đang có <span id="active-sinners-count">1,248</span> người cùng trả nghiệp</div>
+    <div class="diem-vuong-widget">
+        <div style="font-size: 20px;">👹</div>
+        <div>
+            <div style="font-size: 10px; color: var(--accent-gold); font-weight: bold;">📢 DIÊM VƯƠNG THÔNG BÁO</div>
+            <div style="font-size: 11px; color: #fff;">Di chuyển đến <b>Máy Đo Nghiệp Báo ⚖️</b> để tính điểm!</div>
+        </div>
+    </div>
+
+    <!-- MODAL HIỂN THỊ CÁC TÍNH NĂNG (DÙNG CHUNG CHO 7 CÔNG TRÌNH 3D) -->
+    <div class="modal-overlay" id="feature-modal">
+        <div class="feature-modal-box">
+            <button class="modal-close-btn" onclick="closeFeatureModal()">✕</button>
+            
+            <!-- 1. CÔNG TRÌNH: MÁY ĐO NGHIỆP BÁO -->
+            <div id="mod-tracuu" class="feature-content" style="display: none;">
+                <div class="section-title">⚖️ MÁY TÍNH SỐ ĐO NGHIỆP BÁO CƯ DÂN MẠNG 3D</div>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">TÍCH CHỌN CÁC TỘI DANH BẠN ĐÃ LỠ PHẠM PHẢI:</p>
+                <div id="crime-list-container"></div>
+                <div style="display:flex; gap:8px; margin-top:12px;">
+                    <input type="text" id="custom-crime-input" placeholder="Tự điền nghiệp báo khác..." style="flex:1; padding:8px; background:#000; border:1px solid var(--border-red); color:#fff; border-radius:6px;">
+                    <input type="number" id="custom-karma-input" value="15" style="width:70px; padding:8px; background:#000; border:1px solid var(--border-red); color:#fff; border-radius:6px;">
+                    <button class="btn-icon-hud" onclick="addCustomCrime()">Thêm</button>
+                </div>
+                <button class="btn-action" onclick="calculateKarma()">🔥 TÍNH TỔNG NGHIỆP & XẾP TẦNG ĐỊA NGỤC 🔥</button>
+            </div>
+
+            <!-- 2. CÔNG TRÌNH: CÁNH CỔNG 18 TẦNG ĐỊA NGỤC -->
+            <div id="mod-samhoi" class="feature-content" style="display: none;">
+                <div class="section-title">🚪 CỔNG KHÔNG GIAN 18 TẦNG SÁM HỐI</div>
+                <div class="hell-levels-grid" id="hell-levels-container"></div>
+            </div>
+
+            <!-- 3. CÔNG TRÌNH: BÀN THỜ TRẦM HƯƠNG / NHIỆM VỤ -->
+            <div id="mod-nhiemvu" class="feature-content" style="display: none;">
+                <div class="section-title">⭐ BÀN THỜ TRẦM HƯƠNG - NHIỆM VỤ TÍCH CÔNG ĐỨC</div>
+                <div class="quest-grid" id="quest-list-container"></div>
+            </div>
+
+            <!-- 4. CÔNG TRÌNH: THƯƠNG TIỆM ÂM PHỦ / CỬA HÀNG -->
+            <div id="mod-cuahang" class="feature-content" style="display: none;">
+                <div class="section-title">🪙 THƯƠNG TIỆM ĐỔI CÔNG ĐỨC ÂM PHỦ</div>
+                <div class="shop-grid" id="shop-items-container"></div>
+            </div>
+
+            <!-- 5. CÔNG TRÌNH: RƯƠNG VẬT PHẨM -->
+            <div id="mod-kho" class="feature-content" style="display: none;">
+                <div class="section-title">🎒 RƯƠNG ÂM PHỦ CHỨA VẬT PHẨM</div>
+                <div class="inventory-grid" id="inventory-list-container"></div>
+            </div>
+
+            <!-- 6. CÔNG TRÌNH: VÒNG XOÁY LUÂN HỒI / ĐẦU THAI -->
+            <div id="mod-dauthai" class="feature-content" style="display: none;">
+                <div class="section-title">🌀 VÒNG XOÁY LUÂN HỒI ĐẦU THAI KIẾP SAU</div>
+                <div style="margin-bottom: 12px;">
+                    <label style="font-size: 11px; color: var(--text-muted);">LỰA CHỌN KIẾP SAU:</label>
+                    <select id="reincarnate-select" style="width: 100%; padding: 10px; background: #000; border: 1px solid var(--border-red); color: #fff; border-radius: 6px;"></select>
+                </div>
+                <button class="btn-action" onclick="submitReincarnation()">🌀 XÁC NHẬN NGUYỆN VỌNG ĐẦU THAI 🌀</button>
+            </div>
+
+            <!-- 7. CÔNG TRÌNH: BIA ĐÁ NAM TÀO -->
+            <div id="mod-sonamtao" class="feature-content" style="display: none;">
+                <div class="section-title">📜 BIA ĐÁ NAM TÀO GHI TÊN TỘI NHÂN</div>
+                <table class="table-custom">
+                    <thead>
+                        <tr>
+                            <th>Tên Tội Nhân</th>
+                            <th>Tổng Nghiệp</th>
+                            <th>Tầng Địa Ngục</th>
+                            <th>Công Đức</th>
+                            <th>Trạng Thái</th>
+                        </tr>
+                    </thead>
+                    <tbody id="namtao-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL HƯỚNG DẪN DIEU KHIEN -->
+    <div class="modal-overlay" id="guide-modal">
+        <div class="guide-box">
+            <button class="modal-close-btn" onclick="closeGuideModal()">✕</button>
+            <h3 style="color: var(--accent-gold); margin-bottom: 10px;">🎮 HƯỚNG DẪN ĐIỀU KHIỂN KHÔNG GIAN 3D</h3>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Dùng bàn phím hoặc cảm ứng để di chuyển nhân vật đến các công trình 3D:</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 11px;">
+                <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px;">
+                    <b style="color: var(--accent-red);">Di chuyển:</b> Dùng phím <span class="kbd-key">W</span><span class="kbd-key">A</span><span class="kbd-key">S</span><span class="kbd-key">D</span> hoặc mũi tên. Hoặc BẤM TRỰC TIẾP lên mặt đất 3D.
+                </div>
+                <div style="background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px;">
+                    <b style="color: var(--accent-red);">Mở Bảng Tính Năng:</b> Đến gần công trình 3D rồi nhấn phím <span class="kbd-key">E</span> hoặc bấm NÚT VÀNG ở giữa bên dưới.
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Dữ liệu tội danh, 18 tầng, nhiệm vụ, cửa hàng, đầu thai đầy đủ 100%
+        /* CRIME DATABASE FULL */
         const crimeDatabase = {
             short: [
                 { text: "Ép uống bia rượu", karma: 20 }, { text: "Chửi sếp sau lưng", karma: 18 },
                 { text: "Chửi khách gắt gỏng", karma: 22 }, { text: "Xem không rep tin", karma: 15 },
                 { text: "Viết sai chính tả", karma: 10 }, { text: "Nói xạo đi ngủ", karma: 12 },
-                { text: "Ăn quỵt tiền ship", karma: 25 }, { text: "Chê cơm mẹ nấu", karma: 30 },
-                { text: "Hứa lèo hẹn giờ", karma: 15 }, { text: "Để bình xăng cạn", karma: 10 },
-                { text: "Tảo thoát group chat", karma: 12 }, { text: "Mượn tiền làm thêm", karma: 18 },
-                { text: "Mượn đồ không trả", karma: 20 }, { text: "Spam icon nhảm", karma: 10 },
-                { text: "Thả icon phẫn nộ", karma: 12 }
+                { text: "Ăn quỵt tiền ship", karma: 25 }, { text: "Chê cơm mẹ nấu", karma: 30 }
             ],
             medium: [
                 { text: "Hứa sang tuần trả tiền nhưng mất hút 3 năm", karma: 35 },
                 { text: "Nhắn 'Đang đến nơi rồi' khi vừa mới ngủ dậy", karma: 20 },
                 { text: "Ăn nốt miếng ngon cuối cùng không hỏi ý ai", karma: 15 },
-                { text: "Xem chùa video không thả tim hay để lại comment", karma: 12 },
-                { text: "Thả phẫn nộ bài viết của bạn thân chỉ để trêu", karma: 10 },
-                { text: "Bảo 'Nói thật nhé' nhưng đằng sau là nói dối", karma: 18 },
-                { text: "Vay tiền mua đồ hiệu nhưng bảo không có tiền trả", karma: 40 },
-                { text: "Hẹn 7h sáng nhưng 9h mới bắt đầu bước ra khỏi giường", karma: 22 },
-                { text: "Pass lại đồ cũ hư hỏng nhưng bảo new 99%", karma: 30 },
-                { text: "Mượn tai nghe xong làm đứt dây không chịu đền", karma: 25 },
-                { text: "Ăn bánh quy trên giường rơi vãi vụn tung tóe", karma: 15 },
-                { text: "Đi xem phim nói chuyện điện thoại oang oang", karma: 35 },
-                { text: "Được nhờ lấy đồ nhưng lấy sai còn gắt gỏng", karma: 18 },
-                { text: "Để bát đĩa đóng váng 3 ngày không chịu rửa", karma: 28 },
-                { text: "Mượn xe máy chạy kiệt xăng mới chịu trả lại", karma: 25 },
-                { text: "Rủ rê người khác ăn kiêng nhưng mình ăn uống xả giàn", karma: 15 },
-                { text: "Nhìn thấy người quen ngoài đường nhưng giả vờ quay đi", karma: 12 },
-                { text: "Review đồ ăn vô căn cứ làm người ta dẹp tiệm", karma: 45 },
-                { text: "Huỷ đơn hàng Shopee khi shipper đã giao đến cửa", karma: 30 },
-                { text: "Gửi ảnh dìm hàng bạn thân lên nhóm chung", karma: 18 },
-                { text: "Sử dụng Wi-Fi chùa nhà hàng xóm để tải phim", karma: 10 },
-                { text: "Chụp ảnh check-in sống ảo rồi bỏ mứa đồ ăn", karma: 25 },
-                { text: "Quên sinh nhật người yêu rồi bảo cố tình tạo bất ngờ", karma: 32 },
-                { text: "Đăng status thả thính dù đã có người yêu", karma: 28 },
-                { text: "Trêu các fan M.U trong hang khi thua", karma: 20 }
+                { text: "Vay tiền mua đồ hiệu nhưng bảo không có tiền trả", karma: 40 }
             ],
             long: [
-                { text: "Nhận deadline xong biến mất hút đến tận ngày nộp mới xuất hiện bảo bị bệnh", karma: 50 },
+                { text: "Nhận deadline xong biến mất hút đến tận ngày nộp mới xuất hiện", karma: 50 },
                 { text: "Đặt đồ ăn giao tận nơi xong tắt máy làm shipper đợi dưới mưa 1 tiếng", karma: 60 },
-                { text: "Vay tiền bạn thân lúc khó khăn xong lúc bạn cần lại chặn luôn liên lạc", karma: 70 },
-                { text: "Ăn uống chung nhóm xong đến lúc tính tiền giả vờ nghe điện thoại rồi đi mất", karma: 45 },
-                { text: "Lấy ảnh người khác sống ảo sang chảnh rồi đi dạy đời đạo lý làm người", karma: 40 },
-                { text: "Đóng góp bài tập nhóm đúng 1 câu 'Ok bạn' rồi hưởng chung điểm A", karma: 55 },
-                { text: "Spam tin nhắn rủ rê người khác tham gia đa cấp làm giàu nhanh chóng", karma: 65 },
-                { text: "Đi hát Karaoke giành mic từ đầu đến cuối không cho ai hát bài nào", karma: 35 },
-                { text: "Kể bí mật của bạn thân cho cả công ty biết rồi bảo 'Tớ vô tình thôi'", karma: 50 },
-                { text: "Mượn quần áo đi tiệc làm dính vết bẩn không tẩy rồi âm thầm trả lại", karma: 38 },
-                { text: "Xem phim rạp đạp liên tục vào lưng ghế người ngồi phía trước", karma: 42 },
-                { text: "Rủ bạn bè đi ăn bảo mình bao nhưng lúc thanh toán giả vờ quên ví", karma: 48 },
-                { text: "Mượn laptop người khác về tải phần mềm độc hại làm hỏng máy", karma: 55 },
-                { text: "Hứa làm phù rể phù dâu xong sát giờ cưới bảo bận không đến được", karma: 50 },
-                { text: "Đoạt công trạng dự án của đồng nghiệp trẻ trước mặt ban giám đốc", karma: 80 },
-                { text: "Nói xấu sau lưng bạn thân với chính người mà bạn thân ghét nhất", karma: 60 },
-                { text: "Dẫn chó đi dạo để phóng uế bừa bãi trước cửa nhà hàng xóm", karma: 30 },
-                { text: "Mượn xe hơi chạy va quẹt trầy xước rồi đem trả không nói một câu", karma: 70 },
-                { text: "Đổ thừa lỗi sai của mình cho thực tập sinh mới vào công ty", karma: 65 },
-                { text: "Hứa đi du lịch chung nhóm xong sát ngày hủy làm cả nhóm bù tiền", karma: 45 },
-                { text: "Nhận làm giùm bài tốt nghiệp xong copy toàn bộ trên mạng về bán", karma: 75 },
-                { text: "Mua hàng thanh lý trả giá 1/10 xong còn đòi freeship tận nơi", karma: 25 },
-                { text: "Ăn trộm mật khẩu Netflix của bạn rồi chia sẻ cho 10 người khác dùng", karma: 35 },
-                { text: "Đi dự đám cưới mừng phong bì giấy trống rồi ăn uống no nê", karma: 85 },
-                { text: "Bỏ bê thú cưng đói cả ngày để mải mê cày game online", karma: 50 },
-                { text: "Đăng ảnh nhóm chỉ sửa mặt mình đẹp còn mặc kệ bạn bè xấu", karma: 25 },
-                { text: "Gia nhập hội nhóm antifan đi lính dội bom phẫn nộ vô căn cứ", karma: 40 },
-                { text: "Gửi link virus giả làm quà tặng để hack tài khoản bạn bè", karma: 90 },
-                { text: "Mượn sách đọc xong làm mất rồi đền cuốn sách hoàn toàn khác", karma: 30 },
-                { text: "Rủ người ta yêu đương ngọt ngào xong đùng một cái bảo 'Chưa sẵn sàng'", karma: 55 },
-                { text: "Đi đường bật đèn pha chiếu thẳng vào mặt người đi ngược chiều", karma: 60 },
-                { text: "Hẹn hò qua mạng lấy hình idol xong ngoài đời xuất hiện hoàn toàn khác", karma: 35 },
-                { text: "Cắt ngang lời người khác đang phát biểu nghiêm túc bằng câu đùa vô duyên", karma: 25 },
-                { text: "Làm hỏng đồ dùng chung của công ty rồi lẳng lặng bỏ đi không báo", karma: 45 },
-                { text: "Nói dối bố mẹ xin tiền học thêm để đi quẹt thẻ đu idol", karma: 50 }
+                { text: "Vay tiền bạn thân lúc khó khăn xong lúc bạn cần lại chặn liên lạc", karma: 70 }
             ]
         };
 
         const hell18Levels = [
-            { level: 1, name: "Địa Ngục Bạt Thiệt", desc: "Dành cho tội chửi sếp, chửi khách, nói dối.", action: "Kéo Lưỡi Sám Hối", icon: "👅" },
-            { level: 2, name: "Địa Ngục Cắt Ngón Tay", desc: "Dành cho tội viết sai chính tả, khẩu nghiệp.", action: "Chịu Phạt Ngón Tay", icon: "✂️" },
-            { level: 3, name: "Địa Ngục Cây Băng", desc: "Dành cho tội xem tin nhắn không rep.", action: "Đâm Cây Băng Lòng", icon: "🧊" },
-            { level: 4, name: "Địa Ngục Nghiệt Kính", desc: "Dành cho tội sống ảo, sửa ảnh dìm bạn.", action: "Soi Kính Âm Phủ", icon: "🪞" },
-            { level: 5, name: "Địa Ngục Chưng Trưng", desc: "Dành cho tội ép uống rượu bia, lừa gạt.", action: "Chịu Nồi Nước Sôi", icon: "🏺" },
-            { level: 6, name: "Địa Ngục Đồng Trụ", desc: "Dành cho tội cắm sừng, thả thính bừa bãi.", action: "Ôm Cột Đồng Nóng", icon: "🛢️" },
-            { level: 7, name: "Địa Ngục Bồn Dầu Sôi", desc: "Dành cho tội bùng nợ, quỵt tiền ship.", action: "Nhảy Bồn Dầu Trừ Nghiệp", icon: "🔥" },
-            { level: 8, name: "Địa Ngục Núi Băng", desc: "Dành cho tội chê cơm mẹ nấu, vô ơn.", action: "Lên Núi Băng Tuyết", icon: "🏔️" },
-            { level: 9, name: "Địa Ngục Bát Đao", desc: "Dành cho tội đâm sau lưng, đoạt công.", action: "Chịu Đao Trảm Nghiệp", icon: "🗡️" },
-            { level: 10, name: "Địa Ngục Trại Đốc", desc: "Dành cho tội rủ rê đa cấp, lừa đảo.", action: "Chịu Phạt Đốc Trại", icon: "🕸️" },
-            { level: 11, name: "Địa Ngục Bàn Chông", desc: "Dành cho tội bùng deadline, bỏ bài tập.", action: "Nằm Bàn Chông Trả Nợ", icon: "📌" },
-            { level: 12, name: "Địa Ngục Ép Lực", desc: "Dành cho tội bom hàng shipper, quỵt nợ.", action: "Ép Lực Cởi Tội", icon: "🗜️" },
-            { level: 13, name: "Địa Ngục Huyết Trì", desc: "Dành cho tội bất hiếu, ngược đãi thú cưng.", action: "Ngâm Hồ Huyết Trì", icon: "🩸" },
-            { level: 14, name: "Địa Ngục U Vọng", desc: "Dành cho tội hứa lèo, hẹn giờ ngủ quên.", action: "Chịu Phạt U Vọng", icon: "👁️" },
-            { level: 15, name: "Địa Ngục Kẹp Thị", desc: "Dành cho tội giành mic Karaoke, xả rác.", action: "Kẹp Thị Cải Tạo", icon: "⛓️" },
-            { level: 16, name: "Địa Ngục Hỏa Sơn", desc: "Dành cho tội kích động antifan.", action: "Tắm Dung Nham", icon: "🌋" },
-            { level: 17, name: "Địa Ngục Thạch Ma", desc: "Dành cho tội tham ăn, bỏ mứa đồ ăn.", action: "Xay Cối Đá", icon: "🪨" },
-            { level: 18, name: "Địa Ngục Đao Cứu", desc: "Dành cho tội phản bội bạn thân.", action: "Chịu Đao Cưa Cực Nặng", icon: "🪚" }
+            { level: 1, name: "Địa Ngục Bạt Thiệt", desc: "Tội chửi sếp, chửi khách.", icon: "👅" },
+            { level: 7, name: "Địa Ngục Bồn Dầu Sôi", desc: "Tội bùng nợ, quỵt ship.", icon: "🔥" },
+            { level: 11, name: "Địa Ngục Bàn Chông", desc: "Tội bùng deadline.", icon: "📌" },
+            { level: 18, name: "Địa Ngục Đao Cứu", desc: "Tội phản bội bạn thân.", icon: "🪚" }
         ];
 
         const questDatabase = [
             { id: 1, title: "🕯️ Thắp Nhang Trầm Hươu Ảo", desc: "Thắp 1 nén nhang cầu an.", merit: 10, duration: 5, icon: "🕯️" },
-            { id: 2, title: "📖 Đọc 1 Bài Kinh Sám Hối", desc: "Tụng niệm giải tỏa oán nghiệp.", merit: 25, duration: 10, icon: "📖" },
-            { id: 3, title: "🍜 Cúng Dường Cháo Mạnh Bà", desc: "Bố thí cho các vong hồn đói khát.", merit: 50, duration: 15, icon: "🍜" },
-            { id: 4, title: "🌉 Giúp Cô Hồn Qua Cầu Nại Hà", desc: "Dắt tay các cụ qua sông.", merit: 100, duration: 25, icon: "🌉" },
-            { id: 5, title: "⚖️ Phụ Giúp Nam Tào Ghi Sổ", desc: "Kiểm tra thông tin dân số.", merit: 200, duration: 40, icon: "⚖️" },
-            { id: 6, title: "🔥 Đổ Dầu Thêm Vào Vạc Sôi", desc: "Làm sạch tầng địa ngục.", merit: 500, duration: 60, icon: "🔥" }
+            { id: 2, title: "📖 Đọc 1 Bài Kinh Sám Hối", desc: "Tụng niệm giải tỏa oán nghiệp.", merit: 25, duration: 10, icon: "📖" }
         ];
 
         const shopDatabase = [
-            { id: 'item_1', name: '🍃 Lá Trầu Không Âm Ty', desc: 'Xua đuổi tà ma nhẹ.', cost: 25, icon: '🍃', effect: 'Xua tan tà khí xung quanh.' },
-            { id: 'item_2', name: '🪞 Kính Nghiệp Báo VIP', desc: 'Soi rõ tương lai kiếp sau.', cost: 50, icon: '🪞', effect: 'Kiếp sau an yên!' },
-            { id: 'item_3', name: '🍵 Bát Canh Mạnh Bà VIP', desc: 'Xóa sạch ký ức nợ nần.', cost: 120, icon: '🍵', effect: 'Quên sạch nợ kiếp trước.' },
-            { id: 'item_4', name: '📜 Kim Bài Miễn Tội Tầng 1', desc: 'Bỏ qua 50 điểm nghiệp.', cost: 300, icon: '📜', effect: 'Giảm 50 điểm Karma.' },
-            { id: 'item_5', name: '🗡️ Kiếm Trảm Nghiệp Phù', desc: 'Chém đứt 200 điểm nghiệp.', cost: 1000, icon: '🗡️', effect: 'Giảm 200 Karma!', karmaReduce: 200 },
-            { id: 'item_6', name: '🏮 Đèn Hoa Đăng Giải Oán', desc: 'Thắp sáng 18 tầng.', cost: 5000, icon: '🏮', effect: 'Giảm 500 Karma!', karmaReduce: 500 }
+            { id: 'item_1', name: '🍃 Lá Trầu Không Âm Ty', desc: 'Xua đuổi tà ma nhẹ.', cost: 25, icon: '🍃' },
+            { id: 'item_5', name: '🗡️ Kiếm Trảm Nghiệp Phù', desc: 'Chém đứt 200 điểm nghiệp.', cost: 1000, icon: '🗡️', karmaReduce: 200 }
         ];
 
         const reincarnateOptions = [
-            { id: 0, title: "Tỷ Phú Trúng Số Kiếp Sau", cost: 500, icon: "💎", desc: "Sinh ra ở vạch đích, tập đoàn nghìn tỷ!" },
-            { id: 1, title: "Mèo Hoàng Gia Trâm Anh Thế Gia", cost: 200, icon: "🐱", desc: "Không deadline, ăn bò Wagyu cả ngày!" },
-            { id: 2, title: "Người Bình Thường 8 Tiếng/Ngày", cost: 50, icon: "👨‍💼", desc: "Đúng giờ tan làm, đủ tiền du lịch." },
-            { id: 3, title: "Cây Cỏ Tịnh Tâm", cost: 10, icon: "🪴", desc: "Cây cổ thụ trăm tuổi giữa rừng sâu." },
-            { id: 4, title: "Muỗi Đêm Hè (Phạt Cải Tạo)", cost: 0, icon: "🦟", desc: "Vòng đời 7 ngày vo ve cắn chân." }
+            { id: 0, title: "Tỷ Phú Trúng Số Kiếp Sau", cost: 500, icon: "💎", desc: "Sinh ra ở vạch đích!" },
+            { id: 1, title: "Mèo Hoàng Gia Trâm Anh", cost: 200, icon: "🐱", desc: "Ăn bò Wagyu cả ngày!" }
         ];
 
         let currentUser = {
@@ -1169,24 +652,152 @@
             merit: 25,
             assignedHell: "Chưa Xếp Tầng",
             selectedCrimes: [],
-            inventory: {}
+            inventory: {},
+            x: 0,
+            y: 0
         };
 
-        let currentActiveHell = null;
-        let currentActiveQuest = null;
-        let questTimerInterval = null;
+        /* ENGINE CANVAS 3D ISOMETRIC */
+        const canvas = document.getElementById('world-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
 
-        window.onload = function() {
-            initFireCanvas();
-            renderCrimes();
-            render18Hells();
-            renderQuests();
-            renderShop();
-            renderInventory();
-            renderReincarnateSelect();
-        };
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            if (currentUser.x === 0) {
+                currentUser.x = width / 2;
+                currentUser.y = height / 2 + 100;
+            }
+        }
+        window.addEventListener('resize', resize);
+        resize();
 
-        // --- HỆ THỐNG ĐĂNG NHẬP & CHỌN NHÂN VẬT ---
+        /* DANH SÁCH 7 CÔNG TRÌNH 3D TRÊN BẢN ĐỒ */
+        const buildings3D = [
+            { id: 'mod-tracuu', name: 'Máy Đo Nghiệp Báo 3D', icon: '⚖️', color: '#ffb703', x: 0, y: 0 },
+            { id: 'mod-samhoi', name: 'Cổng 18 Tầng Địa Ngục', icon: '🚪', color: '#e6222b', x: -220, y: -120 },
+            { id: 'mod-nhiemvu', name: 'Bàn Thờ Trầm Hương', icon: '🕯️', color: '#4caf50', x: 220, y: -120 },
+            { id: 'mod-cuahang', name: 'Thương Tiệm Âm Phủ', icon: '🪙', color: '#ffb703', x: -260, y: 100 },
+            { id: 'mod-kho', name: 'Rương Vật Phẩm', icon: '🎒', color: '#2196f3', x: 260, y: 100 },
+            { id: 'mod-dauthai', name: 'Vòng Xoáy Luân Hồi', icon: '🌀', color: '#9c27b0', x: -140, y: 220 },
+            { id: 'mod-sonamtao', name: 'Bia Đá Nam Tào', icon: '📜', color: '#ffffff', x: 140, y: 220 }
+        ];
+
+        let nearestBuilding = null;
+        const keys = {};
+
+        window.addEventListener('keydown', e => {
+            keys[e.key.toLowerCase()] = true;
+            if (e.key.toLowerCase() === 'e') triggerZoneAction();
+        });
+        window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+
+        canvas.addEventListener('click', e => {
+            currentUser.x = e.clientX;
+            currentUser.y = e.clientY;
+        });
+
+        function updateWorld() {
+            const speed = 4;
+            if (keys['w'] || keys['arrowup']) currentUser.y -= speed;
+            if (keys['s'] || keys['arrowdown']) currentUser.y += speed;
+            if (keys['a'] || keys['arrowleft']) currentUser.x -= speed;
+            if (keys['d'] || keys['arrowright']) currentUser.x += speed;
+
+            // Kiểm tra công trình 3D gần nhất
+            nearestBuilding = null;
+            let minDist = 9999;
+            const centerX = width / 2;
+            const centerY = height / 2 - 50;
+
+            buildings3D.forEach(b => {
+                let bx = centerX + b.x;
+                let by = centerY + b.y;
+                let dist = Math.hypot(currentUser.x - bx, currentUser.y - by);
+                if (dist < 70 && dist < minDist) {
+                    minDist = dist;
+                    nearestBuilding = { ...b, bx, by };
+                }
+            });
+
+            const txt = document.getElementById('interact-text');
+            if (nearestBuilding) {
+                txt.innerText = `E: Mở ${nearestBuilding.name}`;
+            } else {
+                txt.innerText = "Di chuyển nhân vật đến gần Công Trình 3D...";
+            }
+        }
+
+        function drawWorld3D() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Nền đất không gian âm phủ
+            const centerX = width / 2;
+            const centerY = height / 2 - 50;
+
+            // Vẽ hiệu ứng lốc xoáy lửa âm ty ở tâm
+            ctx.strokeStyle = "rgba(90, 17, 24, 0.4)";
+            ctx.lineWidth = 2;
+            for (let r = 50; r < 400; r += 50) {
+                ctx.beginPath();
+                ctx.ellipse(centerX, centerY, r, r * 0.5, 0, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Vẽ 7 Công Trình 3D
+            buildings3D.forEach(b => {
+                let bx = centerX + b.x;
+                let by = centerY + b.y;
+
+                // Đế 3D Isometric
+                ctx.fillStyle = "rgba(22, 10, 12, 0.9)";
+                ctx.strokeStyle = b.color;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.ellipse(bx, by + 15, 35, 18, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                // Cột sáng hiệu ứng 3D
+                let grad = ctx.createLinearGradient(bx, by - 60, bx, by);
+                grad.addColorStop(0, "rgba(230, 34, 43, 0)");
+                grad.addColorStop(1, "rgba(230, 34, 43, 0.3)");
+                ctx.fillStyle = grad;
+                ctx.fillRect(bx - 25, by - 50, 50, 50);
+
+                // Biểu tượng công trình
+                ctx.font = "32px Arial";
+                ctx.textAlign = "center";
+                ctx.fillText(b.icon, bx, by - 10);
+
+                // Nhãn tên công trình 3D
+                ctx.font = "bold 11px Montserrat";
+                ctx.fillStyle = b.color;
+                ctx.fillText(b.name, bx, by - 50);
+            });
+
+            // Vẽ Nhân Vật Của Người Dùng
+            ctx.save();
+            ctx.shadowColor = currentUser.color;
+            ctx.shadowBlur = 15;
+            ctx.font = "38px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(currentUser.icon, currentUser.x, currentUser.y);
+
+            ctx.font = "bold 11px Montserrat";
+            ctx.fillStyle = currentUser.color;
+            ctx.fillText(currentUser.name, currentUser.x, currentUser.y - 35);
+            ctx.restore();
+        }
+
+        function gameLoop() {
+            updateWorld();
+            drawWorld3D();
+            requestAnimationFrame(gameLoop);
+        }
+
+        /* HỆ THỐNG GIAO DIỆN & TÍNH NĂNG */
         function selectCharType(type, icon) {
             currentUser.icon = icon;
             document.getElementById('avatar-display').innerText = icon;
@@ -1202,20 +813,45 @@
         }
 
         function enterHellWorld() {
-            const nameInput = document.getElementById('input-login-name').value.trim();
+            const nameInput = document.getElementById('input-username').value.trim();
             if (nameInput) currentUser.name = nameInput;
 
-            document.getElementById('main-user-avatar').innerText = currentUser.icon;
-            document.getElementById('main-user-avatar').style.borderColor = currentUser.color;
-            document.getElementById('input-name').value = currentUser.name;
-
+            document.getElementById('hud-avatar-icon').innerText = currentUser.icon;
+            document.getElementById('hud-username').innerText = currentUser.name;
+            
             document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-app').style.display = 'block';
-            document.getElementById('diem-vuong-widget').style.display = 'flex';
+            renderCrimes();
+            render18Hells();
+            renderQuests();
+            renderShop();
+            renderInventory();
+            renderReincarnateSelect();
             updateUI();
+            gameLoop();
         }
 
-        // --- CÁC TÍNH NĂNG CŨ KHÔI PHỤC ĐẦY ĐỦ ---
+        function triggerZoneAction() {
+            if (nearestBuilding) {
+                openFeatureModal(nearestBuilding.id);
+            } else {
+                alert("Hãy di chuyển nhân vật lại gần một Công Trình 3D!");
+            }
+        }
+
+        function openFeatureModal(modalContentId) {
+            document.querySelectorAll('.feature-content').forEach(c => c.style.display = 'none');
+            document.getElementById(modalContentId).style.display = 'block';
+            document.getElementById('feature-modal').classList.add('active');
+        }
+
+        function closeFeatureModal() {
+            document.getElementById('feature-modal').classList.remove('active');
+        }
+
+        function openGuideModal() { document.getElementById('guide-modal').classList.add('active'); }
+        function closeGuideModal() { document.getElementById('guide-modal').classList.remove('active'); }
+
+        // --- RENDER DỮ LIỆU TÍNH NĂNG CŨ ---
         function renderCrimes() {
             const container = document.getElementById('crime-list-container');
             let html = '';
@@ -1230,10 +866,7 @@
                     html += `
                         <div class="crime-item">
                             <input type="checkbox" onchange="toggleCrime('${c.text}', ${c.karma}, this.checked)">
-                            <div>
-                                <div>${c.text}</div>
-                                <span style="color: var(--accent-red); font-size: 10px;">+${c.karma} Karma</span>
-                            </div>
+                            <div><div>${c.text}</div><span style="color:var(--accent-red); font-size:10px;">+${c.karma} Karma</span></div>
                         </div>`;
                 });
                 html += `</div>`;
@@ -1245,12 +878,7 @@
             const container = document.getElementById('hell-levels-container');
             let html = '';
             hell18Levels.forEach(h => {
-                html += `
-                    <div class="hell-level-card" onclick="openHellModal(${h.level})">
-                        <div style="font-size: 28px; margin-bottom: 4px;">${h.icon}</div>
-                        <h4>Tầng ${h.level}: ${h.name}</h4>
-                        <p>${h.desc}</p>
-                    </div>`;
+                html += `<div class="hell-level-card"><div style="font-size:28px;">${h.icon}</div><h4>Tầng ${h.level}: ${h.name}</h4><p>${h.desc}</p></div>`;
             });
             container.innerHTML = html;
         }
@@ -1259,14 +887,7 @@
             const container = document.getElementById('quest-list-container');
             let html = '';
             questDatabase.forEach(q => {
-                html += `
-                    <div class="quest-card" onclick="startQuestModal(${q.id})">
-                        <div style="font-size: 28px; margin-bottom: 4px;">${q.icon}</div>
-                        <h4>${q.title}</h4>
-                        <p>${q.desc}</p>
-                        <div style="font-size: 11px; color: var(--accent-gold); font-weight: bold; margin-bottom: 6px;">⏱️ ${q.duration}s</div>
-                        <button class="btn-header" style="width: 100%;">+${q.merit} Công Đức</button>
-                    </div>`;
+                html += `<div class="quest-card"><div style="font-size:28px;">${q.icon}</div><h4>${q.title}</h4><p>${q.desc}</p><button class="btn-icon-hud" onclick="doQuest(${q.merit})">+${q.merit} Công Đức</button></div>`;
             });
             container.innerHTML = html;
         }
@@ -1275,15 +896,7 @@
             const container = document.getElementById('shop-items-container');
             let html = '';
             shopDatabase.forEach(item => {
-                html += `
-                    <div class="shop-item">
-                        <div>
-                            <div style="font-size: 28px; margin-bottom: 4px;">${item.icon}</div>
-                            <h4>${item.name}</h4>
-                            <p>${item.desc}</p>
-                        </div>
-                        <button class="btn-header" onclick="buyItem('${item.id}')">${item.cost.toLocaleString('vi-VN')} Công Đức</button>
-                    </div>`;
+                html += `<div class="shop-item"><div style="font-size:28px;">${item.icon}</div><h4>${item.name}</h4><p>${item.desc}</p><button class="btn-icon-hud" onclick="buyItem('${item.id}')">${item.cost} Công Đức</button></div>`;
             });
             container.innerHTML = html;
         }
@@ -1291,28 +904,11 @@
         function renderInventory() {
             const container = document.getElementById('inventory-list-container');
             let keys = Object.keys(currentUser.inventory);
-            if (keys.length === 0) {
-                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 30px; font-size: 12px;">🎒 Kho trống! Hãy sang Cửa Hàng mua vật phẩm.</div>`;
-                return;
-            }
+            if (keys.length === 0) { container.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--text-muted);">🎒 Rương trống!</div>`; return; }
             let html = '';
             keys.forEach(id => {
-                let qty = currentUser.inventory[id];
-                if (qty > 0) {
-                    let item = shopDatabase.find(s => s.id === id);
-                    if (item) {
-                        html += `
-                            <div class="inventory-item">
-                                <div>
-                                    <div style="font-size: 28px; margin-bottom: 4px;">${item.icon}</div>
-                                    <h4>${item.name}</h4>
-                                    <p>${item.desc}</p>
-                                    <div style="font-size: 11px; color: var(--accent-gold); font-weight: bold; margin-bottom: 6px;">Số lượng: ${qty}</div>
-                                </div>
-                                <button class="btn-action" style="margin-top:0; padding:8px;" onclick="useInventoryItem('${item.id}')">SỬ DỤNG</button>
-                            </div>`;
-                    }
-                }
+                let item = shopDatabase.find(s => s.id === id);
+                if (item) html += `<div class="inventory-item"><div style="font-size:28px;">${item.icon}</div><h4>${item.name}</h4><p>Số lượng: ${currentUser.inventory[id]}</p></div>`;
             });
             container.innerHTML = html;
         }
@@ -1320,9 +916,7 @@
         function renderReincarnateSelect() {
             const select = document.getElementById('reincarnate-select');
             let html = '';
-            reincarnateOptions.forEach(opt => {
-                html += `<option value="${opt.id}">${opt.icon} ${opt.title} (Cần ${opt.cost} Công Đức)</option>`;
-            });
+            reincarnateOptions.forEach(opt => { html += `<option value="${opt.id}">${opt.icon} ${opt.title} (${opt.cost} Công Đức)</option>`; });
             select.innerHTML = html;
         }
 
@@ -1333,12 +927,11 @@
 
         function addCustomCrime() {
             const text = document.getElementById('custom-crime-input').value.trim();
-            const karma = parseInt(document.getElementById('custom-karma-input').value) || 10;
+            const karma = parseInt(document.getElementById('custom-karma-input').value) || 15;
             if (text) {
                 currentUser.selectedCrimes.push({ text, karma });
-                alert(`Đã thêm tội tự điền: "${text}" (+${karma} Karma)`);
+                alert(`Đã thêm: "${text}" (+${karma} Karma)`);
                 document.getElementById('custom-crime-input').value = '';
-                calculateKarma();
             }
         }
 
@@ -1348,29 +941,41 @@
             currentUser.karma = total;
             if (total === 0) currentUser.assignedHell = "Chưa có nghiệp";
             else if (total < 50) currentUser.assignedHell = "Tầng 1: Bạt Thiệt";
-            else if (total < 150) currentUser.assignedHell = "Tầng 7: Bồn Dầu Sôi";
-            else if (total < 300) currentUser.assignedHell = "Tầng 11: Bàn Chông";
-            else currentUser.assignedHell = "Tầng 18: Đao Cứu (Cực Nặng)";
+            else currentUser.assignedHell = "Tầng 18: Đao Cứu";
             updateUI();
-            alert(`Tổng Karma của ${currentUser.name}: ${currentUser.karma}. Xếp vào ${currentUser.assignedHell}`);
+            alert(`Tổng Karma: ${currentUser.karma}. Xếp vào ${currentUser.assignedHell}`);
+            closeFeatureModal();
         }
 
-        function updateUserName() {
-            const val = document.getElementById('input-name').value.trim();
-            if (val) currentUser.name = val;
+        function doQuest(merit) {
+            currentUser.merit += merit;
             updateUI();
+            alert(`🎉 Nhận thành công +${merit} Công Đức!`);
+        }
+
+        function buyItem(itemId) {
+            let item = shopDatabase.find(s => s.id === itemId);
+            if (currentUser.merit >= item.cost) {
+                currentUser.merit -= item.cost;
+                currentUser.inventory[itemId] = (currentUser.inventory[itemId] || 0) + 1;
+                updateUI();
+                renderInventory();
+                alert(`🎊 Đã mua: ${item.name}!`);
+            } else alert("❌ Không đủ điểm Công Đức!");
+        }
+
+        function submitReincarnation() {
+            if (currentUser.karma > 0) { alert("❌ Bạn chưa trả hết nghiệp báo!"); return; }
+            alert("🌀 Đã ghi nhận nguyện vọng đầu thai tại Phủ Nam Tào!");
+            closeFeatureModal();
         }
 
         function updateUI() {
-            document.getElementById('user-display-name').innerText = currentUser.name;
-            document.getElementById('stat-karma').innerText = currentUser.karma;
-            document.getElementById('stat-merit').innerText = currentUser.merit;
-            document.getElementById('stat-hell-name').innerText = currentUser.assignedHell;
-            let barWidth = Math.min(100, (currentUser.karma / 300) * 100);
-            document.getElementById('karma-bar').style.width = barWidth + '%';
+            document.getElementById('hud-karma').innerText = currentUser.karma;
+            document.getElementById('hud-merit').innerText = currentUser.merit;
+            document.getElementById('hud-hell-name').innerText = currentUser.assignedHell;
 
-            const body = document.getElementById('namtao-table-body');
-            body.innerHTML = `
+            document.getElementById('namtao-table-body').innerHTML = `
                 <tr>
                     <td><b>${currentUser.name}</b></td>
                     <td style="color:var(--accent-red);">${currentUser.karma}</td>
@@ -1378,165 +983,6 @@
                     <td style="color:var(--accent-gold);">${currentUser.merit}</td>
                     <td>${currentUser.karma === 0 ? 'Đã Tự Do' : 'Đang Cải Tạo'}</td>
                 </tr>`;
-        }
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
-
-        function openHellModal(level) {
-            const hell = hell18Levels.find(h => h.level === level);
-            if (!hell) return;
-            currentActiveHell = hell;
-            document.getElementById('modal-title').innerText = `Tầng ${hell.level}: ${hell.name}`;
-            document.getElementById('modal-desc').innerText = hell.desc;
-            document.getElementById('modal-icon').innerText = hell.icon;
-            document.getElementById('modal-btn').innerText = `${hell.action} (-5 KARMA)`;
-            document.getElementById('punishment-modal').classList.add('active');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-
-        function triggerPunishmentAction() {
-            if (currentUser.karma > 0) {
-                currentUser.karma = Math.max(0, currentUser.karma - 5);
-                currentUser.merit += 2;
-                updateUI();
-                if (currentUser.karma === 0) {
-                    alert("🎉 Đã xóa hết toàn bộ điểm Karma nghiệp báo!");
-                    closeModal('punishment-modal');
-                }
-            } else {
-                alert("Bạn đã hết nghiệp báo để trả!");
-                closeModal('punishment-modal');
-            }
-        }
-
-        function startQuestModal(questId) {
-            const quest = questDatabase.find(q => q.id === questId);
-            if (!quest) return;
-            currentActiveQuest = quest;
-            document.getElementById('quest-modal-title').innerText = quest.title;
-            document.getElementById('quest-modal-desc').innerText = quest.desc;
-            document.getElementById('quest-modal-icon').innerText = quest.icon;
-            const btn = document.getElementById('quest-modal-btn');
-            btn.innerText = "⏳ ĐANG TIẾN HÀNH...";
-            btn.disabled = true;
-
-            const timerBar = document.getElementById('quest-timer-bar');
-            const timerText = document.getElementById('quest-timer-text');
-            timerBar.style.width = '0%';
-            document.getElementById('quest-modal').classList.add('active');
-
-            let elapsed = 0;
-            const totalMs = quest.duration * 1000;
-            if (questTimerInterval) clearInterval(questTimerInterval);
-
-            questTimerInterval = setInterval(() => {
-                elapsed += 100;
-                let pct = Math.min(100, (elapsed / totalMs) * 100);
-                timerBar.style.width = pct + '%';
-                let left = Math.ceil((totalMs - elapsed) / 1000);
-                timerText.innerText = `Còn ${left}s / Tổng ${quest.duration}s`;
-
-                if (elapsed >= totalMs) {
-                    clearInterval(questTimerInterval);
-                    timerText.innerText = "🎉 HOÀN THÀNH!";
-                    btn.innerText = `NHẬN +${quest.merit} CÔNG ĐỨC`;
-                    btn.disabled = false;
-                    btn.onclick = finishQuest;
-                }
-            }, 100);
-        }
-
-        function finishQuest() {
-            if (currentActiveQuest) {
-                currentUser.merit += currentActiveQuest.merit;
-                updateUI();
-                alert(`🎉 Nhận thành công +${currentActiveQuest.merit} Công Đức!`);
-                closeModal('quest-modal');
-            }
-        }
-
-        function cancelQuest() {
-            if (questTimerInterval) clearInterval(questTimerInterval);
-            closeModal('quest-modal');
-        }
-
-        function buyItem(itemId) {
-            let item = shopDatabase.find(s => s.id === itemId);
-            if (!item) return;
-            if (currentUser.merit >= item.cost) {
-                currentUser.merit -= item.cost;
-                currentUser.inventory[itemId] = (currentUser.inventory[itemId] || 0) + 1;
-                updateUI();
-                renderInventory();
-                alert(`🎊 Đã mua thành công: ${item.name}!`);
-            } else {
-                alert("❌ Không đủ điểm Công Đức!");
-            }
-        }
-
-        function useInventoryItem(itemId) {
-            let item = shopDatabase.find(s => s.id === itemId);
-            if (!item || !currentUser.inventory[itemId]) return;
-            currentUser.inventory[itemId] -= 1;
-            if (currentUser.inventory[itemId] <= 0) delete currentUser.inventory[itemId];
-            if (item.karmaReduce) currentUser.karma = Math.max(0, currentUser.karma - item.karmaReduce);
-            updateUI();
-            renderInventory();
-            alert(`✨ [SỬ DỤNG VẬT PHẨM: ${item.name}]\n\n${item.effect}`);
-        }
-
-        function submitReincarnation() {
-            if (currentUser.karma > 0) {
-                alert("❌ Bạn vẫn còn Điểm Karma Nghiệp Báo! Hãy trả hết nghiệp trước.");
-                return;
-            }
-            const selectVal = parseInt(document.getElementById('reincarnate-select').value);
-            const opt = reincarnateOptions.find(o => o.id === selectVal);
-            if (!opt) return;
-            if (currentUser.merit < opt.cost) {
-                alert(`❌ Chưa đủ Công Đức! Cần ${opt.cost} Công Đức.`);
-                return;
-            }
-            currentUser.merit -= opt.cost;
-            updateUI();
-            document.getElementById('reincarnate-result-title').innerText = `✅ ĐÃ DUYỆT: ${opt.title}`;
-            document.getElementById('reincarnate-result-desc').innerText = opt.desc;
-            document.getElementById('reincarnate-result-icon').innerText = opt.icon;
-            document.getElementById('reincarnate-result-modal').classList.add('active');
-        }
-
-        function openGuideModal() { document.getElementById('guide-modal').classList.add('active'); }
-        function closeGuideModal() { document.getElementById('guide-modal').classList.remove('active'); }
-        function showCCCD() { alert(`🪪 THẺ CĂN CƯỚC ÂM PHỦ\nHọ Tên: ${currentUser.name}\nNghiệp: ${currentUser.karma}\nCông Đức: ${currentUser.merit}`); }
-        function toggleAudio() { let s = document.getElementById('audio-status'); s.innerText = s.innerText === "BẬT" ? "TẮT" : "BẬT"; }
-
-        function initFireCanvas() {
-            const canvas = document.getElementById('canvas-fire');
-            const ctx = canvas.getContext('2d');
-            let particles = [];
-            function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-            window.addEventListener('resize', resize); resize();
-            for (let i = 0; i < 40; i++) {
-                particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 3 + 1, vY: Math.random() * 1 + 0.5, alpha: Math.random() });
-            }
-            function loop() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach(p => {
-                    p.y -= p.vY; if (p.y < 0) p.y = canvas.height;
-                    ctx.fillStyle = `rgba(230, 34, 43, ${p.alpha})`;
-                    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
-                });
-                requestAnimationFrame(loop);
-            }
-            loop();
         }
     </script>
 </body>
