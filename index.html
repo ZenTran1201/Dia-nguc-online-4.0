@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dia Nguc Online v9.0 - Full Features Chibi Edition</title>
+    <title>Dia Nguc Online v9.5 - Full Image Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -346,7 +346,6 @@
 
         .table-custom th { background: rgba(230, 34, 43, 0.2); color: var(--accent-gold); }
 
-        /* TIMER CHO NHIỆM VỤ */
         .timer-container {
             width: 100%;
             background: #110406;
@@ -372,7 +371,7 @@
             align-items: center;
             gap: 10px;
             background: rgba(18, 5, 7, 0.94);
-            border: 2px solid var(--accent-red);
+            border: 2px solid var(--border-red);
             border-radius: 50px;
             padding: 8px 16px 8px 10px;
             box-shadow: 0 0 20px rgba(230, 34, 43, 0.6);
@@ -437,12 +436,11 @@
         </div>
     </div>
 
-    <!-- MODAL CHỨC NĂNG CHÍNH -->
+    <!-- MODAL CHỨC NĂNG -->
     <div class="modal-overlay" id="feature-modal">
         <div class="feature-modal-box">
             <button class="modal-close-btn" onclick="closeFeatureModal()">✕</button>
             
-            <!-- 1. MÁY ĐO NGHIỆP BÁO (ĐẦY ĐỦ TỘI DANH) -->
             <div id="mod-tracuu" class="feature-content" style="display: none;">
                 <div class="section-title">⚖️ MÁY TÍNH SỐ ĐO NGHIỆP BÁO ĐẦY ĐỦ</div>
                 <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">TÍCH CHỌN CÁC TỘI DANH ĐÃ PHẠM:</p>
@@ -455,31 +453,26 @@
                 <button class="btn-action" onclick="calculateKarma()">🔥 TÍNH TỔNG NGHIỆP & XẾP TẦNG ĐỊA NGỤC 🔥</button>
             </div>
 
-            <!-- 2. 18 TẦNG ĐỊA NGỤC -->
             <div id="mod-samhoi" class="feature-content" style="display: none;">
                 <div class="section-title">🚪 18 TẦNG ĐỊA NGỤC (SÁM HỐI & CẢI TẠO)</div>
                 <div class="hell-levels-grid" id="hell-levels-container"></div>
             </div>
 
-            <!-- 3. NHIỆM VỤ CÔNG ĐỨC (CÓ ĐẾM NGƯỢC TIME) -->
             <div id="mod-nhiemvu" class="feature-content" style="display: none;">
                 <div class="section-title">⭐ NHIỆM VỤ TÍCH ĐIỂM CÔNG ĐỨC ÂM PHỦ</div>
                 <div class="quest-grid" id="quest-list-container"></div>
             </div>
 
-            <!-- 4. CỬA HÀNG -->
             <div id="mod-cuahang" class="feature-content" style="display: none;">
                 <div class="section-title">🪙 THƯƠNG TIỆM ĐỔI CÔNG ĐỨC</div>
                 <div class="shop-grid" id="shop-items-container"></div>
             </div>
 
-            <!-- 5. KHO VẬT PHẨM -->
             <div id="mod-kho" class="feature-content" style="display: none;">
                 <div class="section-title">🎒 RƯƠNG ÂM PHỦ CHỨA VẬT PHẨM</div>
                 <div class="inventory-grid" id="inventory-list-container"></div>
             </div>
 
-            <!-- 6. ĐẦU THAI -->
             <div id="mod-dauthai" class="feature-content" style="display: none;">
                 <div class="section-title">🌀 VÒNG XOÁY LUÂN HỒI ĐẦU THAI</div>
                 <div style="margin-bottom: 12px;">
@@ -489,7 +482,6 @@
                 <button class="btn-action" onclick="submitReincarnation()">🌀 XÁC NHẬN ĐẦU THAI 🌀</button>
             </div>
 
-            <!-- 7. SỔ NAM TÀO -->
             <div id="mod-sonamtao" class="feature-content" style="display: none;">
                 <div class="section-title">📜 BIA ĐÁ NAM TÀO GHI TÊN</div>
                 <table class="table-custom">
@@ -508,7 +500,7 @@
         </div>
     </div>
 
-    <!-- MODAL LÀM NHIỆM VỤ CÓ THANH ĐẾM NGƯỢC -->
+    <!-- MODAL LÀM NHIỆM VỤ CÓ ĐẾM NGƯỢC -->
     <div class="modal-overlay" id="quest-modal">
         <div class="feature-modal-box" style="max-width: 420px; text-align: center;">
             <button class="modal-close-btn" onclick="cancelQuest()">✕</button>
@@ -522,7 +514,6 @@
     </div>
 
     <script>
-        // FULL 100% CÁC TỘI DANH CŨ
         const crimeDatabase = {
             short: [
                 { text: "Ép uống bia rượu", karma: 20 }, { text: "Chửi sếp sau lưng", karma: 18 },
@@ -545,7 +536,6 @@
             ]
         };
 
-        // FULL 18 TẦNG ĐỊA NGỤC
         const hell18Levels = [
             { level: 1, name: "Bạt Thiệt", desc: "Tội chửi sếp, chửi khách.", icon: "👅" },
             { level: 2, name: "Cắt Ngón Tay", desc: "Tội viết sai chính tả.", icon: "✂️" },
@@ -567,7 +557,6 @@
             { level: 18, name: "Đao Cứu", desc: "Tội phản bội bạn thân.", icon: "🪚" }
         ];
 
-        // NHIỆM VỤ CÓ THỜI GIAN QUY ƯỚC
         const questDatabase = [
             { id: 1, title: "🕯️ Thắp Nhang Trầm Hươu Ảo", desc: "Thắp 1 nén nhang cầu an.", merit: 10, duration: 5, icon: "🕯️" },
             { id: 2, title: "📖 Đọc 1 Bài Kinh Sám Hối", desc: "Tụng niệm giải tỏa oán nghiệp.", merit: 25, duration: 10, icon: "📖" },
@@ -605,6 +594,10 @@
         const canvas = document.getElementById('world-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
+
+        // Tải hình ảnh background 3D địa ngục
+        const bgImage = new Image();
+        bgImage.src = 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1920&auto=format&fit=crop'; // Hoặc đường dẫn file ảnh của bạn
 
         function resize() {
             width = canvas.width = window.innerWidth;
@@ -673,16 +666,17 @@
 
         function drawWorld3D() {
             ctx.clearRect(0, 0, width, height);
+
+            // Vẽ ảnh nền background 3D rực rỡ
+            if (bgImage.complete) {
+                ctx.drawImage(bgImage, 0, 0, width, height);
+                // Thêm lớp phủ tối nhẹ để làm nổi bật các công trình
+                ctx.fillStyle = "rgba(5, 2, 3, 0.35)";
+                ctx.fillRect(0, 0, width, height);
+            }
+
             const centerX = width / 2;
             const centerY = height / 2 - 50;
-
-            ctx.strokeStyle = "rgba(90, 17, 24, 0.4)";
-            ctx.lineWidth = 2;
-            for (let r = 50; r < 400; r += 50) {
-                ctx.beginPath();
-                ctx.ellipse(centerX, centerY, r, r * 0.5, 0, 0, Math.PI * 2);
-                ctx.stroke();
-            }
 
             buildings3D.forEach(b => {
                 let bx = centerX + b.x;
@@ -705,6 +699,7 @@
                 ctx.fillText(b.name, bx, by - 50);
             });
 
+            // Vẽ nhân vật chibi phát sáng
             ctx.save();
             ctx.shadowColor = currentUser.color;
             ctx.shadowBlur = 20;
@@ -775,7 +770,6 @@
             document.getElementById('feature-modal').classList.remove('active');
         }
 
-        // --- RENDER DỮ LIỆU ĐẦY ĐỦ ---
         function renderCrimes() {
             const container = document.getElementById('crime-list-container');
             let html = '';
