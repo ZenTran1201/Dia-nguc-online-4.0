@@ -8,7 +8,7 @@
     <style>
         :root {
             --bg-dark: #070304;
-            --panel-bg: rgba(22, 10, 12, 0.85);
+            --panel-bg: rgba(22, 10, 12, 0.90);
             --border-red: #5a1118;
             --accent-red: #e6222b;
             --accent-gold: #ffb703;
@@ -47,7 +47,7 @@
             z-index: 1;
             max-width: 1300px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 15px;
             padding-bottom: 100px;
         }
 
@@ -55,35 +55,35 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 25px;
+            padding: 15px 20px;
             background: var(--panel-bg);
             border: 1px solid var(--border-red);
             border-radius: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             backdrop-filter: blur(10px);
         }
 
         .logo h1 {
             font-family: 'Cinzel', serif;
             color: var(--accent-red);
-            font-size: 24px;
-            letter-spacing: 2px;
+            font-size: 20px;
+            letter-spacing: 1px;
             text-shadow: 0 0 10px rgba(230, 34, 43, 0.5);
         }
 
         .header-btns {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
         .btn-header {
             background: rgba(230, 34, 43, 0.15);
             border: 1px solid var(--accent-red);
             color: var(--text-light);
-            padding: 8px 16px;
+            padding: 8px 12px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             transition: all 0.3s;
         }
@@ -96,51 +96,51 @@
         .main-layout {
             display: grid;
             grid-template-columns: 320px 1fr;
-            gap: 20px;
+            gap: 15px;
         }
 
         .card {
             background: var(--panel-bg);
             border: 1px solid var(--border-red);
             border-radius: 12px;
-            padding: 20px;
+            padding: 15px;
             backdrop-filter: blur(8px);
         }
 
         .sidebar {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
 
         .profile-box {
             text-align: center;
             border-bottom: 1px dashed var(--border-red);
-            padding-bottom: 15px;
+            padding-bottom: 12px;
         }
 
         .avatar {
-            width: 70px;
-            height: 70px;
+            width: 65px;
+            height: 65px;
             background: #2a080c;
             border: 2px solid var(--accent-red);
             border-radius: 50%;
-            margin: 0 auto 10px;
+            margin: 0 auto 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
+            font-size: 30px;
         }
 
         .status-metric {
-            margin-top: 10px;
-            font-size: 13px;
+            margin-top: 8px;
+            font-size: 12px;
         }
 
         .metric-row {
             display: flex;
             justify-content: space-between;
-            margin: 6px 0;
+            margin: 5px 0;
         }
 
         .progress-bar {
@@ -148,7 +148,7 @@
             background: #220a0d;
             border-radius: 4px;
             overflow: hidden;
-            margin-top: 3px;
+            margin-top: 4px;
         }
 
         .progress-fill {
@@ -161,16 +161,16 @@
         .nav-menu {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .nav-item {
-            padding: 12px 15px;
+            padding: 12px 14px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid transparent;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -185,25 +185,25 @@
         }
 
         .section-title {
-            font-size: 18px;
+            font-size: 16px;
             color: var(--accent-gold);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             border-bottom: 1px solid rgba(255, 183, 3, 0.2);
-            padding-bottom: 8px;
+            padding-bottom: 6px;
         }
 
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .input-group label {
             display: block;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .input-group input, .input-group select {
@@ -214,22 +214,23 @@
             border-radius: 6px;
             color: #fff;
             outline: none;
+            font-size: 14px;
         }
 
         .crime-group-title {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--accent-red);
-            margin: 15px 0 8px;
+            margin: 12px 0 6px;
             font-weight: bold;
         }
 
         .crime-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 10px;
-            max-height: 380px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 8px;
+            max-height: 350px;
             overflow-y: auto;
-            padding-right: 5px;
+            padding-right: 4px;
         }
 
         .crime-item {
@@ -244,6 +245,12 @@
             font-size: 12px;
         }
 
+        .crime-item input[type="checkbox"] {
+            transform: scale(1.2);
+            margin-top: 2px;
+            cursor: pointer;
+        }
+
         .crime-item:hover {
             border-color: var(--accent-red);
             background: rgba(230, 34, 43, 0.05);
@@ -251,8 +258,14 @@
 
         .custom-crime-box {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .custom-crime-box input {
+            flex: 1;
+            min-width: 150px;
         }
 
         .btn-action {
@@ -264,11 +277,12 @@
             color: #fff;
             font-weight: 700;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 12px;
             text-transform: uppercase;
             letter-spacing: 1px;
             box-shadow: 0 4px 15px rgba(230, 34, 43, 0.4);
             transition: all 0.3s;
+            font-size: 13px;
         }
 
         .btn-action:hover {
@@ -285,16 +299,16 @@
 
         .hell-levels-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-            gap: 12px;
-            max-height: 500px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            max-height: 450px;
             overflow-y: auto;
         }
 
         .hell-level-card {
             background: rgba(10, 3, 4, 0.8);
             border: 1px solid var(--border-red);
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s;
@@ -304,13 +318,13 @@
         .hell-level-card:hover {
             border-color: var(--accent-gold);
             transform: scale(1.02);
-            box-shadow: 0 0 15px rgba(255, 183, 3, 0.3);
+            box-shadow: 0 0 12px rgba(255, 183, 3, 0.3);
         }
 
         .hell-level-card h4 {
             color: var(--accent-red);
-            font-size: 14px;
-            margin-bottom: 6px;
+            font-size: 13px;
+            margin-bottom: 4px;
         }
 
         .hell-level-card p {
@@ -331,6 +345,7 @@
             justify-content: center;
             z-index: 1000;
             backdrop-filter: blur(6px);
+            padding: 15px;
         }
 
         .modal-overlay.active {
@@ -341,9 +356,9 @@
             background: rgba(22, 10, 12, 0.95);
             border: 2px solid var(--accent-red);
             border-radius: 16px;
-            width: 90%;
-            max-width: 480px;
-            padding: 25px;
+            width: 100%;
+            max-width: 440px;
+            padding: 20px;
             text-align: center;
             position: relative;
             box-shadow: 0 0 30px rgba(230, 34, 43, 0.7);
@@ -357,18 +372,19 @@
 
         .modal-close {
             position: absolute;
-            top: 12px;
-            right: 15px;
+            top: 10px;
+            right: 12px;
             background: none;
             border: none;
             color: var(--text-muted);
             font-size: 20px;
             cursor: pointer;
+            padding: 5px;
         }
 
         .modal-icon-display {
-            font-size: 75px;
-            margin: 15px 0;
+            font-size: 65px;
+            margin: 12px 0;
             text-shadow: 0 0 20px rgba(230, 34, 43, 0.8);
             animation: pulseIcon 1.5s infinite ease-in-out;
             cursor: pointer;
@@ -384,9 +400,9 @@
             background: #110406;
             border: 1px solid var(--border-red);
             border-radius: 10px;
-            height: 16px;
+            height: 14px;
             overflow: hidden;
-            margin: 15px 0 8px;
+            margin: 12px 0 6px;
             position: relative;
         }
 
@@ -398,26 +414,26 @@
         }
 
         .timer-text {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             color: var(--accent-gold);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         /* Shop Grid & Inventory Grid */
         .shop-grid, .inventory-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 15px;
-            max-height: 500px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            max-height: 450px;
             overflow-y: auto;
-            padding-right: 5px;
+            padding-right: 4px;
         }
 
         .shop-item, .inventory-item {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border-red);
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
             text-align: center;
             display: flex;
@@ -427,30 +443,30 @@
 
         .shop-item h4, .inventory-item h4 {
             color: var(--accent-gold);
-            font-size: 14px;
-            margin-bottom: 5px;
+            font-size: 13px;
+            margin-bottom: 4px;
         }
 
         .shop-item p, .inventory-item p {
             font-size: 11px;
             color: var(--text-muted);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             flex: 1;
         }
 
         /* Quest Grid */
         .quest-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 12px;
-            max-height: 500px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 10px;
+            max-height: 450px;
             overflow-y: auto;
         }
 
         .quest-card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 183, 3, 0.3);
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
             display: flex;
             flex-direction: column;
@@ -463,30 +479,36 @@
         .quest-card:hover {
             border-color: var(--accent-gold);
             transform: translateY(-2px);
-            box-shadow: 0 0 15px rgba(255, 183, 3, 0.2);
+            box-shadow: 0 0 12px rgba(255, 183, 3, 0.2);
         }
 
         .quest-card h4 {
             color: var(--accent-gold);
-            font-size: 14px;
-            margin-bottom: 5px;
+            font-size: 13px;
+            margin-bottom: 4px;
         }
 
         .quest-card p {
             font-size: 11px;
             color: var(--text-muted);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
         }
 
         .table-custom {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12px;
-            margin-top: 10px;
+            font-size: 11px;
+            margin-top: 8px;
+            min-width: 450px;
         }
 
         .table-custom th, .table-custom td {
-            padding: 10px;
+            padding: 8px;
             border: 1px solid var(--border-red);
             text-align: left;
         }
@@ -507,17 +529,17 @@
         /* WIDGET DIÊM VƯƠNG GÓC DƯỚI BÊN PHẢI */
         .diem-vuong-widget {
             position: fixed;
-            bottom: 25px;
-            right: 25px;
+            bottom: 20px;
+            right: 20px;
             z-index: 999;
             display: flex;
             align-items: center;
-            gap: 12px;
-            background: rgba(18, 5, 7, 0.92);
+            gap: 10px;
+            background: rgba(18, 5, 7, 0.94);
             border: 2px solid var(--accent-red);
             border-radius: 50px;
-            padding: 10px 20px 10px 12px;
-            box-shadow: 0 0 25px rgba(230, 34, 43, 0.6);
+            padding: 8px 16px 8px 10px;
+            box-shadow: 0 0 20px rgba(230, 34, 43, 0.6);
             backdrop-filter: blur(8px);
             animation: pulseGlow 2s infinite ease-in-out;
         }
@@ -528,15 +550,15 @@
         }
 
         .diem-vuong-avatar {
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
             background: #2a0408;
             border: 2px solid var(--accent-gold);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
+            font-size: 22px;
             position: relative;
         }
 
@@ -544,8 +566,8 @@
             position: absolute;
             bottom: 0;
             right: 0;
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             background: #00ff66;
             border: 2px solid #000;
             border-radius: 50%;
@@ -563,7 +585,7 @@
         }
 
         .diem-vuong-title {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             color: var(--accent-gold);
             letter-spacing: 0.5px;
@@ -571,20 +593,75 @@
         }
 
         .diem-vuong-status {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             color: #ffffff;
-            margin-top: 2px;
+            margin-top: 1px;
         }
 
         .diem-vuong-status span {
             color: var(--accent-red);
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 900;
         }
 
+        /* RESPONSIVE MEDIA QUERIES CHO ĐIỆN THOẠI & TABLET */
+        @media (max-width: 900px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            .app-container {
+                padding: 10px;
+                padding-bottom: 90px;
+            }
+            header {
+                padding: 12px 15px;
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            .header-btns {
+                justify-content: center;
+                width: 100%;
+            }
+            .nav-menu {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+            .nav-item {
+                font-size: 11px;
+                padding: 10px 8px;
+                justify-content: center;
+                text-align: center;
+            }
+            .nav-item span {
+                display: none;
+            }
+            .shop-grid, .inventory-grid, .quest-grid, .hell-levels-grid, .crime-grid {
+                grid-template-columns: 1fr;
+            }
+            .diem-vuong-widget {
+                bottom: 10px;
+                right: 10px;
+                padding: 6px 12px 6px 8px;
+            }
+            .diem-vuong-avatar {
+                width: 35px;
+                height: 35px;
+                font-size: 18px;
+            }
+            .diem-vuong-status {
+                font-size: 10px;
+            }
+            .diem-vuong-status span {
+                font-size: 12px;
+            }
+        }
+
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 5px;
+            height: 5px;
         }
         ::-webkit-scrollbar-track {
             background: #100405;
@@ -631,7 +708,7 @@
                         </div>
                     </div>
 
-                    <div style="margin-top: 12px; font-size: 11px; text-align: left; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px;">
+                    <div style="margin-top: 10px; font-size: 11px; text-align: left; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px;">
                         Tầng Chỉ Định: <b style="color: var(--accent-red);" id="stat-hell-name">Chưa xếp tầng</b><br>
                         Trạng Thái: <b style="color: #4CAF50;" id="stat-status">Đang Tự Do</b>
                     </div>
@@ -640,11 +717,11 @@
                 <div class="card nav-menu">
                     <div class="nav-item active" onclick="switchTab('tab-tracuu')">1. Tra Cứu Nghiệp Báo <span>❯</span></div>
                     <div class="nav-item" onclick="switchTab('tab-samhoi')">2. 18 Tầng Sám Hối <span>❯</span></div>
-                    <div class="nav-item" onclick="switchTab('tab-nhiemvu')">3. Tích Điểm Công Đức (Nhiệm Vụ) <span>❯</span></div>
+                    <div class="nav-item" onclick="switchTab('tab-nhiemvu')">3. Tích Điểm Công Đức <span>❯</span></div>
                     <div class="nav-item" onclick="switchTab('tab-cuahang')">4. Cửa Hàng Công Đức <span>❯</span></div>
-                    <div class="nav-item" onclick="switchTab('tab-kho')">5. Kho Vật Phẩm Công Đức <span>❯</span></div>
+                    <div class="nav-item" onclick="switchTab('tab-kho')">5. Kho Vật Phẩm <span>❯</span></div>
                     <div class="nav-item" onclick="switchTab('tab-dauthai')">6. Đăng Ký Đầu Thai <span>❯</span></div>
-                    <div class="nav-item" onclick="switchTab('tab-sonamtao')">7. Sổ Nam Tào (Bảng Vàng) <span>❯</span></div>
+                    <div class="nav-item" onclick="switchTab('tab-sonamtao')">7. Sổ Nam Tào <span>❯</span></div>
                 </div>
             </div>
 
@@ -661,7 +738,7 @@
                     <div id="crime-list-container"></div>
 
                     <div class="custom-crime-box">
-                        <input type="text" id="custom-crime-input" placeholder="Tự điền nghiệp báo khác của bạn..." style="flex: 1;">
+                        <input type="text" id="custom-crime-input" placeholder="Tự điền nghiệp báo khác của bạn...">
                         <input type="number" id="custom-karma-input" placeholder="+Karma" style="width: 90px;" value="15">
                         <button class="btn-header" onclick="addCustomCrime()">Thêm Nghiệp</button>
                     </div>
@@ -719,18 +796,20 @@
                 <!-- TAB 7: SỔ NAM TÀO -->
                 <div id="tab-sonamtao" class="card view-panel">
                     <div class="section-title">📜 SỔ NAM TÀO (DANH SÁCH TỘI NHÂN)</div>
-                    <table class="table-custom">
-                        <thead>
-                            <tr>
-                                <th>Tên Tội Nhân</th>
-                                <th>Tổng Nghiệp</th>
-                                <th>Tầng Địa Ngục</th>
-                                <th>Công Đức</th>
-                                <th>Trạng Thái</th>
-                            </tr>
-                        </thead>
-                        <tbody id="namtao-table-body"></tbody>
-                    </table>
+                    <div class="table-container">
+                        <table class="table-custom">
+                            <thead>
+                                <tr>
+                                    <th>Tên Tội Nhân</th>
+                                    <th>Tổng Nghiệp</th>
+                                    <th>Tầng Địa Ngục</th>
+                                    <th>Công Đức</th>
+                                    <th>Trạng Thái</th>
+                                </tr>
+                            </thead>
+                            <tbody id="namtao-table-body"></tbody>
+                        </table>
+                    </div>
                 </div>
 
             </div>
@@ -925,7 +1004,6 @@
             { id: 'item_10', name: '🌌 Thẻ Chuyển Sinh Tu Tiên', desc: 'Cấp bậc tối thượng! Bay thẳng lên tiên giới phi thăng bất tử.', cost: 1000000, icon: '🌌', effect: 'THỦ TỤC HOÀN TẤT! Cổng Tiên Giới rộng mở, bạn phi thăng thành Tiên!' }
         ];
 
-        // DANH SÁCH TỰ CHỌN ĐẦU THAI KÈM ICON & CÔNG ĐỨC
         const reincarnateOptions = [
             { id: 0, title: "Tỷ Phú Trúng Số Kiếp Sau", cost: 500, icon: "💎", desc: "Bạn sẽ được sinh ra ở vạch đích, sở hữu tập đoàn nghìn tỷ, tiền tiêu không cần nhìn giá!" },
             { id: 1, title: "Mèo Hoàng Gia Trâm Anh Thế Gia", cost: 200, icon: "🐱", desc: "Không deadline, không học hành, ăn bò Wagyu và được hầu hạ cả ngày!" },
@@ -973,9 +1051,9 @@
             const container = document.getElementById('crime-list-container');
             let html = '';
             const sections = [
-                { title: "📌 NGHIỆP BÁO SƯƠNG SƯƠNG", data: crimeDatabase.short },
-                { title: "⚡ NGHIỆP BÁO THƯỜNG GẶP", data: crimeDatabase.medium },
-                { title: "🔥 NGHIỆP BÁO NẶNG 35 TỘI NẶNG ĐÔ", data: crimeDatabase.long }
+                { title: "📌 NGHIỆP BÁO NGẮN (3 - 5 CHỮ) - 15 TỘI BẢN QUYỀN", data: crimeDatabase.short },
+                { title: "⚡ NGHIỆP BÁO TRUNG BÌNH (5 - 10 CHỮ) - 25 TỘI THƯỜNG GẶP", data: crimeDatabase.medium },
+                { title: "🔥 NGHIỆP BÁO NẶNG (TRÊN 10 CHỮ) - 35 TỘI NẶNG ĐÔ", data: crimeDatabase.long }
             ];
 
             sections.forEach(sec => {
@@ -1005,7 +1083,7 @@
                         <div style="font-size: 30px; margin-bottom: 5px;">${h.icon}</div>
                         <h4>Tầng ${h.level}: ${h.name}</h4>
                         <p>${h.desc}</p>
-                        <span style="font-size: 10px; color: var(--accent-gold); display: block; margin-top: 8px;">👉 Bấm vào để xem hình phạt</span>
+                        <span style="font-size: 10px; color: var(--accent-gold); display: block; margin-top: 8px;">👉 Bấm vào xem hình phạt</span>
                     </div>
                 `;
             });
@@ -1018,10 +1096,10 @@
             questDatabase.forEach(q => {
                 html += `
                     <div class="quest-card" onclick="startQuestModal(${q.id})">
-                        <div style="font-size: 35px; margin-bottom: 8px;">${q.icon}</div>
+                        <div style="font-size: 32px; margin-bottom: 6px;">${q.icon}</div>
                         <h4>${q.title}</h4>
                         <p>${q.desc}</p>
-                        <div style="font-size: 11px; color: var(--accent-gold); font-weight: bold; margin-bottom: 10px;">⏱️ Thời gian: ${q.duration}s</div>
+                        <div style="font-size: 11px; color: var(--accent-gold); font-weight: bold; margin-bottom: 8px;">⏱️ ${q.duration}s</div>
                         <button class="btn-header" style="width: 100%;">+${q.merit} Công Đức</button>
                     </div>
                 `;
@@ -1037,7 +1115,7 @@
                 html += `
                     <div class="shop-item" style="${isTuTien ? 'border-color: var(--accent-gold); background: rgba(255, 183, 3, 0.05);' : ''}">
                         <div>
-                            <div style="font-size: 32px; margin-bottom: 5px;">${item.icon}</div>
+                            <div style="font-size: 30px; margin-bottom: 5px;">${item.icon}</div>
                             <h4 style="${isTuTien ? 'color: #fff;' : ''}">${item.name}</h4>
                             <p>${item.desc}</p>
                         </div>
@@ -1052,7 +1130,7 @@
             const container = document.getElementById('inventory-list-container');
             let keys = Object.keys(currentUser.inventory);
             if (keys.length === 0) {
-                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">🎒 Kho của bạn đang trống! Hãy sang tab "Cửa Hàng Công Đức" để mua vật phẩm.</div>`;
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 30px; font-size: 12px;">🎒 Kho trống! Hãy sang Cửa Hàng mua vật phẩm.</div>`;
                 return;
             }
 
@@ -1065,12 +1143,12 @@
                         html += `
                             <div class="inventory-item">
                                 <div>
-                                    <div style="font-size: 35px; margin-bottom: 5px;">${item.icon}</div>
+                                    <div style="font-size: 32px; margin-bottom: 5px;">${item.icon}</div>
                                     <h4>${item.name}</h4>
                                     <p>${item.desc}</p>
                                     <div style="font-size: 11px; color: var(--accent-gold); font-weight: bold; margin-bottom: 8px;">Số lượng: ${qty}</div>
                                 </div>
-                                <button class="btn-action" style="margin-top:0;" onclick="useInventoryItem('${item.id}')">SỬ DỤNG</button>
+                                <button class="btn-action" style="margin-top:0; padding:8px;" onclick="useInventoryItem('${item.id}')">SỬ DỤNG</button>
                             </div>
                         `;
                     }
@@ -1088,7 +1166,6 @@
             select.innerHTML = html;
         }
 
-        // XỬ LÝ ĐĂNG KÝ ĐẦU THAI VỚI KẾT QUẢ NGẪU NHIÊN
         function submitReincarnation() {
             if (currentUser.karma > 0) {
                 alert("❌ Bạn vẫn còn Điểm Karma Nghiệp Báo! Hãy sang tab '18 Tầng Sám Hối' để trả hết nghiệp trước khi xin đầu thai.");
@@ -1100,7 +1177,7 @@
             if (!opt) return;
 
             if (currentUser.merit < opt.cost) {
-                alert(`❌ Bạn chưa đủ Công Đức cho nguyện vọng này! Cần ${opt.cost} Công Đức (Bạn hiện có: ${currentUser.merit}).`);
+                alert(`❌ Bạn chưa đủ Công Đức cho nguyện vọng này! Cần ${opt.cost} Công Đức (Hiện có: ${currentUser.merit}).`);
                 return;
             }
 
@@ -1117,10 +1194,9 @@
                 btn.disabled = false;
                 btn.innerText = "🌀 XÁC NHẬN NGUYỆN VỌNG ĐẦU THAI 🌀";
 
-                let rand = Math.random(); // Ngẫu nhiên 0 -> 1
+                let rand = Math.random();
 
                 if (rand < 0.7) {
-                    // 70% DUYỆT THÀNH CÔNG
                     currentUser.merit -= opt.cost;
                     playHellSound();
                     updateUI();
@@ -1135,18 +1211,16 @@
                     document.getElementById('reincarnate-result-modal').classList.add('active');
 
                 } else if (rand < 0.9) {
-                    // 20% TRẠNG THÁI CHỜ DUYỆT
-                    document.getElementById('reincarnate-status-title').innerText = "⏳ TRẠNG THÁI: ĐANG TRONG HÀNG CHỜ DUYỆT";
+                    document.getElementById('reincarnate-status-title').innerText = "⏳ TRẠNG THÁI: CHỜ DUYỆT";
                     document.getElementById('reincarnate-status-title').style.color = "var(--accent-gold)";
-                    document.getElementById('reincarnate-status-desc').innerText = "Hồ sơ của bạn quá đông người đăng ký cùng lúc. Hãy thử bấm đăng ký lại sau ít phút!";
-                    alert("⏳ Hồ sơ của bạn hiện đang nằm trong danh sách CHỜ DUYỆT của Phán Quan!");
+                    document.getElementById('reincarnate-status-desc').innerText = "Hồ sơ đang trong hàng chờ, hãy thử lại sau ít phút!";
+                    alert("⏳ Hồ sơ của bạn đang nằm trong danh sách CHỜ DUYỆT của Phán Quan!");
 
                 } else {
-                    // 10% BỊ TỪ CHỐI
                     document.getElementById('reincarnate-status-title').innerText = "❌ TRẠNG THÁI: TỪ CHỐI DUYỆT";
                     document.getElementById('reincarnate-status-title').style.color = "var(--accent-red)";
-                    document.getElementById('reincarnate-status-desc').innerText = "Phán Quan nhận thấy nhân duyên kiếp này chưa đủ! Vui lòng tích thêm điểm Công Đức.";
-                    alert("❌ Nguyện vọng đầu thai của bạn bị TỪ CHỐI! Vui lòng thử lại sau.");
+                    document.getElementById('reincarnate-status-desc').innerText = "Phán Quan nhận thấy nhân duyên chưa đủ! Vui lòng tích thêm Công Đức.";
+                    alert("❌ Nguyện vọng đầu thai bị TỪ CHỐI!");
                 }
 
             }, 2500);
@@ -1162,9 +1236,9 @@
                 playHellSound();
                 updateUI();
                 renderInventory();
-                alert(`🎊 Đã mua thành công: ${item.name}! Vật phẩm đã được chuyển vào Kho.`);
+                alert(`🎊 Đã mua thành công: ${item.name}!`);
             } else {
-                alert("❌ Không đủ điểm Công Đức! Hãy sang tab 'Tích Điểm Công Đức' để hoàn thành nhiệm vụ.");
+                alert("❌ Không đủ điểm Công Đức!");
             }
         }
 
@@ -1182,7 +1256,6 @@
             playHellSound();
             updateUI();
             renderInventory();
-
             alert(`✨ [SỬ DỤNG VẬT PHẨM: ${item.name}]\n\n${item.effect}`);
         }
 
@@ -1196,7 +1269,7 @@
             document.getElementById('quest-modal-icon').innerText = quest.icon;
             
             const btn = document.getElementById('quest-modal-btn');
-            btn.innerText = "⏳ ĐANG TIẾN HÀNH NHIỆM VỤ...";
+            btn.innerText = "⏳ ĐANG TIẾN HÀNH...";
             btn.disabled = true;
 
             const timerBar = document.getElementById('quest-timer-bar');
@@ -1217,12 +1290,12 @@
                 timerBar.style.width = pct + '%';
                 
                 let secondsLeft = Math.ceil((totalMs - elapsed) / 1000);
-                timerText.innerText = `Đang thực hiện... (Còn ${secondsLeft}s / Tổng ${quest.duration}s)`;
+                timerText.innerText = `Còn ${secondsLeft}s / Tổng ${quest.duration}s`;
 
                 if (elapsed >= totalMs) {
                     clearInterval(questTimerInterval);
-                    timerText.innerText = "🎉 HOÀN THÀNH NHIỆM VỤ!";
-                    btn.innerText = `LÃNH NGHỆ +${quest.merit} CÔNG ĐỨC`;
+                    timerText.innerText = "🎉 HOÀN THÀNH!";
+                    btn.innerText = `NHẬN +${quest.merit} CÔNG ĐỨC`;
                     btn.disabled = false;
                     btn.onclick = finishQuest;
                 }
@@ -1234,7 +1307,7 @@
                 currentUser.merit += currentActiveQuest.merit;
                 playHellSound();
                 updateUI();
-                alert(`🎉 Bạn đã nhận thành công +${currentActiveQuest.merit} Điểm Công Đức!`);
+                alert(`🎉 Nhận thành công +${currentActiveQuest.merit} Công Đức!`);
                 closeModal('quest-modal');
             }
         }
@@ -1268,7 +1341,7 @@
                 updateUI();
 
                 if (currentUser.karma === 0) {
-                    alert("🎉 Bạn đã xóa hết toàn bộ điểm Karma nghiệp báo! Chuẩn bị đầu thai.");
+                    alert("🎉 Đã xóa hết toàn bộ điểm Karma nghiệp báo! Chuẩn bị đầu thai.");
                     closeModal('punishment-modal');
                 }
             } else {
@@ -1308,7 +1381,7 @@
             else currentUser.assignedHell = "Tầng 18: Đao Cứu (Cực Nặng)";
 
             updateUI();
-            alert(`Đã thẩm định! Tổng Karma của ${currentUser.name}: ${currentUser.karma}. Xếp vào ${currentUser.assignedHell}`);
+            alert(`Tổng Karma của ${currentUser.name}: ${currentUser.karma}. Xếp vào ${currentUser.assignedHell}`);
         }
 
         function updateUserName() {
@@ -1346,7 +1419,7 @@
         }
 
         function showCCCD() {
-            alert(`🪪 THẺ CĂN CƯỚC ÂM PHỦ 4.0\nHọ Tên: ${currentUser.name}\nNghiệp Tích Lũy: ${currentUser.karma}\nCông Đức: ${currentUser.merit}\nTầng Xếp Hạng: ${currentUser.assignedHell}`);
+            alert(`🪪 THẺ CĂN CƯỚC ÂM PHỦ 4.0\nHọ Tên: ${currentUser.name}\nNghiệp: ${currentUser.karma}\nCông Đức: ${currentUser.merit}\nTầng: ${currentUser.assignedHell}`);
         }
 
         let audioCtx = null;
@@ -1386,7 +1459,7 @@
             window.addEventListener('resize', resize);
             resize();
 
-            for (let i = 0; i < 60; i++) {
+            for (let i = 0; i < 50; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
