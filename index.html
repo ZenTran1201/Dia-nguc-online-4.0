@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dia Nguc Online v11.0 - Custom Artwork Edition</title>
+    <title>Dia Nguc Online v12.0 - Ultimate Custom Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #050203;
-            --panel-bg: rgba(20, 8, 10, 0.95);
+            --panel-bg: rgba(22, 10, 12, 0.92);
             --border-red: #5a1118;
             --accent-red: #e6222b;
             --accent-gold: #ffb703;
@@ -32,7 +32,7 @@
             color: var(--text-light);
         }
 
-        /* LOGIN SCREEN */
+        /* MÀN HÌNH CHỌN CHIBI LINH HỒN */
         #login-screen {
             position: fixed;
             top: 0;
@@ -106,51 +106,7 @@
             box-shadow: 0 0 10px rgba(255, 183, 3, 0.5);
         }
 
-        .login-input-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .login-input-group label {
-            display: block;
-            font-size: 11px;
-            color: var(--accent-gold);
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .login-input-group input {
-            width: 100%;
-            padding: 12px;
-            background: #0a0304;
-            border: 1px solid var(--border-red);
-            border-radius: 8px;
-            color: #fff;
-            outline: none;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .btn-enter-hell {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #e6222b, #800f14);
-            border: none;
-            border-radius: 10px;
-            color: #fff;
-            font-weight: 800;
-            font-size: 14px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(230, 34, 43, 0.5);
-            transition: all 0.3s;
-        }
-
-        .btn-enter-hell:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(230, 34, 43, 0.8);
-        }
-
-        /* 3D WORLD CANVAS */
+        /* CANVAS ĐỊA NGỤC 3D NẠP ẢNH NỀN GỐC */
         #world-canvas {
             position: absolute;
             top: 0;
@@ -160,160 +116,189 @@
             z-index: 1;
         }
 
-        /* HUD TOP LEFT */
-        .hud-top-left {
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            z-index: 100;
+        /* GIAO DIỆN CHÍNH (ĐẶT LÊN TRÊN CANVAS) */
+        .app-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px;
+            height: 100vh;
             display: flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--panel-bg);
-            padding: 10px 16px;
-            border-radius: 12px;
-            border: 1px solid var(--border-red);
-            backdrop-filter: blur(8px);
+            flex-direction: column;
+            pointer-events: none; /* Cho phép click xuyên qua vùng trống xuống canvas */
         }
 
-        .hud-avatar {
-            width: 45px;
-            height: 45px;
+        .app-container * {
+            pointer-events: auto; /* Các thành phần giao diện vẫn bấm được bình thường */
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-red);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--accent-red);
+            font-size: 22px;
+            letter-spacing: 2px;
+        }
+
+        .header-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-header {
+            background: rgba(230, 34, 43, 0.15);
+            border: 1px solid var(--accent-red);
+            color: var(--text-light);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 15px;
+            flex: 1;
+            overflow: hidden;
+            padding-bottom: 20px;
+        }
+
+        .card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-red);
+            border-radius: 12px;
+            padding: 15px;
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar {
+            gap: 12px;
+        }
+
+        .profile-box {
+            text-align: center;
+            border-bottom: 1px dashed var(--border-red);
+            padding-bottom: 12px;
+        }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
             background: #2a080c;
             border: 2px solid var(--accent-gold);
             border-radius: 50%;
+            margin: 0 auto 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 28px;
         }
 
-        /* HUD TOP RIGHT */
-        .hud-top-right {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            z-index: 100;
+        .status-metric {
+            margin-top: 8px;
+            font-size: 12px;
+        }
+
+        .metric-row {
             display: flex;
-            gap: 8px;
+            justify-content: space-between;
+            margin: 4px 0;
         }
 
-        .btn-icon-hud {
-            padding: 8px 14px;
-            background: var(--panel-bg);
-            border: 1px solid var(--border-red);
-            color: var(--accent-gold);
-            border-radius: 10px;
+        .progress-bar {
+            height: 6px;
+            background: #220a0d;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 3px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-red);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid transparent;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
-            font-weight: bold;
-            backdrop-filter: blur(8px);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .btn-icon-hud:hover {
-            border-color: var(--accent-gold);
-            background: rgba(230, 34, 43, 0.2);
+        .nav-item:hover, .nav-item.active {
+            background: rgba(230, 34, 43, 0.15);
+            border-color: var(--accent-red);
+            color: #fff;
         }
 
-        /* NÚT TƯƠNG TÁC VÀNG TRUNG TÂM */
-        .interaction-center {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
+        .main-content {
+            overflow-y: auto;
         }
 
-        .btn-interact-gold {
-            background: linear-gradient(135deg, #ffb703, #d48800);
-            border: 2px solid #fff;
-            color: #000;
-            padding: 12px 28px;
-            border-radius: 30px;
-            font-weight: 900;
-            font-size: 13px;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(255, 183, 3, 0.6);
+        .view-panel {
+            display: none;
+        }
+
+        .view-panel.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 16px;
+            color: var(--accent-gold);
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
-            animation: pulseBtn 1.5s infinite;
-        }
-
-        @keyframes pulseBtn {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        /* MODAL KHUNG CHỨC NĂNG */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 2000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(6px);
-            padding: 15px;
-        }
-
-        .modal-overlay.active { display: flex; }
-
-        .feature-modal-box {
-            background: rgba(22, 10, 12, 0.98);
-            border: 2px solid var(--border-red);
-            border-radius: 16px;
-            width: 100%;
-            max-width: 950px;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 25px;
-            position: relative;
-            box-shadow: 0 0 40px rgba(230, 34, 43, 0.6);
-        }
-
-        .modal-close-btn {
-            position: absolute;
-            top: 15px;
-            right: 18px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .modal-close-btn:hover { color: var(--accent-red); }
-
-        .section-title {
-            font-size: 18px;
-            color: var(--accent-gold);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
             border-bottom: 1px solid rgba(255, 183, 3, 0.2);
-            padding-bottom: 8px;
+            padding-bottom: 6px;
         }
 
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .input-group label {
             display: block;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .input-group input, .input-group select {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             background: #120507;
             border: 1px solid var(--border-red);
             border-radius: 6px;
@@ -322,108 +307,140 @@
         }
 
         .crime-group-title {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--accent-red);
-            margin: 15px 0 8px;
+            margin: 12px 0 6px;
             font-weight: bold;
         }
 
         .crime-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 10px;
-            max-height: 350px;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 8px;
+            max-height: 280px;
             overflow-y: auto;
-            padding-right: 5px;
+            padding-right: 4px;
         }
 
         .crime-item {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(90, 17, 24, 0.5);
-            padding: 10px;
+            padding: 8px;
             border-radius: 6px;
             display: flex;
             align-items: flex-start;
-            gap: 10px;
+            gap: 8px;
             cursor: pointer;
-            font-size: 12px;
-        }
-
-        .crime-item:hover {
-            border-color: var(--accent-red);
-            background: rgba(230, 34, 43, 0.05);
+            font-size: 11px;
         }
 
         .custom-crime-box {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 8px;
+            margin-top: 10px;
         }
 
         .btn-action {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background: linear-gradient(135deg, #e6222b, #800f14);
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             color: #fff;
             font-weight: 700;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 12px;
             box-shadow: 0 4px 15px rgba(230, 34, 43, 0.4);
         }
 
-        .btn-action:hover { transform: translateY(-2px); }
-
-        .hell-levels-grid, .quest-grid, .shop-grid, .inventory-grid {
+        .hell-levels-grid, .shop-grid, .inventory-grid, .quest-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-            gap: 15px;
-            max-height: 500px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            max-height: 400px;
             overflow-y: auto;
-            padding-right: 5px;
         }
 
-        .hell-level-card, .quest-card, .shop-item, .inventory-item {
+        .hell-level-card, .shop-item, .inventory-item, .quest-card {
             background: rgba(10, 3, 4, 0.85);
             border: 1px solid var(--border-red);
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .hell-level-card:hover, .quest-card:hover {
-            border-color: var(--accent-gold);
-            transform: scale(1.02);
         }
 
         .table-custom {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12px;
-            margin-top: 10px;
+            font-size: 11px;
+            margin-top: 8px;
         }
 
         .table-custom th, .table-custom td {
-            padding: 10px;
+            padding: 8px;
             border: 1px solid var(--border-red);
             text-align: left;
         }
 
         .table-custom th { background: rgba(230, 34, 43, 0.2); color: var(--accent-gold); }
 
+        /* MODAL CHUNG */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 4000;
+            backdrop-filter: blur(6px);
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-box {
+            background: rgba(22, 10, 12, 0.98);
+            border: 2px solid var(--accent-red);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 450px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 30px rgba(230, 34, 43, 0.7);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .modal-icon-display {
+            font-size: 60px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
         .timer-container {
             width: 100%;
             background: #110406;
             border: 1px solid var(--border-red);
-            border-radius: 10px;
-            height: 16px;
+            border-radius: 8px;
+            height: 12px;
             overflow: hidden;
-            margin: 15px 0 8px;
+            margin: 10px 0;
         }
 
         .timer-bar {
@@ -433,62 +450,31 @@
             transition: width 0.1s linear;
         }
 
-        .timer-text {
-            font-size: 12px;
-            font-weight: bold;
-            color: var(--accent-gold);
-            margin-bottom: 10px;
-        }
-
         /* WIDGET DIÊM VƯƠNG */
         .diem-vuong-widget {
             position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 100;
+            bottom: 20px;
+            right: 20px;
+            z-index: 20;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             background: rgba(18, 5, 7, 0.92);
             border: 2px solid var(--accent-red);
             border-radius: 50px;
-            padding: 10px 20px 10px 12px;
-            box-shadow: 0 0 25px rgba(230, 34, 43, 0.6);
+            padding: 8px 16px 8px 10px;
+            box-shadow: 0 0 20px rgba(230, 34, 43, 0.6);
             backdrop-filter: blur(8px);
-        }
-
-        .diem-vuong-avatar {
-            width: 48px;
-            height: 48px;
-            background: #2a0408;
-            border: 2px solid var(--accent-gold);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            position: relative;
-        }
-
-        .live-dot {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 12px;
-            height: 12px;
-            background: #00ff66;
-            border: 2px solid #000;
-            border-radius: 50%;
         }
     </style>
 </head>
 <body>
 
-    <!-- SCREEN 1: LOGIN & CHỌN NHÂN VẬT CHIBI DỰA TRÊN ẢNH GỐC -->
+    <!-- MÀN HÌNH CHỌN CHIBI LINH HỒN BAN ĐẦU -->
     <div id="login-screen">
         <div class="login-card">
             <h2>👻 CHIBI ÂM PHỦ ONLINE</h2>
-            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">Chọn linh hồn áo bào phát sáng</p>
+            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Chọn linh hồn áo bào phát sáng</p>
 
             <div class="avatar-preview-box" id="avatar-display" style="color: #ffffff;">👻</div>
 
@@ -505,161 +491,175 @@
                 <input type="text" id="input-username" value="Tội Nhân Vô Danh">
             </div>
 
-            <button class="btn-enter-hell" onclick="enterHellWorld()">🔥 NHẬP CÕI ÂM 3D 🔥</button>
+            <button class="btn-action" onclick="enterHellWorld()" style="margin-top: 5px;">🔥 NHẬP CÕI ÂM 3D 🔥</button>
         </div>
     </div>
 
-    <!-- 3D WORLD CANVAS NẠP ẢNH GỐC -->
+    <!-- CANVAS ĐỊA NGỤC NẠP ẢNH GỐC HOÀNH TRÁNG -->
     <canvas id="world-canvas"></canvas>
 
-    <!-- HUD TOP LEFT -->
-    <div class="hud-top-left">
-        <div class="hud-avatar" id="hud-avatar-icon">👻</div>
-        <div>
-            <div style="font-size: 13px; font-weight: bold; color: var(--accent-gold);" id="hud-username">Tội Nhân Vô Danh</div>
-            <div style="font-size: 10px; color: var(--text-muted);">
-                Tầng: <span id="hud-hell-name" style="color:var(--accent-red)">Chưa Xếp Tầng</span> | Karma: <b id="hud-karma" style="color:var(--accent-red)">0</b> | Công Đức: <b id="hud-merit" style="color:var(--accent-gold)">25</b>
+    <!-- GIAO DIỆN QUẢN LÝ TÍNH NĂNG CHÍNH -->
+    <div class="app-container" id="main-app-ui" style="display: none;">
+        <header>
+            <div class="logo">
+                <h1>🔥 DIA NGUC ONLINE v12.0</h1>
+                <p style="font-size: 10px; color: var(--text-muted);">So Nam Tao Digital System • Am Phu 4.0</p>
+            </div>
+            <div class="header-btns">
+                <button class="btn-header" onclick="toggleAudio()">🔊 Âm Thanh: <span id="audio-status">BẬT</span></button>
+                <button class="btn-header" onclick="showCCCD()">🪪 Thẻ Căn Cước</button>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <div class="sidebar">
+                <div class="card profile-box">
+                    <div class="avatar" id="sidebar-avatar-icon">👻</div>
+                    <h3 id="user-display-name" style="font-size: 14px;">Tội Nhân Vô Danh</h3>
+                    <p style="font-size: 10px; color: var(--text-muted);" id="user-id">ID: #8619-HELL</p>
+                    
+                    <div class="status-metric">
+                        <div class="metric-row">
+                            <span>Điểm Nghiệp:</span>
+                            <span style="color: var(--accent-red); font-weight: bold;" id="stat-karma">0</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Công Đức:</span>
+                            <span style="color: var(--accent-gold); font-weight: bold;" id="stat-merit">25</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="karma-bar"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 8px; font-size: 10px; text-align: left; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 4px;">
+                        Tầng: <b style="color: var(--accent-red);" id="stat-hell-name">Chưa xếp tầng</b>
+                    </div>
+                </div>
+
+                <div class="card nav-menu">
+                    <div class="nav-item active" onclick="switchTab('tab-tracuu')">1. Tra Cứu Nghiệp Báo <span>❯</span></div>
+                    <div class="nav-item" onclick="switchTab('tab-samhoi')">2. 18 Tầng Sám Hối <span>❯</span></div>
+                    <div class="nav-item" onclick="switchTab('tab-nhiemvu')">3. Tích Điểm Công Đức <span>❯</span></div>
+                    <div class="nav-item" onclick="switchTab('tab-cuahang')">4. Cửa Hàng Công Đức <span>❯</span></div>
+                    <div class="nav-item" onclick="switchTab('tab-kho')">5. Kho Vật Phẩm <span>❯</span></div>
+                    <div class="nav-item" onclick="switchTab('tab-dauthai')">6. Đăng Ký Đầu Thai <span>❯</span></div>
+                    <div class="nav-item" onclick="switchTab('tab-sonamtao')">7. Sổ Nam Tào <span>❯</span></div>
+                </div>
+            </div>
+
+            <div class="main-content card">
+                <!-- TAB 1: TRA CỨU NGHIỆP BÁO ĐẦY ĐỦ 100% -->
+                <div id="tab-tracuu" class="view-panel active">
+                    <div class="section-title">⚖️ MÁY TÍNH SỐ ĐO NGHIỆP BÁO CƯ DÂN MẠNG</div>
+                    <div class="input-group">
+                        <label>DANH XƯNG TỘI NHÂN:</label>
+                        <input type="text" id="input-name" placeholder="Nhập tên để Nam Tào ghi sổ..." onchange="updateUserName()">
+                    </div>
+                    <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 5px;">TÍCH CHỌN CÁC TỘI DANH BẠN ĐÃ LỠ PHẠM PHẢI:</p>
+                    <div id="crime-list-container"></div>
+                    <div class="custom-crime-box">
+                        <input type="text" id="custom-crime-input" placeholder="Tự điền nghiệp báo khác..." style="flex: 1;">
+                        <input type="number" id="custom-karma-input" placeholder="+Karma" style="width: 70px;" value="15">
+                        <button class="btn-header" onclick="addCustomCrime()">Thêm</button>
+                    </div>
+                    <button class="btn-action" onclick="calculateKarma()">🔥 TÍNH TỔNG NGHIỆP & XẾP TẦNG ĐỊA NGỤC 🔥</button>
+                </div>
+
+                <!-- TAB 2: 18 TẦNG SÁM HỐI -->
+                <div id="tab-samhoi" class="view-panel">
+                    <div class="section-title">🔥 18 TẦNG ĐỊA NGỤC (SÁM HỐI & CẢI TẠO)</div>
+                    <div class="hell-levels-grid" id="hell-levels-container"></div>
+                </div>
+
+                <!-- TAB 3: NHIỆM VỤ TÍCH ĐIỂM -->
+                <div id="tab-nhiemvu" class="view-panel">
+                    <div class="section-title">⭐ NHIỆM VỤ TÍCH ĐIỂM CÔNG ĐỨC ÂM PHỦ</div>
+                    <div class="quest-grid" id="quest-list-container"></div>
+                </div>
+
+                <!-- TAB 4: CỬA HÀNG -->
+                <div id="tab-cuahang" class="view-panel">
+                    <div class="section-title">🪙 CỬA HÀNG ĐỔI CÔNG ĐỨC 4.0</div>
+                    <div class="shop-grid" id="shop-items-container"></div>
+                </div>
+
+                <!-- TAB 5: KHO VẬT PHẨM -->
+                <div id="tab-kho" class="view-panel">
+                    <div class="section-title">🎒 KHO VẬT PHẨM CÔNG ĐỨC SỞ HỮU</div>
+                    <div class="inventory-grid" id="inventory-list-container"></div>
+                </div>
+
+                <!-- TAB 6: ĐẦU THAI -->
+                <div id="tab-dauthai" class="view-panel">
+                    <div class="section-title">🌀 NGUYỆN VỌNG ĐẦU THAI KIẾP SAU</div>
+                    <div class="input-group">
+                        <label>LỰA CHỌN KIẾP SAU:</label>
+                        <select id="reincarnate-select"></select>
+                    </div>
+                    <div id="reincarnate-status-box" style="margin-top: 10px; padding: 10px; border: 1px dashed var(--border-red); border-radius: 6px; text-align: center; display: none;">
+                        <div id="reincarnate-status-title" style="font-weight: bold; font-size: 13px; color: var(--accent-gold);"></div>
+                        <div id="reincarnate-status-desc" style="font-size: 11px; color: var(--text-muted); margin-top: 3px;"></div>
+                    </div>
+                    <button class="btn-action" id="btn-submit-reincarnation" onclick="submitReincarnation()">🌀 XÁC NHẬN ĐẦU THAI 🌀</button>
+                </div>
+
+                <!-- TAB 7: SỔ NAM TÀO -->
+                <div id="tab-sonamtao" class="view-panel">
+                    <div class="section-title">📜 SỔ NAM TÀO (DANH SÁCH TỘI NHÂN)</div>
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Tên Tội Nhân</th>
+                                <th>Tổng Nghiệp</th>
+                                <th>Tầng Địa Ngục</th>
+                                <th>Công Đức</th>
+                                <th>Trạng Thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="namtao-table-body"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-
-    <!-- HUD TOP RIGHT -->
-    <div class="hud-top-right">
-        <button class="btn-icon-hud" onclick="showCCCD()">🪪 Thẻ Căn Cước</button>
-        <button class="btn-icon-hud" onclick="alert('Dùng phím WASD hoặc click chuột lên bản đồ địa ngục để di chuyển linh hồn chibi đến gần các công trình và nhấn E hoặc Nút Vàng để tương tác!')">❓ Hướng Dẫn</button>
-    </div>
-
-    <!-- NÚT TƯƠNG TÁC VÀNG TRUNG TÂM -->
-    <div class="interaction-center">
-        <button class="btn-interact-gold" id="btn-interact" onclick="triggerZoneAction()">
-            <span>✨</span> <span id="interact-text">Di chuyển linh hồn đến công trình 3D...</span>
-        </button>
     </div>
 
     <!-- WIDGET DIÊM VƯƠNG -->
     <div class="diem-vuong-widget">
-        <div class="diem-vuong-avatar">
-            👹
-            <div class="live-dot"></div>
-        </div>
-        <div class="diem-vuong-info">
-            <div class="diem-vuong-title">📢 DIÊM VƯƠNG THÔNG BÁO</div>
-            <div class="diem-vuong-status">
-                Đang có <span id="active-sinners-count">1,248</span> người cùng trả nghiệp
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL HIỂN THỊ CÁC TÍNH NĂNG -->
-    <div class="modal-overlay" id="feature-modal">
-        <div class="feature-modal-box">
-            <button class="modal-close-btn" onclick="closeFeatureModal()">✕</button>
-            
-            <!-- 1. TRA CỨU NGHIỆP BÁO -->
-            <div id="mod-tracuu" class="feature-content" style="display: none;">
-                <div class="section-title">⚖️ MÁY TÍNH SỐ ĐO NGHIỆP BÁO CƯ DÂN MẠNG</div>
-                <div class="input-group">
-                    <label>DANH XƯNG TỘI NHÂN (HỌ & TÊN / NICKNAME):</label>
-                    <input type="text" id="input-name" placeholder="Nhập tên để Nam Tào ghi sổ..." onchange="updateUserName()">
-                </div>
-                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">TÍCH CHỌN CÁC TỘI DANH BẠN ĐÃ LỠ PHẠM PHẢI:</p>
-                <div id="crime-list-container"></div>
-                <div class="custom-crime-box">
-                    <input type="text" id="custom-crime-input" placeholder="Tự điền nghiệp báo khác của bạn..." style="flex: 1;">
-                    <input type="number" id="custom-karma-input" placeholder="+Karma" style="width: 90px;" value="15">
-                    <button class="btn-header" style="background:var(--accent-red); border:none; color:#fff; border-radius:6px; padding:0 15px; cursor:pointer;" onclick="addCustomCrime()">Thêm Nghiệp</button>
-                </div>
-                <button class="btn-action" onclick="calculateKarma()">🔥 TÍNH TỔNG NGHIỆP & XẾP TẦNG ĐỊA NGỤC 🔥</button>
-            </div>
-
-            <!-- 2. 18 TẦNG SÁM HỐI -->
-            <div id="mod-samhoi" class="feature-content" style="display: none;">
-                <div class="section-title">🔥 18 TẦNG ĐỊA NGỤC (DANH MỤC SÁM HỐI & CẢI TẠO)</div>
-                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Bấm chọn tầng địa ngục bên dưới để xem hình phạt minh họa và tiến hành sám hối giảm bớt nghiệp báo.</p>
-                <div class="hell-levels-grid" id="hell-levels-container"></div>
-            </div>
-
-            <!-- 3. TÍCH ĐIỂM CÔNG ĐỨC -->
-            <div id="mod-nhiemvu" class="feature-content" style="display: none;">
-                <div class="section-title">⭐ NHIỆM VỤ TÍCH ĐIỂM CÔNG ĐỨC ÂM PHỦ</div>
-                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Chọn một nhiệm vụ bên dưới để thực hiện với hiệu ứng thời gian thực.</p>
-                <div class="quest-grid" id="quest-list-container"></div>
-            </div>
-
-            <!-- 4. CỬA HÀNG CÔNG ĐỨC -->
-            <div id="mod-cuahang" class="feature-content" style="display: none;">
-                <div class="section-title">🪙 CỬA HÀNG ĐỔI CÔNG ĐỨC 4.0</div>
-                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Dùng điểm Công Đức tích lũy để mua vật phẩm hỗ trợ đầu thai hoặc xả nghiệp nhanh.</p>
-                <div class="shop-grid" id="shop-items-container"></div>
-            </div>
-
-            <!-- 5. KHO VẬT PHẨM -->
-            <div id="mod-kho" class="feature-content" style="display: none;">
-                <div class="section-title">🎒 KHO VẬT PHẨM CÔNG ĐỨC SỞ HỮU</div>
-                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Danh sách vật phẩm đã mua. Bấm "SỬ DỤNG" để kích hoạt công dụng.</p>
-                <div class="inventory-grid" id="inventory-list-container"></div>
-            </div>
-
-            <!-- 6. ĐẦU THAI -->
-            <div id="mod-dauthai" class="feature-content" style="display: none;">
-                <div class="section-title">🌀 NGUYỆN VỌNG ĐẦU THAI KIẾP SAU</div>
-                <div class="input-group">
-                    <label>LỰA CHỌN KIẾP SAU THEO CÔNG ĐỨC:</label>
-                    <select id="reincarnate-select"></select>
-                </div>
-                <div id="reincarnate-status-box" style="margin-top: 15px; padding: 15px; border: 1px dashed var(--border-red); border-radius: 8px; text-align: center; display: none;">
-                    <div id="reincarnate-status-title" style="font-weight: bold; font-size: 15px; color: var(--accent-gold);"></div>
-                    <div id="reincarnate-status-desc" style="font-size: 12px; color: var(--text-muted); margin-top: 5px;"></div>
-                </div>
-                <button class="btn-action" id="btn-submit-reincarnation" onclick="submitReincarnation()">🌀 XÁC NHẬN NGUYỆN VỌNG ĐẦU THAI 🌀</button>
-            </div>
-
-            <!-- 7. SỔ NAM TÀO -->
-            <div id="mod-sonamtao" class="feature-content" style="display: none;">
-                <div class="section-title">📜 SỔ NAM TÀO (DANH SÁCH TỘI NHÂN)</div>
-                <table class="table-custom">
-                    <thead>
-                        <tr>
-                            <th>Tên Tội Nhân</th>
-                            <th>Tổng Nghiệp</th>
-                            <th>Tầng Địa Ngục</th>
-                            <th>Công Đức</th>
-                            <th>Trạng Thái</th>
-                        </tr>
-                    </thead>
-                    <tbody id="namtao-table-body"></tbody>
-                </table>
-            </div>
+        <div style="font-size: 24px;">👹</div>
+        <div>
+            <div style="font-size: 10px; color: var(--accent-gold); font-weight: bold;">📢 DIÊM VƯƠNG THÔNG BÁO</div>
+            <div style="font-size: 11px; color: #fff;">Đang có <span id="active-sinners-count" style="color:var(--accent-red); font-weight:bold;">1,248</span> người trả nghiệp</div>
         </div>
     </div>
 
     <!-- MODAL HÌNH PHẠT SÁM HỐI -->
     <div class="modal-overlay" id="punishment-modal">
-        <div class="feature-modal-box" style="max-width: 450px; text-align: center;">
-            <button class="modal-close-btn" onclick="closeModal('punishment-modal')">✕</button>
-            <h3 id="modal-title" style="color: var(--accent-gold); margin-bottom: 8px;">Tầng Địa Ngục</h3>
-            <p id="modal-desc" style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;"></p>
-            <div style="font-size: 70px; margin: 15px 0; cursor: pointer;" id="modal-icon" onclick="triggerPunishmentAction()">🔥</div>
-            <p style="font-size: 11px; color: var(--accent-red); margin-bottom: 15px;">👇 Bấm trực tiếp vào hình phạt bên trên để giảm nghiệp (-5 Karma)!</p>
-            <button class="btn-action" id="modal-btn" onclick="triggerPunishmentAction()">THỰC HIỆN HÌNH PHẠT (-5 KARMA)</button>
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeModal('punishment-modal')">✕</button>
+            <h3 id="modal-title" style="color: var(--accent-gold); margin-bottom: 6px;">Tầng Địa Ngục</h3>
+            <p id="modal-desc" style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;"></p>
+            <div class="modal-icon-display" id="modal-icon" onclick="triggerPunishmentAction()">🔥</div>
+            <p style="font-size: 10px; color: var(--accent-red); margin-bottom: 10px;">👇 Bấm trực tiếp vào hình phạt để giảm nghiệp (-5 Karma)!</p>
+            <button class="btn-action" id="modal-btn" onclick="triggerPunishmentAction()">THỰC HIỆN HÌNH PHẠT</button>
         </div>
     </div>
 
-    <!-- MODAL LÀM NHIỆM VỤ CÓ ĐẾM NGƯỢC -->
+    <!-- MODAL ĐẾM NGƯỢC NHIỆM VỤ -->
     <div class="modal-overlay" id="quest-modal">
-        <div class="feature-modal-box" style="max-width: 420px; text-align: center;">
-            <button class="modal-close-btn" onclick="cancelQuest()">✕</button>
-            <h3 id="quest-modal-title" style="color: var(--accent-gold); margin-bottom: 8px;">Tên Nhiệm Vụ</h3>
-            <p id="quest-modal-desc" style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;"></p>
-            <div style="font-size: 50px; margin: 15px 0;" id="quest-modal-icon">🕯️</div>
+        <div class="modal-box">
+            <button class="modal-close" onclick="cancelQuest()">✕</button>
+            <h3 id="quest-modal-title" style="color: var(--accent-gold); margin-bottom: 6px;">Nhiệm Vụ</h3>
+            <p id="quest-modal-desc" style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;"></p>
+            <div style="font-size: 40px; margin: 10px 0;" id="quest-modal-icon">🕯️</div>
             <div class="timer-container"><div class="timer-bar" id="quest-timer-bar"></div></div>
-            <div class="timer-text" id="quest-timer-text">Đang thực hiện...</div>
+            <div style="font-size: 11px; color: var(--accent-gold); font-weight: bold; margin-bottom: 10px;" id="quest-timer-text">Đang thực hiện...</div>
             <button class="btn-action" id="quest-modal-btn" disabled>ĐANG TIẾN HÀNH...</button>
         </div>
     </div>
 
     <script>
-        // DỮ LIỆU TỘI DANH & HỆ THỐNG
+        // DỮ LIỆU ĐẦY ĐỦ 100% TỘI DANH GỐC
         const crimeDatabase = {
             short: [
                 { text: "Ép uống bia rượu", karma: 20 }, { text: "Chửi sếp sau lưng", karma: 18 },
@@ -684,30 +684,30 @@
 
         const hell18Levels = [
             { level: 1, name: "Bạt Thiệt (Kéo Lưỡi)", desc: "Tội chửi sếp, khách, nói dối.", action: "Kéo Lưỡi Sám Hối", icon: "👅" },
-            { level: 2, name: "Cắt Ngón Tay", desc: "Tội viết sai chính tả, gõ phím khẩu nghiệp.", action: "Chịu Phạt Ngón Tay", icon: "✂️" },
+            { level: 2, name: "Cắt Ngón Tay", desc: "Tội viết sai chính tả, gõ phím.", action: "Chịu Phạt Ngón Tay", icon: "✂️" },
             { level: 3, name: "Cây Băng", desc: "Tội xem tin nhắn không rep.", action: "Đâm Cây Băng Lòng", icon: "🧊" },
             { level: 4, name: "Nghiệt Kính", desc: "Tội sống ảo, sửa ảnh dìm bạn.", action: "Soi Kính Âm Phủ", icon: "🪞" },
-            { level: 5, name: "Chưng Trưng", desc: "Tội ép uống rượu bia, lừa gạt.", action: "Chịu Nồi Nước Sôi", icon: "🏺" },
-            { level: 6, name: "Đồng Trụ", desc: "Tội cắm sừng, thả thính bừa bãi.", action: "Ôm Cột Đồng Nóng", icon: "🛢️" },
-            { level: 7, name: "Bồn Dầu Sôi", desc: "Tội bùng nợ, quỵt tiền ship.", action: "Nhảy Bồn Dầu Trừ Nghiệp", icon: "🔥" },
+            { level: 5, name: "Chưng Trưng", desc: "Tội ép uống rượu bia.", action: "Chịu Nồi Nước Sôi", icon: "🏺" },
+            { level: 6, name: "Đồng Trụ", desc: "Tội cắm sừng, thả thính.", action: "Ôm Cột Đồng Nóng", icon: "🛢️" },
+            { level: 7, name: "Bồn Dầu Sôi", desc: "Tội bùng nợ, quỵt ship.", action: "Nhảy Bồn Dầu", icon: "🔥" },
             { level: 8, name: "Núi Băng", desc: "Tội chê cơm mẹ nấu, vô ơn.", action: "Lên Núi Băng Tuyết", icon: "🏔️" },
-            { level: 9, name: "Bát Đao", desc: "Tội đâm sau lưng, đoạt công.", action: "Chịu Đao Trảm Nghiệp", icon: "🗡️" },
-            { level: 10, name: "Trại Đốc", desc: "Tội rủ rê đa cấp, lừa đảo.", action: "Chịu Phạt Đốc Trại", icon: "🕸️" },
-            { level: 11, name: "Bàn Chông", desc: "Tội bùng deadline, bỏ bài tập.", action: "Nằm Bàn Chông Trả Nợ", icon: "📌" },
-            { level: 12, name: "Ép Lực", desc: "Tội bom hàng shipper, quỵt nợ.", action: "Ép Lực Cởi Tội", icon: "🗜️" },
-            { level: 13, name: "Huyết Trì", desc: "Tội bất hiếu, ngược đãi thú cưng.", action: "Ngâm Hồ Huyết Trì", icon: "🩸" },
-            { level: 14, name: "U Vọng", desc: "Tội hứa lèo, hẹn giờ ngủ quên.", action: "Chịu Phạt U Vọng", icon: "👁️" },
-            { level: 15, name: "Kẹp Thị", desc: "Tội giành mic Karaoke, xả rác.", action: "Kẹp Thị Cải Tạo", icon: "⛓️" },
+            { level: 9, name: "Bát Đao", desc: "Tội đâm sau lưng, đoạt công.", action: "Chịu Đao Trảm", icon: "🗡️" },
+            { level: 10, name: "Trại Đốc", desc: "Tội rủ đa cấp, lừa đảo.", action: "Phạt Đốc Trại", icon: "🕸️" },
+            { level: 11, name: "Bàn Chông", desc: "Tội bùng deadline.", action: "Nằm Bàn Chông", icon: "📌" },
+            { level: 12, name: "Ép Lực", desc: "Tội bom hàng shipper.", action: "Ép Lực Cởi Tội", icon: "🗜️" },
+            { level: 13, name: "Huyết Trì", desc: "Tội bất hiếu, ngược đãi thú.", action: "Ngâm Hồ Máu", icon: "🩸" },
+            { level: 14, name: "U Vọng", desc: "Tội hứa lèo, hẹn giờ.", action: "Chịu Phạt U Vọng", icon: "👁️" },
+            { level: 15, name: "Kẹp Thị", desc: "Tội giành mic Karaoke.", action: "Kẹp Thị Cải Tạo", icon: "⛓️" },
             { level: 16, name: "Hỏa Sơn", desc: "Tội kích động antifan.", action: "Tắm Dung Nham", icon: "🌋" },
-            { level: 17, name: "Thạch Ma", desc: "Tội tham ăn, bỏ mứa đồ ăn.", action: "Xay Cối Đá Tích Công", icon: "🪨" },
-            { level: 18, name: "Đao Cứu", desc: "Tội phản bội bạn thân.", action: "Chịu Đao Cưa Cực Nặng", icon: "🪚" }
+            { level: 17, name: "Thạch Ma", desc: "Tội tham ăn, bỏ mứa.", action: "Xay Cối Đá", icon: "🪨" },
+            { level: 18, name: "Đao Cứu", desc: "Tội phản bội bạn thân.", action: "Chịu Đao Cưa", icon: "🪚" }
         ];
 
         const questDatabase = [
             { id: 1, title: "🕯️ Thắp Nhang Trầm Hươu Ảo", desc: "Thắp 1 nén nhang cầu an lành.", merit: 10, duration: 5, icon: "🕯️" },
             { id: 2, title: "📖 Đọc 1 Bài Kinh Sám Hối", desc: "Tụng niệm giải tỏa oán nghiệp.", merit: 25, duration: 10, icon: "📖" },
-            { id: 3, title: "🍜 Cúng Dường Cháo Mạnh Bà", desc: "Bố thí cho các vong hồn đói khát.", merit: 50, duration: 15, icon: "🍜" },
-            { id: 4, title: "🌉 Giúp Cô Hồn Qua Cầu Nại Hà", desc: "Dắt tay qua sông quên lãng.", merit: 100, duration: 25, icon: "🌉" }
+            { id: 3, title: "🍜 Cúng Dường Cháo Mạnh Bà", desc: "Bố thí cho các vong hồn đói.", merit: 50, duration: 15, icon: "🍜" },
+            { id: 4, title: "🌉 Giúp Cô Hồn Qua Cầu", desc: "Dắt tay qua sông quên lãng.", merit: 100, duration: 25, icon: "🌉" }
         ];
 
         const shopDatabase = [
@@ -721,7 +721,7 @@
         const reincarnateOptions = [
             { id: 0, title: "Tỷ Phú Trúng Số Kiếp Sau", cost: 500, icon: "💎", desc: "Sinh ra ở vạch đích, tập đoàn nghìn tỷ!" },
             { id: 1, title: "Mèo Hoàng Gia Trâm Anh", cost: 200, icon: "🐱", desc: "Không deadline, ăn bò Wagyu cả ngày!" },
-            { id: 2, title: "Người Bình Thường 8 Tiếng/Ngày", cost: 50, icon: "👨‍💼", desc: "Đúng giờ tan làm, đủ tiền đi du lịch." }
+            { id: 2, title: "Người Bình Thường 8 Tiếng/Ngày", cost: 50, icon: "👨‍💼", desc: "Đúng giờ tan làm, đủ tiền du lịch." }
         ];
 
         let currentUser = {
@@ -741,43 +741,38 @@
         let currentActiveQuest = null;
         let questTimerInterval = null;
 
+        // XỬ LÝ ẢNH CANVAS 3D ĐỊA NGỤC NỀN & CHIBI
         const canvas = document.getElementById('world-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
 
-        // TẢI HÌNH ẢNH THIẾT KẾ ĐỊA NGỤC VÀ CHIBI GỐC CỦA BẠN
         const bgHellImage = new Image();
-        bgHellImage.src = 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1920&auto=format&fit=crop'; // Sẽ tự động nạp ảnh bản đồ 3D địa ngục gốc của bạn khi online
+        bgHellImage.src = 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1920&auto=format&fit=crop'; // Nền ảnh dung nham 3D âm phủ
 
         function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
             if (currentUser.x === 0) {
                 currentUser.x = width / 2;
-                currentUser.y = height / 2 + 100;
+                currentUser.y = height / 2 + 50;
             }
         }
         window.addEventListener('resize', resize);
         resize();
 
         const buildings3D = [
-            { id: 'mod-tracuu', name: 'Máy Đo Nghiệp Báo 3D', icon: '⚖️', color: '#ffb703', x: 0, y: 0 },
-            { id: 'mod-samhoi', name: 'Cổng 18 Tầng Địa Ngục', icon: '🚪', color: '#e6222b', x: -220, y: -120 },
-            { id: 'mod-nhiemvu', name: 'Bàn Thờ Trầm Hương', icon: '🕯️', color: '#4caf50', x: 220, y: -120 },
-            { id: 'mod-cuahang', name: 'Thương Tiệm Âm Phủ', icon: '🪙', color: '#ffb703', x: -260, y: 100 },
-            { id: 'mod-kho', name: 'Rương Vật Phẩm', icon: '🎒', color: '#2196f3', x: 260, y: 100 },
-            { id: 'mod-dauthai', name: 'Vòng Xoáy Luân Hồi', icon: '🌀', color: '#9c27b0', x: -140, y: 220 },
-            { id: 'mod-sonamtao', name: 'Bia Đá Nam Tào', icon: '📜', color: '#ffffff', x: 140, y: 220 }
+            { id: 'tab-tracuu', name: 'Máy Đo Nghiệp Báo 3D', icon: '⚖️', color: '#ffb703', x: 0, y: 0 },
+            { id: 'tab-samhoi', name: 'Cổng 18 Tầng Địa Ngục', icon: '🚪', color: '#e6222b', x: -200, y: -100 },
+            { id: 'tab-nhiemvu', name: 'Bàn Thờ Trầm Hương', icon: '🕯️', color: '#4caf50', x: 200, y: -100 },
+            { id: 'tab-cuahang', name: 'Thương Tiệm Âm Phủ', icon: '🪙', color: '#ffb703', x: -230, y: 80 },
+            { id: 'tab-kho', name: 'Rương Vật Phẩm', icon: '🎒', color: '#2196f3', x: 230, y: 80 },
+            { id: 'tab-dauthai', name: 'Vòng Xoáy Luân Hồi', icon: '🌀', color: '#9c27b0', x: -120, y: 180 },
+            { id: 'tab-sonamtao', name: 'Bia Đá Nam Tào', icon: '📜', color: '#ffffff', x: 120, y: 180 }
         ];
 
-        let nearestBuilding = null;
         const keys = {};
-
-        window.addEventListener('keydown', e => {
-            keys[e.key.toLowerCase()] = true;
-            if (e.key.toLowerCase() === 'e') triggerZoneAction();
-        });
-        window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+        window.addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; });
+        window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
 
         canvas.addEventListener('click', e => {
             currentUser.x = e.clientX;
@@ -791,27 +786,17 @@
             if (keys['a'] || keys['arrowleft']) currentUser.x -= speed;
             if (keys['d'] || keys['arrowright']) currentUser.x += speed;
 
-            nearestBuilding = null;
-            let minDist = 9999;
             const centerX = width / 2;
-            const centerY = height / 2 - 50;
+            const centerY = height / 2 - 30;
 
             buildings3D.forEach(b => {
                 let bx = centerX + b.x;
                 let by = centerY + b.y;
                 let dist = Math.hypot(currentUser.x - bx, currentUser.y - by);
-                if (dist < 70 && dist < minDist) {
-                    minDist = dist;
-                    nearestBuilding = { ...b, bx, by };
+                if (dist < 60) {
+                    switchTab(b.id);
                 }
             });
-
-            const txt = document.getElementById('interact-text');
-            if (nearestBuilding) {
-                txt.innerText = `E: Mở ${nearestBuilding.name}`;
-            } else {
-                txt.innerText = "Di chuyển linh hồn đến gần công trình 3D...";
-            }
         }
 
         function drawWorld3D() {
@@ -819,51 +804,51 @@
 
             if (bgHellImage.complete) {
                 ctx.drawImage(bgHellImage, 0, 0, width, height);
-                ctx.fillStyle = "rgba(5, 2, 3, 0.3)";
+                ctx.fillStyle = "rgba(5, 2, 3, 0.4)";
                 ctx.fillRect(0, 0, width, height);
             }
 
             const centerX = width / 2;
-            const centerY = height / 2 - 50;
+            const centerY = height / 2 - 30;
 
             buildings3D.forEach(b => {
                 let bx = centerX + b.x;
                 let by = centerY + b.y;
 
-                ctx.fillStyle = "rgba(22, 10, 12, 0.85)";
+                ctx.fillStyle = "rgba(22, 10, 12, 0.9)";
                 ctx.strokeStyle = b.color;
                 ctx.lineWidth = 2;
                 ctx.beginPath();
-                ctx.ellipse(bx, by + 15, 35, 18, 0, 0, Math.PI * 2);
+                ctx.ellipse(bx, by + 12, 30, 15, 0, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.stroke();
 
-                ctx.font = "30px Arial";
+                ctx.font = "26px Arial";
                 ctx.textAlign = "center";
-                ctx.fillText(b.icon, bx, by - 10);
+                ctx.fillText(b.icon, bx, by - 8);
 
-                ctx.font = "bold 11px Montserrat";
+                ctx.font = "bold 10px Montserrat";
                 ctx.fillStyle = b.color;
-                ctx.fillText(b.name, bx, by - 48);
+                ctx.fillText(b.name, bx, by - 42);
             });
 
-            // Vẽ nhân vật Chibi linh hồn áo bào phát sáng rực rỡ dựa trên ảnh thiết kế
+            // Vẽ linh hồn chibi phát sáng tùy chọn áo bào
             ctx.save();
             ctx.shadowColor = currentUser.color;
-            ctx.shadowBlur = 25;
+            ctx.shadowBlur = 20;
 
             ctx.beginPath();
-            ctx.arc(currentUser.x, currentUser.y - 10, 28, 0, Math.PI * 2);
+            ctx.arc(currentUser.x, currentUser.y - 8, 22, 0, Math.PI * 2);
             ctx.fillStyle = currentUser.glowColor;
             ctx.fill();
 
-            ctx.font = "42px Arial";
+            ctx.font = "36px Arial";
             ctx.textAlign = "center";
             ctx.fillText(currentUser.icon, currentUser.x, currentUser.y);
 
-            ctx.font = "bold 11px Montserrat";
+            ctx.font = "bold 10px Montserrat";
             ctx.fillStyle = currentUser.color;
-            ctx.fillText(currentUser.name, currentUser.x, currentUser.y - 42);
+            ctx.fillText(currentUser.name, currentUser.x, currentUser.y - 35);
             ctx.restore();
         }
 
@@ -886,11 +871,13 @@
             const nameInput = document.getElementById('input-username').value.trim();
             if (nameInput) currentUser.name = nameInput;
 
-            document.getElementById('hud-avatar-icon').innerText = currentUser.icon;
-            document.getElementById('hud-username').innerText = currentUser.name;
+            document.getElementById('sidebar-avatar-icon').innerText = currentUser.icon;
+            document.getElementById('user-display-name').innerText = currentUser.name;
             document.getElementById('input-name').value = currentUser.name;
             
             document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-app-ui').style.display = 'flex';
+
             renderCrimes();
             render18Hells();
             renderQuests();
@@ -901,24 +888,19 @@
             gameLoop();
         }
 
-        function triggerZoneAction() {
-            if (nearestBuilding) {
-                openFeatureModal(nearestBuilding.id);
-            } else {
-                alert("Hãy di chuyển linh hồn lại gần một công trình 3D!");
-            }
+        function switchTab(tabId) {
+            document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            // Highlight nav item tương ứng
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(n => {
+                if (n.getAttribute('onclick').includes(tabId)) n.classList.add('active');
+            });
         }
 
-        function openFeatureModal(modalContentId) {
-            document.querySelectorAll('.feature-content').forEach(c => c.style.display = 'none');
-            document.getElementById(modalContentId).style.display = 'block';
-            document.getElementById('feature-modal').classList.add('active');
-        }
-
-        function closeFeatureModal() {
-            document.getElementById('feature-modal').classList.remove('active');
-        }
-
+        // --- CÁC HÀM XỬ LÝ NGHIỆP BÁO VÀ TÍNH NĂNG GỐC ---
         function renderCrimes() {
             const container = document.getElementById('crime-list-container');
             let html = '';
@@ -947,10 +929,9 @@
             hell18Levels.forEach(h => {
                 html += `
                     <div class="hell-level-card" onclick="openHellModal(${h.level})">
-                        <div style="font-size: 30px; margin-bottom: 5px;">${h.icon}</div>
-                        <h4>Tầng ${h.level}: ${h.name}</h4>
-                        <p>${h.desc}</p>
-                        <span style="font-size: 10px; color: var(--accent-gold); display: block; margin-top: 8px;">👉 Bấm để sám hối</span>
+                        <div style="font-size: 24px; margin-bottom: 4px;">${h.icon}</div>
+                        <h4 style="color:var(--accent-red); font-size:12px;">Tầng ${h.level}: ${h.name}</h4>
+                        <p style="font-size:10px; color:var(--text-muted);">${h.desc}</p>
                     </div>`;
             });
             container.innerHTML = html;
@@ -962,67 +943,13 @@
             questDatabase.forEach(q => {
                 html += `
                     <div class="quest-card" onclick="startQuestModal(${q.id})">
-                        <div style="font-size: 35px; margin-bottom: 8px;">${q.icon}</div>
-                        <h4>${q.title}</h4>
-                        <p>${q.desc}</p>
-                        <div style="font-size: 11px; color: var(--accent-gold); font-weight: bold; margin-bottom: 10px;">⏱️ Thời gian: ${q.duration}s</div>
-                        <button class="btn-header" style="width: 100%; background:rgba(230,34,43,0.2); border:1px solid var(--accent-red); color:#fff; padding:6px; border-radius:6px; cursor:pointer;">+${q.merit} Công Đức</button>
+                        <div style="font-size: 28px; margin-bottom: 4px;">${q.icon}</div>
+                        <h4 style="color:var(--accent-gold); font-size:12px;">${q.title}</h4>
+                        <p style="font-size:10px; color:var(--text-muted);">${q.desc}</p>
+                        <div style="font-size:10px; color:var(--accent-gold); margin-top:4px;">⏱️ ${q.duration}s | +${q.merit} Công Đức</div>
                     </div>`;
             });
             container.innerHTML = html;
-        }
-
-        function startQuestModal(questId) {
-            const quest = questDatabase.find(q => q.id === questId);
-            if (!quest) return;
-            currentActiveQuest = quest;
-
-            document.getElementById('quest-modal-title').innerText = quest.title;
-            document.getElementById('quest-modal-desc').innerText = quest.desc;
-            document.getElementById('quest-modal-icon').innerText = quest.icon;
-            
-            const btn = document.getElementById('quest-modal-btn');
-            btn.innerText = "⏳ ĐANG TIẾN HÀNH...";
-            btn.disabled = true;
-
-            const timerBar = document.getElementById('quest-timer-bar');
-            const timerText = document.getElementById('quest-timer-text');
-            timerBar.style.width = '0%';
-            document.getElementById('quest-modal').classList.add('active');
-
-            let elapsed = 0;
-            const totalMs = quest.duration * 1000;
-            if (questTimerInterval) clearInterval(questTimerInterval);
-
-            questTimerInterval = setInterval(() => {
-                elapsed += 100;
-                let pct = Math.min(100, (elapsed / totalMs) * 100);
-                timerBar.style.width = pct + '%';
-                let secondsLeft = Math.ceil((totalMs - elapsed) / 1000);
-                timerText.innerText = `Đang thực hiện... (Còn ${secondsLeft}s)`;
-
-                if (elapsed >= totalMs) {
-                    clearInterval(questTimerInterval);
-                    timerText.innerText = "🎉 HOÀN THÀNH!";
-                    btn.innerText = `NHẬN +${quest.merit} CÔNG ĐỨC`;
-                    btn.disabled = false;
-                    btn.onclick = finishQuest;
-                }
-            }, 100);
-        }
-
-        function finishQuest() {
-            if (currentActiveQuest) {
-                currentUser.merit += currentActiveQuest.merit;
-                updateUI();
-                alert(`🎉 Bạn đã nhận thành công +${currentActiveQuest.merit} Điểm Công Đức!`);
-                closeModal('quest-modal');
-            }
-        }
-
-        function cancelQuest() {
-            if (questTimerInterval) clearInterval(questTimerInterval);
-            closeModal('quest-modal');
         }
 
         function renderShop() {
@@ -1032,11 +959,11 @@
                 html += `
                     <div class="shop-item">
                         <div>
-                            <div style="font-size: 32px; margin-bottom: 5px;">${item.icon}</div>
-                            <h4>${item.name}</h4>
-                            <p>${item.desc}</p>
+                            <div style="font-size: 28px; margin-bottom: 4px;">${item.icon}</div>
+                            <h4 style="color:var(--accent-gold); font-size:12px;">${item.name}</h4>
+                            <p style="font-size:10px; color:var(--text-muted);">${item.desc}</p>
                         </div>
-                        <button class="btn-header" style="background:var(--accent-red); border:none; color:#fff; padding:8px; border-radius:6px; cursor:pointer;" onclick="buyItem('${item.id}')">${item.cost.toLocaleString('vi-VN')} Công Đức</button>
+                        <button class="btn-action" style="margin-top:8px; padding:6px;" onclick="buyItem('${item.id}')">${item.cost} Công Đức</button>
                     </div>`;
             });
             container.innerHTML = html;
@@ -1046,26 +973,23 @@
             const container = document.getElementById('inventory-list-container');
             let keys = Object.keys(currentUser.inventory);
             if (keys.length === 0) {
-                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">🎒 Kho trống! Hãy sang Cửa Hàng mua vật phẩm.</div>`;
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 30px; font-size:11px;">🎒 Kho trống!</div>`;
                 return;
             }
             let html = '';
             keys.forEach(id => {
                 let qty = currentUser.inventory[id];
-                if (qty > 0) {
-                    let item = shopDatabase.find(s => s.id === id);
-                    if (item) {
-                        html += `
-                            <div class="inventory-item">
-                                <div>
-                                    <div style="font-size: 35px; margin-bottom: 5px;">${item.icon}</div>
-                                    <h4>${item.name}</h4>
-                                    <p>${item.desc}</p>
-                                    <div style="font-size: 11px; color: var(--accent-gold); font-weight: bold; margin-bottom: 8px;">Số lượng: ${qty}</div>
-                                </div>
-                                <button class="btn-action" style="margin-top:0;" onclick="useInventoryItem('${item.id}')">SỬ DỤNG</button>
-                            </div>`;
-                    }
+                let item = shopDatabase.find(s => s.id === id);
+                if (item && qty > 0) {
+                    html += `
+                        <div class="inventory-item">
+                            <div>
+                                <div style="font-size: 28px; margin-bottom: 4px;">${item.icon}</div>
+                                <h4 style="color:var(--accent-gold); font-size:12px;">${item.name}</h4>
+                                <p style="font-size:10px; color:var(--text-muted);">SL: ${qty}</p>
+                            </div>
+                            <button class="btn-action" style="margin-top:8px; padding:6px;" onclick="useInventoryItem('${item.id}')">SỬ DỤNG</button>
+                        </div>`;
                 }
             });
             container.innerHTML = html;
@@ -1143,6 +1067,59 @@
             }
         }
 
+        function startQuestModal(questId) {
+            const quest = questDatabase.find(q => q.id === questId);
+            if (!quest) return;
+            currentActiveQuest = quest;
+
+            document.getElementById('quest-modal-title').innerText = quest.title;
+            document.getElementById('quest-modal-desc').innerText = quest.desc;
+            document.getElementById('quest-modal-icon').innerText = quest.icon;
+            
+            const btn = document.getElementById('quest-modal-btn');
+            btn.innerText = "⏳ ĐANG TIẾN HÀNH...";
+            btn.disabled = true;
+
+            const timerBar = document.getElementById('quest-timer-bar');
+            const timerText = document.getElementById('quest-timer-text');
+            timerBar.style.width = '0%';
+            document.getElementById('quest-modal').classList.add('active');
+
+            let elapsed = 0;
+            const totalMs = quest.duration * 1000;
+            if (questTimerInterval) clearInterval(questTimerInterval);
+
+            questTimerInterval = setInterval(() => {
+                elapsed += 100;
+                let pct = Math.min(100, (elapsed / totalMs) * 100);
+                timerBar.style.width = pct + '%';
+                let secondsLeft = Math.ceil((totalMs - elapsed) / 1000);
+                timerText.innerText = `Đang thực hiện... (Còn ${secondsLeft}s)`;
+
+                if (elapsed >= totalMs) {
+                    clearInterval(questTimerInterval);
+                    timerText.innerText = "🎉 HOÀN THÀNH!";
+                    btn.innerText = `NHẬN +${quest.merit} CÔNG ĐỨC`;
+                    btn.disabled = false;
+                    btn.onclick = finishQuest;
+                }
+            }, 100);
+        }
+
+        function finishQuest() {
+            if (currentActiveQuest) {
+                currentUser.merit += currentActiveQuest.merit;
+                updateUI();
+                alert(`🎉 Nhận thành công +${currentActiveQuest.merit} Công Đức!`);
+                closeModal('quest-modal');
+            }
+        }
+
+        function cancelQuest() {
+            if (questTimerInterval) clearInterval(questTimerInterval);
+            closeModal('quest-modal');
+        }
+
         function buyItem(itemId) {
             let item = shopDatabase.find(s => s.id === itemId);
             if (!item) return;
@@ -1183,7 +1160,6 @@
             currentUser.merit -= opt.cost;
             updateUI();
             alert(`✅ HỒ SƠ ĐÃ ĐƯỢC PHÁN QUAN DUYỆT!\nNguyện vọng: ${opt.title}\n${opt.desc}`);
-            closeFeatureModal();
         }
 
         function showCCCD() {
@@ -1191,10 +1167,13 @@
         }
 
         function updateUI() {
-            document.getElementById('hud-username').innerText = currentUser.name;
-            document.getElementById('hud-karma').innerText = currentUser.karma;
-            document.getElementById('hud-merit').innerText = currentUser.merit;
-            document.getElementById('hud-hell-name').innerText = currentUser.assignedHell;
+            document.getElementById('user-display-name').innerText = currentUser.name;
+            document.getElementById('stat-karma').innerText = currentUser.karma;
+            document.getElementById('stat-merit').innerText = currentUser.merit;
+            document.getElementById('stat-hell-name').innerText = currentUser.assignedHell;
+
+            let barWidth = Math.min(100, (currentUser.karma / 300) * 100);
+            document.getElementById('karma-bar').style.width = barWidth + '%';
 
             document.getElementById('namtao-table-body').innerHTML = `
                 <tr>
@@ -1204,6 +1183,12 @@
                     <td style="color:var(--accent-gold);">${currentUser.merit}</td>
                     <td>${currentUser.karma === 0 ? 'Đã Tự Do' : 'Đang Cải Tạo'}</td>
                 </tr>`;
+        }
+
+        let isAudioOn = true;
+        function toggleAudio() {
+            isAudioOn = !isAudioOn;
+            document.getElementById('audio-status').innerText = isAudioOn ? "BẬT" : "TẮT";
         }
     </script>
 </body>
